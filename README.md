@@ -1,7 +1,6 @@
 # Lorem-Ipsum-UCD23
 COMP47250 Summer 2023 Team Software Project - Lorem Ipsum
 
-
 ### Dev Flow
 1. Create a branch with a descriptive name
    - (GOOD) image-detection
@@ -19,7 +18,7 @@ COMP47250 Summer 2023 Team Software Project - Lorem Ipsum
 6. Delete the working branch on your local
    - It avoids confusion.
    - type ```git delete -d [branch name]```. If it causes an error, highly likey either your local git is not up-to-date or your branch is not merged yet.
- 
+
 
 
 ### Requrements
