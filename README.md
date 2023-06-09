@@ -17,7 +17,7 @@ COMP47250 Summer 2023 Team Software Project - Lorem Ipsum
    <img width="942" alt="merge" src="https://github.com/LoremIpsumUCD23/HoloLens-Translator/assets/42766938/eac57ce1-012d-464f-88f9-7c0307eef849">
 6. Delete the working branch on your local
    - It avoids confusion.
-   - type ```git delete -d [branch name]```. If it causes an error, highly likey either your local git is not up-to-date or your branch is not merged yet.
+   - type ```git delete -d [branch name]```. If it causes an error, highly likely either your local git is not up-to-date or your branch is not merged yet.
 
 
 
