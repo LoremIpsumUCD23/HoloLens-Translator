@@ -135,9 +135,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.1
-  preloadedAssets:
-  - {fileID: -700653554834500132, guid: 5ec0bd620e80d244392909c87623c389, type: 2}
-  - {fileID: -2322509954511359289, guid: b5c12b68757f7124581fa590b84da846, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -844,11 +842,12 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Lorem-Ipsum-XR-Translator
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: C:\Users\ghoti\Documents\ConnollyGames\HoloLens-Translator\Lorem
+    Ipsum XR Translator\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: DefaultCompany
+  metroCertificateIssuer: DefaultCompany
+  metroCertificateNotAfter: 809965b5d1bdda01
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: Lorem Ipsum XR Translator
