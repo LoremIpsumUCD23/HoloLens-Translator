@@ -699,8 +699,8 @@ GameObject:
   - component: {fileID: 1935015514}
   - component: {fileID: 1935015513}
   - component: {fileID: 1935015512}
-  - component: {fileID: 1935015511}
   - component: {fileID: 1935015510}
+  - component: {fileID: 1935015518}
   m_Layer: 0
   m_Name: Screenshotter Interactable
   m_TagString: Untagged
@@ -723,22 +723,6 @@ MonoBehaviour:
   handType: 3
   proximityType: 3
   executionOrder: 0
---- !u!114 &1935015511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1935015509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea5f249786382754b8635a1375f7b76c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handType: 3
-  proximityType: 3
-  executionOrder: 0
-  faceAway: 0
 --- !u!114 &1935015512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -887,3 +871,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &1935015518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935015509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149fa3ae453128b41940b5caa905f8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handType: 3
+  proximityType: 3
+  executionOrder: 0
+  constraintOnMovement: -1
+  useLocalSpaceForConstraint: 0
