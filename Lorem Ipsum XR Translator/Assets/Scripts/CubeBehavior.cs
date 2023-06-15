@@ -6,6 +6,7 @@ using TMPro;
 
 // our own namespace
 using Description;
+using Translator;
 
 public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 {
@@ -14,14 +15,19 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     private IDescriptionAPIClient _client;
 
     // Start is called before the first frame update
+    public TextMeshPro textobj;
     void Start()
     {
+
         Debug.Log("Started");
         textObject.text = "Sugai";
+        textobj.text = "tintin";
 
         // TODO: Check your API KEY here: https://platform.openai.com/account/api-keys
         this._client = new ChatGPTClient("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", "text-davinci-003");
         StartCoroutine(this._client.SendRequest("Good morning!", this.getDescription));
+        AzureTranslator.Main();
+
     }
 
     public void OnGestureStarted(InputEventData eventData)
