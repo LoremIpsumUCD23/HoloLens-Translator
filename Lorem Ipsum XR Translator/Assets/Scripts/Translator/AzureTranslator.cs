@@ -5,7 +5,6 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using UnityEngine.Networking;
-using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 
