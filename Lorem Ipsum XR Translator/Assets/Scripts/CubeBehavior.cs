@@ -23,6 +23,8 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         textObject.text = "Sugai";
         textobj.text = "tintin";
 
+        string result = "cat";
+
         // Initialise decriptor client
         // TODO: Check your API KEY here: https://platform.openai.com/account/api-keys
         this._descriptionClient = new ChatGPTClient("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", "text-davinci-003");
@@ -33,9 +35,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         // Initialise translator client
         this._translatorClient = new AzureTranslator(/*Maybe parameters here?*/);
         // Get a translation in Japanese.
-        string language = "ja";
-        StartCoroutine(this._translatorClient.Translate("Good morning!", language, this.getTranslation));
-
+        StartCoroutine(this._translatorClient.Translate("Good morning!", "en", {"ja", "hi"}, this.getTranslation));
     }
 
     public void OnGestureStarted(InputEventData eventData)
