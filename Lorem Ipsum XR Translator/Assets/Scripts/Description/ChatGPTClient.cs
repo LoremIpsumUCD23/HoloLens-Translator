@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Description
 {
-    public class ChatGPTClient : IDescriptionAPIClient
+    public class ChatGPTClient : IDescriptionClient
     {
         private const string Url = "https://api.openai.com/v1/completions";
         private readonly string _apiKey;

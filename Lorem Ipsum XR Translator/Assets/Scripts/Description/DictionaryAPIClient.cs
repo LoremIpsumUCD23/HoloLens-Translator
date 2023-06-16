@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Description
 {
-    public class DictionaryAPIClient : IDescriptionAPIClient
+    public class DictionaryAPIClient : IDescriptionClient
     {
         public DictionaryAPIClient()
         {
