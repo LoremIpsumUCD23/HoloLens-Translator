@@ -73,7 +73,7 @@ namespace Description
                     // No Error
                     case UnityWebRequest.Result.Success:
                         Debug.Log(webRequest.downloadHandler.text);
-                        Rootobject res = JsonUtility.FromJson < Rootobject > (webRequest.downloadHandler.text);
+                        Rootobject res = JsonUtility.FromJson <Rootobject> (webRequest.downloadHandler.text);
                         string message = "blank";
                         if (res == null) message = "response is empty.";
                         //DictionaryEntry res = JsonConvert.DeserializeObject<DictionaryEntry>(res);
@@ -88,55 +88,55 @@ namespace Description
         [Serializable]
         public class Rootobject
         {
-            public string[] Property1 { get; set; }
+            public Class1[] Property1;
         }
 
         [Serializable]
         public class Class1
         {
-            public Meta meta { get; set; }
-            public Hwi hwi { get; set; }
-            public string fl { get; set; }
-            public Def[] def { get; set; }
-            public string[] shortdef { get; set; }
+            public Meta meta;
+            public Hwi hwi;
+            public string fl;
+            public Def[] def;
+            public string[] shortdef;
         }
 
         [Serializable]
         public class Meta
         {
-            public string id { get; set; }
-            public string uuid { get; set; }
-            public string sort { get; set; }
-            public string src { get; set; }
-            public string section { get; set; }
-            public string[] stems { get; set; }
-            public bool offensive { get; set; }
+            public string id;
+            public string uuid;
+            public string sort;
+            public string src;
+            public string section;
+            public string[] stems;
+            public bool offensive;
         }
 
         [Serializable]
         public class Hwi
         {
-            public string hw { get; set; }
-            public Pr[] prs { get; set; }
+            public string hw;
+            public Pr[] prs;
         }
 
         [Serializable]
         public class Pr
         {
-            public string mw { get; set; }
-            public Sound sound { get; set; }
+            public string mw;
+            public Sound sound;
         }
 
         [Serializable]
         public class Sound
         {
-            public string audio { get; set; }
+            public string audio;
         }
 
         [Serializable]
         public class Def
         {
-            public object[][][] sseq { get; set; }
+            public object[][][] sseq;
         }
     }
 
