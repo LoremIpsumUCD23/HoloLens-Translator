@@ -15,28 +15,70 @@ namespace Translator
 
 public class AzureTranslator : ITranslatorClient
 {
-    private static readonly string key = "5878a06b7c2c4a66beed0915fe52a400";
+    //private static readonly string key = "5878a06b7c2c4a66beed0915fe52a400";
     private static readonly string endpoint = "https://api.cognitive.microsofttranslator.com/";
 
     // location, also known as region.
     // required if you're using a multi-service or regional (not global) resource. It can be found in the Azure portal on the Keys and Endpoint page.
-    private static readonly string location = "northeurope";
+    //private static readonly string location = "northeurope";
+    private readonly string apiKey;
+    private readonly string  location;
 
-    public ITranslatorClient(/*Maybe parameters here*/)
+    public AzureTranslator(string apikey ,string location)
     {
-        // TODO: complete this constructor.
+        // private const string Url = "https://api.openai.com/v1/completions";
+
+        this.apiKey = apiKey;
+        this.location = location;
+        
     }
 
 
     public IEnumerator Translate(string originalText, string language, Action<string> callback)
     {
-        
+         // Construct the request URL
+    //string endpoint = "https://api.cognitive.microsofttranslator.com/translate";
+    
+    // Create the request body
+    string requestBody = "[{ \"Text\": \"" + text + "\" }]";
+    byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
+
+    www.uploadHandler = new UploadHandlerRaw(requestData);
+    
+    // Create a UnityWebRequest object
+    UnityWebRequest request = UnityWebRequest.Post(endpoint, requestBody);
+    
+    // Set the request headers
+    www.SetRequestHeader("Content-Type", "application/json");
+    www.SetRequestHeader("Ocp-Apim-Subscription-Key", apiKey);
+    www.SetRequestHeader("Ocp-Apim-Subscription-Region",location); 
+
+    www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+    
+    // Send the request
+    yield return request.SendWebRequest();
+    
+    // Handle the response
+    if (request.result != UnityWebRequest.Result.Success)
+    {
+        Debug.Log("Error: " + request.error);
+        callback("Error: " + request.error);
+    }
+    else
+    {
+        string responseText = request.downloadHandler.text;
+        // Parse and process the response as needed
+        Debug.Log("Translation response: " + responseText);
+        callback(responseText);
+    }
+
+
     }
 
     public static async Task Main()
     {
         // Input and output languages are defined as parameters.
-        string route = "/translate?api-version=3.0&from=en&to=fr&to=ja";
+        string route = "/translate?api-version=3.0&from=en&to=lan1&to=ja";
         string textToTranslate = "Hi , my name is tintin";
          
         object[] body = new object[] { new { Text = textToTranslate } };
