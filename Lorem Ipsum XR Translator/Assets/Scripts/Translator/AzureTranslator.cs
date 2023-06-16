@@ -13,7 +13,7 @@ using System.Net.Http;
 namespace Translator
 {
 
-public class AzureTranslator
+public class AzureTranslator : ITranslatorClient
 {
     private static readonly string key = "5878a06b7c2c4a66beed0915fe52a400";
     private static readonly string endpoint = "https://api.cognitive.microsofttranslator.com/";
@@ -21,6 +21,17 @@ public class AzureTranslator
     // location, also known as region.
     // required if you're using a multi-service or regional (not global) resource. It can be found in the Azure portal on the Keys and Endpoint page.
     private static readonly string location = "northeurope";
+
+    public ITranslatorClient(/*Maybe parameters here*/)
+    {
+        // TODO: complete this constructor.
+    }
+
+
+    public IEnumerator Translate(string originalText, string language, Action<string> callback)
+    {
+        
+    }
 
     public static async Task Main()
     {

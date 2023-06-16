@@ -72,7 +72,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         }
     }
 
-    private void getTranslation(string originalText)
+    private void getTranslation(string responseText)
     {
         if (responseText != null)
         {
