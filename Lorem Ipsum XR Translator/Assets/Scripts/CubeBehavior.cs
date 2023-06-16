@@ -23,13 +23,17 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         textObject.text = "Sugai";
         textobj.text = "tintin";
 
-        // Initialise decriptor client
-        // TODO: Check your API KEY here: https://platform.openai.com/account/api-keys
+        //// Initialise decriptor client
+        //// TODO: Check your API KEY here: https://platform.openai.com/account/api-keys
         //this._descriptionClient = new ChatGPTClient("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", "text-davinci-003");
-        this._descriptionClient = new DictionaryAPIClient("elementary");
+        //// Get a description.
+        //StartCoroutine(this._descriptionClient.SendRequest("Good morning", this.getDescription));
+
+        // Elementary dictionary API key    : 50975cc1-b4e7-4666-af66-03067dc6060f  || ("elementary", "50975cc1-b4e7-4666-af66-03067dc6060f")
+        // Intermediate dictionary API key  : 6009aa88-c0ad-49ef-97fe-c2e785c7d0a8  || ("intermediate", "6009aa88-c0ad-49ef-97fe-c2e785c7d0a8")
+        this._descriptionClient = new DictionaryAPIClient("intermediate", "6009aa88-c0ad-49ef-97fe-c2e785c7d0a8");
         // Get a description.
         StartCoroutine(this._descriptionClient.SendRequest("morning", this.getDescription));
-
 
         // Initialise translator client
         this._translatorClient = new AzureTranslator("5878a06b7c2c4a66beed0915fe52a400","northeurope");

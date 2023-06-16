@@ -9,37 +9,30 @@ using Newtonsoft.Json;
 namespace Description
 {
     /// <summary>
-    /// This Dictionary Client uses an API from Merriam Webster Dictionary. The API key comes from a registered account.
+    /// This Dictionary Client uses an API from Merriam-Webster Dictionary. The API key comes from a registered account.
     /// The usage limit is 1000 API calls per day for each key.
     /// </summary>
     public class DictionaryAPIClient : IDescriptionClient
     {
-        private readonly string _apiKeyElementary = "50975cc1-b4e7-4666-af66-03067dc6060f"; // Elementary dictionary API key
-        private readonly string _apiKeyIntermediate = "6009aa88-c0ad-49ef-97fe-c2e785c7d0a8"; // Intermediate dictionary API key
         private readonly string _apiKey;
-        private readonly string _model;
         private readonly string _dictionaryRef;
 
-
-
         // model can be either elementary or intermediate
-        public DictionaryAPIClient(string model)
+        public DictionaryAPIClient(string model, string apiKey)
         {
-            this._model = model;
+            this._apiKey = apiKey;
             if (model.Equals("elementary"))
             {
-                this._apiKey = _apiKeyElementary;
                 this._dictionaryRef = "sd2";
             }
             else if (model.Equals("intermediate"))
             {
-                this._apiKey = _apiKeyIntermediate;
                 this._dictionaryRef = "sd3";
             }
             else Debug.LogError("No such model '" + model + "'");
         }
 
-        // returns
+        // returns the dictionary description of a word
         public IEnumerator SendRequest(string content, Action<string> callback)
         {
             // URI for HTTP Calls
@@ -79,6 +72,8 @@ namespace Description
             }
         }
 
+        // JSON format below
+        // Documentation for each is at: https://dictionaryapi.com/products/json
         [Serializable]
         public class Item
         {
