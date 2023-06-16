@@ -44,20 +44,21 @@ public class AzureTranslator : ITranslatorClient
         Debug.Log(url);
 
         // Create the request body
-        string requestBody = "[{ \"Text\": \"" + text + "\" }]";
+        string requestBody = "[{ \"Text\": \"" + originalText + "\" }]";
         byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
 
-        www.uploadHandler = new UploadHandlerRaw(requestData);
+        
     
         // Create a UnityWebRequest object
         UnityWebRequest request = UnityWebRequest.Post(url, requestBody);
+        request.uploadHandler = new UploadHandlerRaw(requestData);
     
         // Set the request headers
-        www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("Ocp-Apim-Subscription-Key", apiKey);
-        www.SetRequestHeader("Ocp-Apim-Subscription-Region",location); 
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Ocp-Apim-Subscription-Key", apiKey);
+        request.SetRequestHeader("Ocp-Apim-Subscription-Region",location); 
 
-        www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
     
         // Send the request
         yield return request.SendWebRequest();

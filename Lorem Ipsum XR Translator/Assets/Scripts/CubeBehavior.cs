@@ -33,9 +33,9 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
 
         // Initialise translator client
-        this._translatorClient = new AzureTranslator(/*Maybe parameters here?*/);
-        // Get a translation in Japanese.
-        StartCoroutine(this._translatorClient.Translate("Good morning!", "en", {"ja", "hi"}, this.getTranslation));
+        this._translatorClient = new AzureTranslator("5878a06b7c2c4a66beed0915fe52a400","northeurope");
+        // Get a translation in Japanese and Hindi.
+        StartCoroutine(this._translatorClient.Translate("Good morning!", "en", new string[] { "ja", "hi" }, this.getTranslation));
     }
 
     public void OnGestureStarted(InputEventData eventData)
