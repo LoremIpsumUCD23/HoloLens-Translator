@@ -5,6 +5,8 @@ namespace Translator
 {
     public interface ITranslatorClient
     {
-        public IEnumerator Translate(string originalText, string language, Action<string> callback);
+        // from: original language
+        // to: list of target languages
+        public IEnumerator Translate(string originalText, string from, string[] to, Action<string> callback);
     }
 }
