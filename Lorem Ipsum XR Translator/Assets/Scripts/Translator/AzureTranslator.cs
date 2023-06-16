@@ -55,8 +55,7 @@ public class AzureTranslator : ITranslatorClient
     
         // Set the request headers
         request.SetRequestHeader("Content-Type", "application/json");
-        Debug.Log("API KEY:" + this.apiKey);
-        Debug.Log("location:" + this.location);
+        
 
         request.SetRequestHeader("Ocp-Apim-Subscription-Key", this.apiKey);
         request.SetRequestHeader("Ocp-Apim-Subscription-Region",this.location); 
