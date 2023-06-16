@@ -1,11 +1,10 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Translator
 {
     public interface ITranslatorClient
     {
-        public IEnumerator Translate(string content, string language, Action<string> callback);
+        public IEnumerator Translate(string originalText, string language, Action<string> callback);
     }
 }
