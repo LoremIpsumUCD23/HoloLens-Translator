@@ -72,37 +72,25 @@ namespace Description
                         break;
                     // No Error
                     case UnityWebRequest.Result.Success:
-                        Debug.Log(webRequest.downloadHandler.text);
-                        Rootobject res = JsonUtility.FromJson <Rootobject> (webRequest.downloadHandler.text);
-                        string message = "blank";
-                        if (res == null) message = "response is empty.";
-                        //DictionaryEntry res = JsonConvert.DeserializeObject<DictionaryEntry>(res);
-                        //message = res.Property1[0].meta.id;
-                        Debug.Log(message);
-                        callback(message);
+                        List<Item> res = JsonConvert.DeserializeObject<List<Item>>(webRequest.downloadHandler.text);
+                        callback(res[0].shortdef[0]);
                         break;
                 }
             }
         }
 
         [Serializable]
-        public class Rootobject
+        public class Item
         {
-            public Class1[] Property1;
-        }
-
-        [Serializable]
-        public class Class1
-        {
-            public Meta meta;
-            public Hwi hwi;
+            public MetaData meta;
+            public HwiData hwi;
             public string fl;
-            public Def[] def;
+            public DefinitionData[] def;
             public string[] shortdef;
         }
 
         [Serializable]
-        public class Meta
+        public class MetaData
         {
             public string id;
             public string uuid;
@@ -114,30 +102,29 @@ namespace Description
         }
 
         [Serializable]
-        public class Hwi
+        public class HwiData
         {
             public string hw;
-            public Pr[] prs;
+            public PrsData[] prs;
         }
 
         [Serializable]
-        public class Pr
+        public class PrsData
         {
             public string mw;
-            public Sound sound;
+            public SoundData sound;
         }
 
         [Serializable]
-        public class Sound
+        public class SoundData
         {
             public string audio;
         }
 
         [Serializable]
-        public class Def
+        public class DefinitionData
         {
-            public object[][][] sseq;
+            public object[][] sseq;
         }
     }
-
 }
