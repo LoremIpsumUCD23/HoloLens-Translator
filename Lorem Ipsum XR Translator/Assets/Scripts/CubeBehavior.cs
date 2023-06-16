@@ -27,9 +27,10 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
         // Initialise decriptor client
         // TODO: Check your API KEY here: https://platform.openai.com/account/api-keys
-        this._descriptionClient = new ChatGPTClient("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", "text-davinci-003");
+        //this._descriptionClient = new ChatGPTClient("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", "text-davinci-003");
+        this._descriptionClient = new DictionaryAPIClient("elementary");
         // Get a description.
-        StartCoroutine(this._descriptionClient.SendRequest("Good morning!", this.getDescription));
+        StartCoroutine(this._descriptionClient.SendRequest("morning", this.getDescription));
 
 
         // Initialise translator client
