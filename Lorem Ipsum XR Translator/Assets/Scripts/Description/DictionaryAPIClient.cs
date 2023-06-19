@@ -9,37 +9,30 @@ using Newtonsoft.Json;
 namespace Description
 {
     /// <summary>
-    /// This Dictionary Client uses an API from Merriam Webster Dictionary. The API key comes from a registered account.
+    /// This Dictionary Client uses an API from Merriam-Webster Dictionary. The API key comes from a registered account.
     /// The usage limit is 1000 API calls per day for each key.
     /// </summary>
     public class DictionaryAPIClient : IDescriptionClient
     {
-        private readonly string _apiKeyElementary = "50975cc1-b4e7-4666-af66-03067dc6060f"; // Elementary dictionary API key
-        private readonly string _apiKeyIntermediate = "6009aa88-c0ad-49ef-97fe-c2e785c7d0a8"; // Intermediate dictionary API key
         private readonly string _apiKey;
-        private readonly string _model;
         private readonly string _dictionaryRef;
 
-
-
         // model can be either elementary or intermediate
-        public DictionaryAPIClient(string model)
+        public DictionaryAPIClient(string model, string apiKey)
         {
-            this._model = model;
+            this._apiKey = apiKey;
             if (model.Equals("elementary"))
             {
-                this._apiKey = _apiKeyElementary;
                 this._dictionaryRef = "sd2";
             }
             else if (model.Equals("intermediate"))
             {
-                this._apiKey = _apiKeyIntermediate;
                 this._dictionaryRef = "sd3";
             }
             else Debug.LogError("No such model '" + model + "'");
         }
 
-        // returns
+        // returns the dictionary description of a word
         public IEnumerator SendRequest(string content, Action<string> callback)
         {
             // URI for HTTP Calls
@@ -72,72 +65,61 @@ namespace Description
                         break;
                     // No Error
                     case UnityWebRequest.Result.Success:
-                        Debug.Log(webRequest.downloadHandler.text);
-                        Rootobject res = JsonUtility.FromJson < Rootobject > (webRequest.downloadHandler.text);
-                        string message = "blank";
-                        if (res == null) message = "response is empty.";
-                        //DictionaryEntry res = JsonConvert.DeserializeObject<DictionaryEntry>(res);
-                        //message = res.Property1[0].meta.id;
-                        Debug.Log(message);
-                        callback(message);
+                        List<Item> res = JsonConvert.DeserializeObject<List<Item>>(webRequest.downloadHandler.text);
+                        callback(res[0].shortdef[0]);
                         break;
                 }
             }
         }
 
+        // JSON format below
+        // Documentation for each is at: https://dictionaryapi.com/products/json
         [Serializable]
-        public class Rootobject
+        public class Item
         {
-            public string[] Property1 { get; set; }
+            public MetaData meta;
+            public HwiData hwi;
+            public string fl;
+            public DefinitionData[] def;
+            public string[] shortdef;
         }
 
         [Serializable]
-        public class Class1
+        public class MetaData
         {
-            public Meta meta { get; set; }
-            public Hwi hwi { get; set; }
-            public string fl { get; set; }
-            public Def[] def { get; set; }
-            public string[] shortdef { get; set; }
+            public string id;
+            public string uuid;
+            public string sort;
+            public string src;
+            public string section;
+            public string[] stems;
+            public bool offensive;
         }
 
         [Serializable]
-        public class Meta
+        public class HwiData
         {
-            public string id { get; set; }
-            public string uuid { get; set; }
-            public string sort { get; set; }
-            public string src { get; set; }
-            public string section { get; set; }
-            public string[] stems { get; set; }
-            public bool offensive { get; set; }
+            public string hw;
+            public PrsData[] prs;
         }
 
         [Serializable]
-        public class Hwi
+        public class PrsData
         {
-            public string hw { get; set; }
-            public Pr[] prs { get; set; }
+            public string mw;
+            public SoundData sound;
         }
 
         [Serializable]
-        public class Pr
+        public class SoundData
         {
-            public string mw { get; set; }
-            public Sound sound { get; set; }
+            public string audio;
         }
 
         [Serializable]
-        public class Sound
+        public class DefinitionData
         {
-            public string audio { get; set; }
-        }
-
-        [Serializable]
-        public class Def
-        {
-            public object[][][] sseq { get; set; }
+            public object[][] sseq;
         }
     }
-
 }
