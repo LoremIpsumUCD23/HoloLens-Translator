@@ -9,6 +9,7 @@ using Description;
 using Translator;
 using Config;
 
+
 public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 {
     public TextMeshPro TranslationText;
