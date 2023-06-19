@@ -7,6 +7,7 @@ using TMPro;
 // our own namespace
 using Description;
 using Translator;
+using Config;
 
 public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 {
@@ -29,22 +30,20 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
 
         // Initialise translator client
-        this._translatorClient = new AzureTranslator("5878a06b7c2c4a66beed0915fe52a400", "northeurope");
+        this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
         // Get a translation in French.
-        StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.getTranslation));
-
-        // Elementary dictionary API key    : 50975cc1-b4e7-4666-af66-03067dc6060f  || ("elementary", "50975cc1-b4e7-4666-af66-03067dc6060f")
-        // Intermediate dictionary API key  : 6009aa88-c0ad-49ef-97fe-c2e785c7d0a8  || ("intermediate", "6009aa88-c0ad-49ef-97fe-c2e785c7d0a8")
-        this._dictionaryClient = new DictionaryAPIClient("elementary", "50975cc1-b4e7-4666-af66-03067dc6060f");
-        // Get a description.
-        StartCoroutine(this._dictionaryClient.SendRequest(target, this.getDescriptionFromDict));
+        StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
 
         // Initialise decription client
-        // TODO: Check your API KEY here: https://platform.openai.com/account/api-keys
-        this._chatGPTClient = new ChatGPTClient("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", "text-davinci-003");
+        this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
+        // Get a description.
+        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
+
+        // Initialise decription client
+        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
         // Get a description.
         string prompt = "Definition of " + target;
-        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.getDescriptionFromGPT));
+        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
     }
 
     public void OnGestureStarted(InputEventData eventData)
@@ -67,7 +66,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         Debug.Log("Gesture Canceled");
     }
 
-    private void getTranslation(string responseText)
+    private void GetTranslation(string responseText)
     {
         if (responseText != null)
         {
@@ -79,7 +78,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         }
     }
 
-    private void getDescriptionFromDict(string responseText)
+    private void GetDescriptionFromDict(string responseText)
     {
         if (responseText != null)
         {
@@ -91,7 +90,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         }
     }
 
-    private void getDescriptionFromGPT(string responseText)
+    private void GetDescriptionFromGPT(string responseText)
     {
         if (responseText != null)
         {
