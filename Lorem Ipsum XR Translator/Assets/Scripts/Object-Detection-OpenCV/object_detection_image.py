@@ -1,6 +1,6 @@
 import cv2
 
-image = cv2.imread('examples/image8.jpg')
+image = cv2.imread('examples/image3.jpg')
 image = cv2.resize(image, (640, 480))
 h = image.shape[0]
 w = image.shape[1]
