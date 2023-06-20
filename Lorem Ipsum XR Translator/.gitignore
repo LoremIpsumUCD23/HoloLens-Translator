@@ -71,5 +71,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-Lorem Ipsum XR Translator/Assets/Scripts/Config/
-Lorem Ipsum XR Translator/Assets/Scripts/Config.meta
+/Assets/Scripts/Config/
+/Assets/Scripts/Config.meta
