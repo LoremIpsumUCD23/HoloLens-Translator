@@ -44,8 +44,6 @@
     "com.unity.modules.xr": "1.0.0",
     "com.microsoft.mixedreality.toolkit.foundation": "file:MixedReality/com.microsoft.mixedreality.toolkit.foundation-2.8.3.tgz",
     "com.microsoft.mixedreality.openxr": "file:MixedReality/com.microsoft.mixedreality.openxr-1.8.0.tgz",
-    "com.microsoft.mixedreality.toolkit.standardassets": "file:MixedReality/com.microsoft.mixedreality.toolkit.standardassets-2.8.3.tgz",
-    "com.microsoft.mrtk.input": "file:MixedReality/com.microsoft.mrtk.input-3.0.0-pre.16.tgz",
-    "com.microsoft.mrtk.graphicstools.unity": "file:MixedReality/com.microsoft.mrtk.graphicstools.unity-0.4.0.tgz"
+    "com.microsoft.mixedreality.toolkit.standardassets": "file:MixedReality/com.microsoft.mixedreality.toolkit.standardassets-2.8.3.tgz"
   }
 }

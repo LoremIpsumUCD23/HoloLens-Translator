@@ -45,14 +45,6 @@ public class ObjectDetection : MonoBehaviour
         }
         // Request body
         byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{'url':'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.businessinsider.com%2Fimage%2F5484d9d1eab8ea3017b17e29%2Fimage.jpg&f=1&nofb=1&ipt=d01225cfc3990e677d40b1793b24123fe936cee5f157c1fd49544618fc2806b9&ipo=images'}");
-        //string imagePath = Application.streamingAssetsPath + "/image.jpeg"; // Path to the image file in StreamingAssets
-
-        //Texture2D imgTexture = new Texture2D(2, 2);
-        //byte[] imgData = System.IO.File.ReadAllBytes(imagePath);
-        //imgTexture.LoadImage(imgData);
-
-        // Convert the texture to PNG format
-        //byte[] byteData = imgTexture.EncodeToPNG();
 
         UnityWebRequest client = new UnityWebRequest(azureObjApi, "POST");
 
