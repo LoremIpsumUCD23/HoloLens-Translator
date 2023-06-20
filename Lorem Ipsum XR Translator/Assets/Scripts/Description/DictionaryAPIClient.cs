@@ -66,6 +66,10 @@ namespace Description
                     // No Error
                     case UnityWebRequest.Result.Success:
                         List<Item> res = JsonConvert.DeserializeObject<List<Item>>(webRequest.downloadHandler.text);
+                        if (res.Count == 0){
+                            callback("No such word");
+                            break;
+                        }
                         callback(res[0].shortdef[0]);
                         break;
                 }
