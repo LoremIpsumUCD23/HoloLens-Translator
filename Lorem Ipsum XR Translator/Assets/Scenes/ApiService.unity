@@ -867,7 +867,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Translation of "cup" (En -> Fr)
+  m_text: Translation of "cup" (En -> Hindi)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ef0bf895722320846b314721236179eb, type: 2}
   m_sharedMaterial: {fileID: -1119804263073132521, guid: ef0bf895722320846b314721236179eb, type: 2}
