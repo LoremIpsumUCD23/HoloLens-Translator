@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
@@ -76,54 +75,6 @@ namespace Description
             }
         }
 
-        // JSON format below
-        // Documentation for each is at: https://dictionaryapi.com/products/json
-        [Serializable]
-        public class Item
-        {
-            public MetaData meta;
-            public HwiData hwi;
-            public string fl;
-            public DefinitionData[] def;
-            public string[] shortdef;
-        }
-
-        [Serializable]
-        public class MetaData
-        {
-            public string id;
-            public string uuid;
-            public string sort;
-            public string src;
-            public string section;
-            public string[] stems;
-            public bool offensive;
-        }
-
-        [Serializable]
-        public class HwiData
-        {
-            public string hw;
-            public PrsData[] prs;
-        }
-
-        [Serializable]
-        public class PrsData
-        {
-            public string mw;
-            public SoundData sound;
-        }
-
-        [Serializable]
-        public class SoundData
-        {
-            public string audio;
-        }
-
-        [Serializable]
-        public class DefinitionData
-        {
-            public object[][] sseq;
-        }
+        // Documentation for JSON classes is at: https://dictionaryapi.com/products/json
     }
 }
