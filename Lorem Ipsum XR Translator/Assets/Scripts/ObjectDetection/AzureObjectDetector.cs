@@ -20,37 +20,40 @@ namespace ObjectDetection
         {
             byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{\"url\":\"" + imagePath + "\"}");
 
-            UnityWebRequest client = new UnityWebRequest(modelPath, "POST");
+            //UnityWebRequest client = new UnityWebRequest(modelPath, "POST");
 
-            client.uploadHandler = new UploadHandlerRaw(byteData);
-            client.downloadHandler = new DownloadHandlerBuffer();
-
-            // Request headers
-            client.SetRequestHeader("Content-Type", "application/json");
-            client.SetRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-
-            yield return client.SendWebRequest();
-
-            if (client.result != UnityWebRequest.Result.Success)
+            using (UnityWebRequest client = new UnityWebRequest(modelPath, "POST"))
             {
-                Debug.Log("API request failed. Error: " + client.error);
-                callback("object");
-            }
-            else
-            {
-                string responseTextApi = client.downloadHandler.text;
-                string responseText = "";
-                
-                AzureObjDetectionResponse responseData = new AzureObjDetectionResponse(responseTextApi);
-                List<DetectedObject> detectedObjects = responseData.objects;
+                client.uploadHandler = new UploadHandlerRaw(byteData);
+                client.downloadHandler = new DownloadHandlerBuffer();
 
-                foreach (DetectedObject detectedObject in detectedObjects)
+                // Request headers
+                client.SetRequestHeader("Content-Type", "application/json");
+                client.SetRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+
+                yield return client.SendWebRequest();
+
+                if (client.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.Log("Response: " + detectedObject.objectName);
-                    responseText = responseText + detectedObject.objectName + ": " + detectedObject.confidence + "\n";
+                    Debug.Log("API request failed. Error: " + client.error);
+                    callback("object");
                 }
-                Debug.Log("API response: " + responseText);
-                callback(responseText);
+                else
+                {
+                    string responseTextApi = client.downloadHandler.text;
+                    string responseText = "";
+
+                    AzureObjDetectionResponse responseData = new AzureObjDetectionResponse(responseTextApi);
+                    List<DetectedObject> detectedObjects = responseData.objects;
+
+                    foreach (DetectedObject detectedObject in detectedObjects)
+                    {
+                        Debug.Log("Response: " + detectedObject.objectName);
+                        responseText = responseText + detectedObject.objectName + ": " + detectedObject.confidence + "\n";
+                    }
+                    Debug.Log("API response: " + responseText);
+                    callback(responseText);
+                }
             }
         }
     }
