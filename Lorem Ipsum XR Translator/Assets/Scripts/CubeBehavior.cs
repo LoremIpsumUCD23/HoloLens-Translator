@@ -19,13 +19,19 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     private ITranslatorClient _translatorClient;
     private IDescriptionClient _chatGPTClient;
     private IDescriptionClient _dictionaryClient;
+    
+
+    // for testing.
+    private string[] objects = { "cup", "dog", "human", "rocket", "tree" };
 
 
     void Start()
     {
         Debug.Log("Started");
 
-        string target = "cup";
+        var rnd = new System.Random();
+        int index = rnd.Next(objects.Length);
+        string target = this.objects[index];
         string originalLanguage = "en";
         string[] targetLanguages = new string[]{ "fr" };
 
@@ -50,6 +56,30 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     public void OnGestureStarted(InputEventData eventData)
     {
         Debug.Log("Gesture Started");
+
+        var rnd = new System.Random();
+        int index = rnd.Next(objects.Length);
+        string target = this.objects[index];
+        string originalLanguage = "en";
+        string[] targetLanguages = new string[] { "fr" };
+
+
+        // Initialise translator client
+        this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
+        // Get a translation in French.
+        StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
+
+        // Initialise decription client
+        this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
+        // Get a description.
+        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
+
+        // Initialise decription client
+        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
+        // Get a description.
+        string prompt = "Definition of " + target;
+        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
+
     }
 
     public void OnGestureUpdated(InputEventData eventData)
