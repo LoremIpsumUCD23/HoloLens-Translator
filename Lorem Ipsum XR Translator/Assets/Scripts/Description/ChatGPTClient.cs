@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json;
 
 namespace Description
 {
@@ -74,52 +72,6 @@ namespace Description
                     callback(message.Trim(',', '\n'));
                 }
             }
-        }
-
-        // Request body.
-        [Serializable]
-        private class PromptRequest
-        {
-            public string model;
-            public string prompt;
-            public int max_tokens;
-            public float temperature;
-
-            public PromptRequest(string model, string prompt, int max_tokens, float temperature)
-            {
-                this.model = model;
-                this.prompt = prompt;
-                this.max_tokens = max_tokens;
-                this.temperature = temperature;
-            }
-        }
-
-        // Response body
-        [Serializable]
-        private class Response
-        {
-            public string id;
-            public string object_type;
-            public int created;
-            public string model;
-            public List<Choice> choices;
-            public Usage usage;
-        }
-
-        [Serializable]
-        private class Choice
-        {
-            public string text;
-            public int index;
-            public string finish_reason;
-        }
-
-        [Serializable]
-        private class Usage
-        {
-            public int prompt_tokens;
-            public int completion_tokens;
-            public int total_tokens;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Translator
         // location, also known as region.
         // required if you're using a multi-service or regional (not global) resource. It can be found in the Azure portal on the Keys and Endpoint page.
         private readonly string apiKey;
-        private readonly string  location;
+        private readonly string location;
 
         public AzureTranslator(string apiKey,string location)
         {
@@ -52,6 +52,11 @@ namespace Translator
 
                 // Send the request
                 yield return request.SendWebRequest();
+
+                // Request sent, clean up our request data to prevent a memory leak.
+                // TODO: See if there's a better way to handle this. This seems like it could be expensive.
+                requestData = null;
+                GC.Collect();
 
                 // Handle the response
                 if (request.result != UnityWebRequest.Result.Success)
