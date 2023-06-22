@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: b795c6bdb1db01f42aaf07944c0ece8f
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Noto Serif Bengali Condensed
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 749d86e7b9b396343bfd945b56b60c4f, type: 3}
+  - {fileID: 12800000, guid: a196bca285cd74d459126d06761752d6, type: 3}
+  - {fileID: 12800000, guid: 62fa37e9de393634a8722f6bf0333b87, type: 3}
+  - {fileID: 12800000, guid: 7561c7dbaca2b334cac9b0f6408f58f2, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

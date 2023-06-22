@@ -25,9 +25,9 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     {
         Debug.Log("Started");
 
-        string target = "cup";
+        string target = "Morning";
         string originalLanguage = "en";
-        string[] targetLanguages = new string[]{ "hi" };
+        string[] targetLanguages = new string[]{ "bn" };
 
 
         // Initialise translator client
