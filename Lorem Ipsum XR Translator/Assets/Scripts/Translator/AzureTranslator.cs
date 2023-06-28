@@ -36,11 +36,12 @@ namespace Translator
 
             // Create the request body
             string requestBody = "[{ \"Text\": \"" + originalText + "\" }]";
-            byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
+            
 
             // Send a request
-            using (UnityWebRequest request = UnityWebRequest.Post(url, requestBody))
+            using (UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))
             {
+                byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
                 request.uploadHandler = new UploadHandlerRaw(requestData);
 
                 // Set the request headers

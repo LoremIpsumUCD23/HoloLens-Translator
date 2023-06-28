@@ -33,7 +33,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         int index = rnd.Next(objects.Length);
         string target = this.objects[index];
         string originalLanguage = "en";
-        string[] targetLanguages = new string[]{ "bn" };
+        string[] targetLanguages = new string[]{ "bn" , "ja" };
 
 
         // Initialise translator client
@@ -61,7 +61,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         int index = rnd.Next(objects.Length);
         string target = this.objects[index];
         string originalLanguage = "en";
-        string[] targetLanguages = new string[] { "fr" };
+        string[] targetLanguages = new string[]{ "bn" , "ja" };
 
 
         // Initialise translator client
