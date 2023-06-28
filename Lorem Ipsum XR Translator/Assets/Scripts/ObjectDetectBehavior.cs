@@ -4,44 +4,59 @@ using UnityEngine.Networking;
 using TMPro;
 using ObjectDetection;
 using Config;
+using UnityEngine.XR.ARSubsystems;
+using System.Collections.Generic;
 
 public class ObjectDetectBehavior : MonoBehaviour
 {
     public TextMeshPro objCategory;
     public GameObject imageQuad;
+    public Texture2D image;
+
+    public GameObject Caption;
 
     private IObjectDetectorClient _objectDetectorClient;
 
     private void Start()
     {
+    }
+
+    public void DetectImage(Texture2D image)
+    {
+        this.image = image;
         objCategory.text = "loading...";
         this._objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey());
-        StartCoroutine(this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images", this.CallSetSceneObjects));
+        StartCoroutine(this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
+            image, this.CallSetSceneObjects));
     }
 
-    private void CallSetSceneObjects(string responseText)
+    private void CallSetSceneObjects(List<DetectedObject> detectedObjects)
     {
-        StartCoroutine(SetSceneObjects(responseText));
-    }
-
-    private IEnumerator SetSceneObjects(string responseText)
-    {
-        string imgUrl = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images";
-        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imgUrl))
+        string responseText = "";
+        foreach (DetectedObject detectedObject in detectedObjects)
         {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Texture2D texture = DownloadHandlerTexture.GetContent(www);
-                imageQuad.GetComponent<Renderer>().material.mainTexture = texture;
-                //image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
-            }
-            else
-            {
-                Debug.LogError("Failed to load image from URL: " + imgUrl + "\nError: " + www.error);
-            }
+            RaycastHit hit;
+            Debug.Log(detectedObject.objectName + ": " + detectedObject.rectangle.x + "," + detectedObject.rectangle.y +
+                " x " + detectedObject.rectangle.w + "," + detectedObject.rectangle.h +
+                " Screen: " + Screen.width + "," + Screen.height);
+            Vector2 averagePos = new Vector2(detectedObject.rectangle.x + detectedObject.rectangle.w / 2,
+                Screen.height - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
+            Debug.Log(detectedObject.objectName + " : " + averagePos.ToString());
+            Ray ray = Camera.main.ScreenPointToRay(averagePos);
+            Debug.DrawRay(ray.origin, ray.direction);
+            Physics.Raycast(ray, out hit);
+            GameObject caption = Instantiate(Caption);
+            caption.transform.position = hit.point;
+            caption.transform.Find("CaptionText").GetComponent<TextMeshPro>().text = detectedObject.objectName;
+            caption.transform.rotation.SetLookRotation(Camera.main.transform.position, Vector3.up);
+            responseText = responseText + detectedObject.objectName + ": " + detectedObject.confidence + "\n";
         }
+        SetSceneObjects(responseText);
+    }
+
+    private void SetSceneObjects(string responseText)
+    {
+        imageQuad.GetComponent<Renderer>().material.mainTexture = image;
 
         objCategory.text = responseText;
     }

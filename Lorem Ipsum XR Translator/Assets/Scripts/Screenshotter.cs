@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Screenshotter : MonoBehaviour
 {
+
+    public ObjectDetectBehavior objectDetector;
+
     /// <summary>
     /// Captures a screenshot of the user's current view.
     /// </summary>
@@ -12,6 +15,8 @@ public class Screenshotter : MonoBehaviour
     {
         Debug.Log("Try Screenshot!");
         Texture2D screenCap = ScreenCapture.CaptureScreenshotAsTexture(ScreenCapture.StereoScreenCaptureMode.BothEyes);
+
+        objectDetector.DetectImage(screenCap);
 
 
         // Right now we save our screenshot to a file.
