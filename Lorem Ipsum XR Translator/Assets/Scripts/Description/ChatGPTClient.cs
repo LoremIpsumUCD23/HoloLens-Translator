@@ -18,7 +18,7 @@ namespace Description
             this._model = model;
         }
 
-        public IEnumerator SendRequest(string content, Action<string> callback)
+        public IEnumerator Explain(string content, Action<string> callback)
         {
             // Create body of the request. PromtpRequest -> json -> bytes
             var reqBody = new PromptRequest(this._model, content, 10, 0.0f);

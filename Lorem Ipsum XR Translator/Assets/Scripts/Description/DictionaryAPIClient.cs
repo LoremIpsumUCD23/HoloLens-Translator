@@ -32,7 +32,7 @@ namespace Description
         }
 
         // returns the dictionary description of a word
-        public IEnumerator SendRequest(string content, Action<string> callback)
+        public IEnumerator Explain(string content, Action<string> callback)
         {
             // URI for HTTP Calls
             string uri = "https://dictionaryapi.com/api/v3/references/" + this._dictionaryRef + "/json/" + content + "?key=" + this._apiKey;
