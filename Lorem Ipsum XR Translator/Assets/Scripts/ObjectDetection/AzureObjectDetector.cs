@@ -20,40 +20,30 @@ namespace ObjectDetection
         {
             byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{\"url\":\"" + imagePath + "\"}");
 
-            //UnityWebRequest client = new UnityWebRequest(modelPath, "POST");
+                //UnityWebRequest client = new UnityWebRequest(modelPath, "POST");
 
-            using (UnityWebRequest client = new UnityWebRequest(modelPath, "POST"))
-            {
-                client.uploadHandler = new UploadHandlerRaw(byteData);
-                client.downloadHandler = new DownloadHandlerBuffer();
-
-                // Request headers
-                client.SetRequestHeader("Content-Type", "application/json");
-                client.SetRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-
-                yield return client.SendWebRequest();
-
-                if (client.result != UnityWebRequest.Result.Success)
+                using (UnityWebRequest client = new UnityWebRequest(modelPath, "POST"))
                 {
-                    Debug.Log("API request failed. Error: " + client.error);
-                    callback("object");
-                }
-                else
-                {
-                    string responseTextApi = client.downloadHandler.text;
-                    string responseText = "";
+                    client.uploadHandler = new UploadHandlerRaw(byteData);
+                    client.downloadHandler = new DownloadHandlerBuffer();
 
-                    AzureObjDetectionResponse responseData = new AzureObjDetectionResponse(responseTextApi);
-                    List<DetectedObject> detectedObjects = responseData.objects;
+                    // Request headers
+                    client.SetRequestHeader("Content-Type", "application/json");
+                    client.SetRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
 
-                    foreach (DetectedObject detectedObject in detectedObjects)
+                    yield return client.SendWebRequest();
+
+                    if (client.result != UnityWebRequest.Result.Success)
                     {
-                        Debug.Log("Response: " + detectedObject.objectName);
-                        responseText = responseText + detectedObject.objectName + ": " + detectedObject.confidence + "\n";
+                        Debug.Log("API request failed. Error: " + client.error);
+                        callback("object");
                     }
-                    Debug.Log("API response: " + responseText);
-                    callback(responseText);
-                }
+                    else
+                    {
+                        string responseText = client.downloadHandler.text;
+                        Debug.Log("API response: " + responseText);
+                        callback(responseText);
+                    }
             }
         }
     }
