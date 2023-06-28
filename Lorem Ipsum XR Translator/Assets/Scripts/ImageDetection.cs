@@ -65,7 +65,7 @@ public class ImageDetection : MonoBehaviour
 
                 photoCaptureFrame.TryGetProjectionMatrix(Camera.main.nearClipPlane, Camera.main.farClipPlane, out Matrix4x4 projectionMatrix);
 
-                await AnalyzeImage(targetTexture, projectionMatrix);
+                await AnalyzeImage(targetTexture, cameraToWorldMatrix, projectionMatrix);
             }
         }
         // Clean up
@@ -84,7 +84,7 @@ public class ImageDetection : MonoBehaviour
         //await BeginImageCapture();
     }
 
-    public async Task AnalyzeImage(Texture2D image, Matrix4x4 projectionMatrix)
+    public async Task AnalyzeImage(Texture2D image, Matrix4x4 worldMatrix, Matrix4x4 projectionMatrix)
     {
         // Save current camera location
 
