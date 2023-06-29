@@ -1,5 +1,4 @@
-using ObjectDetection;
-using System.Collections;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -36,9 +35,9 @@ public class CaptionController : MonoBehaviour
     /// <param name="captionLocation">The Vector location of where the caption should be placed</param>
     public void CreateCaption(string captionName, Vector3 captionLocation)
     {
-        GameObject caption = Instantiate(CaptionPrefab, captionLocation, Quaternion.identity);
+        GameObject caption = Instantiate(CaptionPrefab, captionLocation, 
+            Quaternion.LookRotation(captionLocation - CameraCache.Main.transform.position));
         caption.transform.Find("CaptionText").GetComponent<TextMeshPro>().text = captionName;
-        caption.transform.rotation.SetLookRotation(Camera.main.transform.position, Vector3.up);
 
         CaptionList.Add(caption);
     }

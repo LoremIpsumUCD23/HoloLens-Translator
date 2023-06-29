@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Windows.WebCam;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 public class SceneAnalyzer : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class SceneAnalyzer : MonoBehaviour
     /// <summary>
     /// The entry point for starting an analysis. This is called from the scene to begin taking a picture
     /// </summary>
+    /// Camera code largely sourced from: https://learn.microsoft.com/en-us/windows/mixed-reality/develop/unity/locatable-camera-in-unity
+    /// There might be an issue with camera capture occurring on main thread, and not asynchronously at all.
     public void StartCapture()
     {
         DebugText.text = "Beginning screenshot process";
@@ -97,14 +100,22 @@ public class SceneAnalyzer : MonoBehaviour
             if (photoCaptureFrame.hasLocationData)
             {
                 photoCaptureFrame.TryGetCameraToWorldMatrix(out Matrix4x4 cameraToWorldMatrix);
-                this.worldMatrix = cameraToWorldMatrix;
 
-                Vector3 position = cameraToWorldMatrix.GetColumn(3) - cameraToWorldMatrix.GetColumn(2);
-                Quaternion rotation = Quaternion.LookRotation(-cameraToWorldMatrix.GetColumn(2), cameraToWorldMatrix.GetColumn(1));
-                this.cameraPosition = position;
+                // This code was supposed to grab camera data out of PhotoCaptureFrame location data.
+                // It does not seem like this can be relied upon.
+                //this.worldMatrix = cameraToWorldMatrix;
+                //
+                //Vector3 position = cameraToWorldMatrix.GetColumn(3) - cameraToWorldMatrix.GetColumn(2);
+                //Quaternion rotation = Quaternion.LookRotation(-cameraToWorldMatrix.GetColumn(2), cameraToWorldMatrix.GetColumn(1));
+                //this.cameraPosition = position;
+                //
+                //photoCaptureFrame.TryGetProjectionMatrix(Camera.main.nearClipPlane, Camera.main.farClipPlane, out Matrix4x4 projectionMatrix);
+                //this.projectionMatrix = projectionMatrix;
 
-                photoCaptureFrame.TryGetProjectionMatrix(Camera.main.nearClipPlane, Camera.main.farClipPlane, out Matrix4x4 projectionMatrix);
-                this.projectionMatrix = projectionMatrix;
+                Camera camera = CameraCache.Main;
+                this.worldMatrix = camera.cameraToWorldMatrix;
+                this.projectionMatrix = camera.projectionMatrix;
+                this.cameraPosition = camera.transform.position;
 
                 StartCoroutine(AnalyzeImage());
             }
@@ -113,7 +124,7 @@ public class SceneAnalyzer : MonoBehaviour
                 DebugText.text = "No location data on photo! :(";
 
                 // Fallback to using the current camera
-                Camera camera = Camera.main;
+                Camera camera = CameraCache.Main;
                 this.worldMatrix = camera.cameraToWorldMatrix;
                 this.projectionMatrix = camera.projectionMatrix;
                 this.cameraPosition = camera.transform.position;
@@ -170,11 +181,14 @@ public class SceneAnalyzer : MonoBehaviour
 
             // Cast to find location of object in 3D space
             RaycastHit hit;
-            Ray ray = ScreenToWorldRay(averagePos, worldMatrix, projectionMatrix, cameraPosition);
+            Ray ray = ScreenToWorldRay(averagePos, worldMatrix, projectionMatrix.inverse, cameraPosition);
+            Debug.DrawRay(ray.origin, ray.direction, Color.red, 60f);
             Physics.Raycast(ray, out hit);
 
+            Vector3 targetLocation = ray.origin + ray.direction;
+
             // Create caption at that location
-            CaptionController.CreateCaption(detectedObject.objectName + ": " + detectedObject.confidence, hit.point);
+            CaptionController.CreateCaption(detectedObject.objectName + ": " + detectedObject.confidence, targetLocation);
         }
     }
 
@@ -185,7 +199,8 @@ public class SceneAnalyzer : MonoBehaviour
     /// <param name="cameraWorld">Camera World Matrix</param>
     /// <param name="cameraProjectionInverse">Inverse of Camera Projection Matrix</param>
     /// <param name="cameraOrigin">Location of Camera</param>
-    /// <returns></returns>
+    /// <returns>A ray traced from input screenPosition to 3D space determined by camera data inputs</returns>
+    /// <source>https://forum.unity.com/threads/help-reproducing-screen-to-world-conversion.661558/</source>
     public Ray ScreenToWorldRay(Vector2 screenPosition, Matrix4x4 cameraWorld, Matrix4x4 cameraProjectionInverse, Vector3 cameraOrigin)
     {
         float screenWidth = Screen.width;

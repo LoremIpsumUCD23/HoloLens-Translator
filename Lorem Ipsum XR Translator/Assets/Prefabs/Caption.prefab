@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5218708975056429291}
   - component: {fileID: 7529610583172509738}
   - component: {fileID: 2874968640782498384}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CaptionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 1900287399}
   - component: {fileID: 1900287400}
   - component: {fileID: 1900287401}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Caption
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ MonoBehaviour:
   handType: 3
   proximityType: 3
   executionOrder: 0
-  faceAway: 0
+  faceAway: 1
 --- !u!114 &1900287400
 MonoBehaviour:
   m_ObjectHideFlags: 0
