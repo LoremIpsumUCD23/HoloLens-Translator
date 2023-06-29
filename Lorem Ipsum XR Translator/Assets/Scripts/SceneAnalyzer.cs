@@ -11,6 +11,7 @@ public class SceneAnalyzer : MonoBehaviour
 {
     public CaptionController CaptionController;
     public TextMeshPro DebugText;
+    public GameObject DebugQuad;
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
@@ -27,12 +28,19 @@ public class SceneAnalyzer : MonoBehaviour
         CaptionController = GetComponent<CaptionController>();
     }
 
+    /// <summary>
+    /// The entry point for starting an analysis. This is called from the scene to begin taking a picture
+    /// </summary>
     public void StartCapture()
     {
         DebugText.text = "Beginning screenshot process";
         PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
     }
 
+    /// <summary>
+    /// Initialize our photo capture object
+    /// </summary>
+    /// <param name="captureObject">The photo capture data</param>
     private void OnPhotoCaptureCreated(PhotoCapture captureObject)
     {
         DebugText.text = "Photo Created";
@@ -49,6 +57,10 @@ public class SceneAnalyzer : MonoBehaviour
         captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
 
     }
+    /// <summary>
+    /// Handle photo capture
+    /// </summary>
+    /// <param name="result">Whether the capture initialized successfully</param>
     private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)
     {
         if (result.success)
@@ -61,6 +73,11 @@ public class SceneAnalyzer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Function that handles what to do with captured photo data
+    /// </summary>
+    /// <param name="result">The result of the photo capture operation</param>
+    /// <param name="photoCaptureFrame">The captured photo data</param>
     private void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
         if (result.success)
@@ -72,6 +89,10 @@ public class SceneAnalyzer : MonoBehaviour
             // Copy the raw image data into our target texture
             photoCaptureFrame.UploadImageDataToTexture(targetTexture);
             this.image = targetTexture;
+            if (DebugQuad)
+            {
+                DebugQuad.GetComponent<Renderer>().material.mainTexture = targetTexture;
+            }
             // Do as we wish with the texture such as apply it to a material, etc.
             if (photoCaptureFrame.hasLocationData)
             {
@@ -90,6 +111,14 @@ public class SceneAnalyzer : MonoBehaviour
             else
             {
                 DebugText.text = "No location data on photo! :(";
+
+                // Fallback to using the current camera
+                Camera camera = Camera.main;
+                this.worldMatrix = camera.cameraToWorldMatrix;
+                this.projectionMatrix = camera.projectionMatrix;
+                this.cameraPosition = camera.transform.position;
+
+                StartCoroutine(AnalyzeImage());
             }
         }
         else 
@@ -100,12 +129,20 @@ public class SceneAnalyzer : MonoBehaviour
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
     }
 
+    /// <summary>
+    /// Cleans up the photo capture object
+    /// </summary>
+    /// <param name="result">Result of the photo capture operation</param>
     void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
     {
         photoCaptureObject.Dispose();
         photoCaptureObject = null;
     }
 
+    /// <summary>
+    /// Coroutine to analyze an image. This sends the image off to our image recognition service and awaits the result
+    /// </summary>
+    /// <returns>IEnumerator waits on image processing result from Azure</returns>
     public IEnumerator AnalyzeImage()
     {
         DebugText.text = "Analyzing Image";
@@ -114,6 +151,11 @@ public class SceneAnalyzer : MonoBehaviour
         yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
             image, this.ProcessAnalysis);
     }
+
+    /// <summary>
+    /// Callback from image processing handles locating detected objects and creating caption objects for them
+    /// </summary>
+    /// <param name="detectedObjects">List of objects detected by the image recognition service</param>
     private void ProcessAnalysis(List<DetectedObject> detectedObjects)
     {
         DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";

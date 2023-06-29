@@ -844,8 +844,7 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Lorem-Ipsum-XR-Translator
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: C:\Users\ghoti\Documents\ConnollyGames\HoloLens-Translator\Lorem
-    Ipsum XR Translator\Assets\WSATestCertificate.pfx
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany

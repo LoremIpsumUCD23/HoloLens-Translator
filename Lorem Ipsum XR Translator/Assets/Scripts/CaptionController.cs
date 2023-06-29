@@ -16,6 +16,9 @@ public class CaptionController : MonoBehaviour
         CaptionList = new List<GameObject>();    
     }
 
+    /// <summary>
+    /// Deletes all current captions in world and clears the list
+    /// </summary>
     public void ClearCaptions()
     {
         // Pooling our caption objects might be more performant?
@@ -26,6 +29,11 @@ public class CaptionController : MonoBehaviour
         CaptionList.Clear();
     }
 
+    /// <summary>
+    /// Creates a new caption object and places it in the world facing towards the player
+    /// </summary>
+    /// <param name="captionName">The text to be displayed on the caption</param>
+    /// <param name="captionLocation">The Vector location of where the caption should be placed</param>
     public void CreateCaption(string captionName, Vector3 captionLocation)
     {
         GameObject caption = Instantiate(CaptionPrefab, captionLocation, Quaternion.identity);
