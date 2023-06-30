@@ -3,7 +3,7 @@ using System;
 namespace Description
 {
     /// <summary>
-    /// Request Body
+    /// Request body to OpenAI API.
     /// </summary>
     [Serializable]
     class PromptRequest
@@ -13,6 +13,8 @@ namespace Description
         public int max_tokens;
         public float temperature;
 
+        /// <summary> request body </summary>
+        /// <see href="https://platform.openai.com/docs/api-reference/completions/create" />
         public PromptRequest(string model, string prompt, int max_tokens, float temperature)
         {
             this.model = model;
