@@ -76,7 +76,7 @@ namespace Description
                     {
                         // Parse the response in json into an object.
                         // A response from ChatGPT API should look like what's defined below (Response class).
-                        Response res = JsonUtility.FromJson<Response>(www.downloadHandler.text);
+                        Response res = JsonUtility.FromJson<OpenAIAPIResponse>(www.downloadHandler.text);
                         if (res == null) message = "response is empty.";
                         else if (res.choices == null || res.choices.Count == 0) message = "choices is empty. Read the ChatGPT document for more details.";
                         else message = res.choices[0].text;

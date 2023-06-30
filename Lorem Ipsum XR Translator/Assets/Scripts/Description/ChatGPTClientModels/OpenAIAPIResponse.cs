@@ -7,7 +7,7 @@ namespace Description
     /// Response body used in the Explain method of ChatGPTClient.
     /// </summary>
     [Serializable]
-    class Response
+    class OpenAIAPIResponse
     {
         public string id;
         public string object_type;
