@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace Description
 {
     /// <summary>
-    /// Response Body
+    /// Response body used in the Explain method of ChatGPTClient.
     /// </summary>
     [Serializable]
-     class Response
+    class Response
     {
         public string id;
         public string object_type;

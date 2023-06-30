@@ -2,6 +2,9 @@ using System;
 
 namespace Description
 {
+    /// <summary>
+    /// Choices among which we can choose description from returned by OpenAI api.
+    /// </summary>
     [Serializable]
     class Choice
     {

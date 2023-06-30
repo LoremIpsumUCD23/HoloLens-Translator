@@ -36,7 +36,6 @@ namespace Translator
 
             // Create the request body
             string requestBody = "[{ \"Text\": \"" + originalText + "\" }]";
-            
 
             // Send a request
             using (UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))
@@ -72,7 +71,7 @@ namespace Translator
                     Debug.Log("Translation response: " + responseText);
                     callback(responseText);
                 }
-            } 
+            }
         }
     }
 }

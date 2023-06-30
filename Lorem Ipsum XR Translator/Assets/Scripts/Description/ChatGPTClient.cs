@@ -6,18 +6,31 @@ using UnityEngine.Networking;
 
 namespace Description
 {
+    /// <summary>
+    /// Class ChatGPTClient utilises OpenAI api to describe things.
+    /// </summary>
     public class ChatGPTClient : IDescriptionClient
     {
         private const string Url = "https://api.openai.com/v1/completions";
         private readonly string _apiKey;
         private readonly string _model;
 
+        /// <summary>The constructor of ChatGPTClient. It takes an api key for connection and ChatGPT model.</summary>
+        /// <see href="https://platform.openai.com/account/api-keys" />
+        /// <see href="https://platform.openai.com/docs/api-reference/models" />
         public ChatGPTClient(string apiKey, string model)
         {
             this._apiKey = apiKey;
             this._model = model;
         }
 
+        /// <summary>
+        /// This method implements an interface forced by IDescriptionClient. It sends a request to OpenAI api and
+        /// passes the response from the api to <paramref name="callback"/> at the end. If it causes an error at
+        /// some point of this procedure, it passes the error message to <paramref name="callback"/>.
+        /// </summary>
+        /// <param name="content">Text that is explained in this method.</param>
+        /// <param name="callback">An action that gets executed with the translated text.</param>
         public IEnumerator Explain(string content, Action<string> callback)
         {
             // Create body of the request. PromtpRequest -> json -> bytes

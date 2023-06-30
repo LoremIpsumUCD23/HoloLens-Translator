@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Description
 {
+    /// <summary>
+    /// Usage info contained in a response from OpenAI api.
+    /// </summary>
     [Serializable]
     class Usage
     {
