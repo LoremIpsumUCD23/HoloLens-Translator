@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace Description
 {
     /// <summary>
-    /// This Dictionary Client uses an API from Merriam-Webster Dictionary. The API key comes from a registered account.
+    /// This Dictionary Client uses an API from Merriam-Webster Dictionary. 
     /// The usage limit is 1000 API calls per day for each key.
     /// </summary>
     public class DictionaryAPIClient : IDescriptionClient
@@ -16,7 +16,13 @@ namespace Description
         private readonly string _apiKey;
         private readonly string _dictionaryRef;
 
-        // model can be either elementary or intermediate
+        /// <summary>
+        /// The constructor for the Dictionary API client
+        /// It has two possible models to choose from, 'elementary' or 'intermediate'
+        /// </summary>
+        /// <param name="model"> model can be either 'elementary' or 'intermediate' for now</param>
+        /// <param name="apiKey"> API key</param>
+
         public DictionaryAPIClient(string model, string apiKey)
         {
             this._apiKey = apiKey;
@@ -32,6 +38,14 @@ namespace Description
         }
 
         // returns the dictionary description of a word
+        /// <summary>
+        /// This method implements an interface forced by IDescriptionClient. It sends a request to MerriamWebster api and
+        /// passes the response from the api to <paramref name="callback"/> at the end. If it causes an error at
+        /// some point of this procedure, it passes the error message to <paramref name="callback"/>.
+        /// </summary>
+        /// <param name="content">Word to be sent to the API</param>
+        /// <param name="callback">An action that gets executed with the translated text</param>
+        /// <returns></returns>
         public IEnumerator Explain(string content, Action<string> callback)
         {
             // URI for HTTP Calls
