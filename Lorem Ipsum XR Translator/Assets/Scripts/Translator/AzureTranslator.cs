@@ -26,7 +26,7 @@ namespace Translator
         }
 
 
-        public IEnumerator Translate(string originalText, string from, string[] to, Action<string> callback)
+        public IEnumerator Translate(Caption caption, string from, string[] to, Action<Caption> callback)
         {
             string url = AzureTranslator.endpoint + string.Format("from={0}", from);
             for (int i = 0; i < to.Length; i ++)
@@ -35,7 +35,7 @@ namespace Translator
             }
 
             // Create the request body
-            string requestBody = "[{ \"Text\": \"" + originalText + "\" }]";
+            string requestBody = "[{ \"Text\": \"" + caption.GetPrimaryTitle() + "|" + caption.GetPrimaryDescription() + "\" }]";
             byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
 
             // Send a request
@@ -62,14 +62,18 @@ namespace Translator
                 if (request.result != UnityWebRequest.Result.Success)
                 {
                     Debug.Log("Error: " + request.error);
-                    callback("Error: " + request.error);
+                    caption.SetTranslatedDescription("Error: " + request.error);
+                    callback(caption);
                 }
                 else
                 {
                     string responseText = request.downloadHandler.text;
                     // Parse and process the response as needed
                     Debug.Log("Translation response: " + responseText);
-                    callback(responseText);
+                    string[] resultText = responseText.Split("|");
+                    caption.SetTranslatedTitle(resultText[0]);
+                    caption.SetTranslatedDescription(resultText[1]);
+                    callback(caption);
                 }
             } 
         }

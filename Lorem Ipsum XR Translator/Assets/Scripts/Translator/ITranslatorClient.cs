@@ -7,6 +7,6 @@ namespace Translator
     {
         // from: original language
         // to: list of target languages
-        public IEnumerator Translate(string originalText, string from, string[] to, Action<string> callback);
+        public IEnumerator Translate(Caption caption, string from, string[] to, Action<Caption> callback);
     }
 }

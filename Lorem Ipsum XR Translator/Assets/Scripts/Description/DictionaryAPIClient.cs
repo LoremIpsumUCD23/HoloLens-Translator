@@ -32,10 +32,11 @@ namespace Description
         }
 
         // returns the dictionary description of a word
-        public IEnumerator SendRequest(string content, Action<string> callback)
+        public IEnumerator SendRequest(Caption caption, Action<Caption> callback)
         {
             // URI for HTTP Calls
-            string uri = "https://dictionaryapi.com/api/v3/references/" + this._dictionaryRef + "/json/" + content + "?key=" + this._apiKey;
+            string uri = "https://dictionaryapi.com/api/v3/references/" + this._dictionaryRef + "/json/" + caption.GetPrimaryTitle() + "?key=" + this._apiKey;
+            Caption result = caption;
 
             // Get call
             using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
@@ -50,26 +51,31 @@ namespace Description
                     // Connection error
                     case UnityWebRequest.Result.ConnectionError:
                         Debug.LogError("Connection Error: " + webRequest.error);
-                        callback("Connection Error: " + webRequest.error);
+                        result.SetPrimaryDescription("Connection Error: " + webRequest.error);
+                        callback(result);
                         break;
                     // Data Processing error
                     case UnityWebRequest.Result.DataProcessingError:
                         Debug.LogError("Dataprocessing Error: " + webRequest.error);
-                        callback("Dataprocessing Error: " + webRequest.error);
+                        result.SetPrimaryDescription("Dataprocessing Error: " + webRequest.error);
+                        callback(result);
                         break;
                     // HTTP error
                     case UnityWebRequest.Result.ProtocolError:
                         Debug.LogError("Http Error: " + webRequest.error);
-                        callback("Http Error: " + webRequest.error);
+                        result.SetPrimaryDescription("Http Error: " + webRequest.error);
+                        callback(result);
                         break;
                     // No Error
                     case UnityWebRequest.Result.Success:
                         List<Item> res = JsonConvert.DeserializeObject<List<Item>>(webRequest.downloadHandler.text);
                         if (res.Count == 0){
-                            callback("No such word");
+                            result.SetPrimaryDescription("No such word");
+                            callback(result);
                             break;
                         }
-                        callback(res[0].shortdef[0]);
+                        result.SetPrimaryDescription(res[0].shortdef[0]);
+                        callback(result);
                         break;
                 }
             }

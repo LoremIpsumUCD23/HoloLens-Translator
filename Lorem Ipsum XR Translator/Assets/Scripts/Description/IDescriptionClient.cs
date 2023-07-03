@@ -5,6 +5,6 @@ namespace Description
 {
     public interface IDescriptionClient
     {
-        public IEnumerator SendRequest(string content, Action<string> callback);
+        public IEnumerator SendRequest(Caption caption, Action<Caption> callback);
     }
 }
