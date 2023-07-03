@@ -96,41 +96,14 @@ public class SceneAnalyzer : MonoBehaviour
             {
                 DebugQuad.GetComponent<Renderer>().material.mainTexture = targetTexture;
             }
-            // Do as we wish with the texture such as apply it to a material, etc.
-            if (photoCaptureFrame.hasLocationData)
-            {
-                photoCaptureFrame.TryGetCameraToWorldMatrix(out Matrix4x4 cameraToWorldMatrix);
 
-                // This code was supposed to grab camera data out of PhotoCaptureFrame location data.
-                // It does not seem like this can be relied upon.
-                //this.worldMatrix = cameraToWorldMatrix;
-                //
-                //Vector3 position = cameraToWorldMatrix.GetColumn(3) - cameraToWorldMatrix.GetColumn(2);
-                //Quaternion rotation = Quaternion.LookRotation(-cameraToWorldMatrix.GetColumn(2), cameraToWorldMatrix.GetColumn(1));
-                //this.cameraPosition = position;
-                //
-                //photoCaptureFrame.TryGetProjectionMatrix(Camera.main.nearClipPlane, Camera.main.farClipPlane, out Matrix4x4 projectionMatrix);
-                //this.projectionMatrix = projectionMatrix;
+            // Grab location, projection, and world information from camera at the time of capture
+            Camera camera = CameraCache.Main;
+            this.worldMatrix = camera.cameraToWorldMatrix;
+            this.projectionMatrix = camera.projectionMatrix;
+            this.cameraPosition = camera.transform.position;
 
-                Camera camera = CameraCache.Main;
-                this.worldMatrix = camera.cameraToWorldMatrix;
-                this.projectionMatrix = camera.projectionMatrix;
-                this.cameraPosition = camera.transform.position;
-
-                StartCoroutine(AnalyzeImage());
-            }
-            else
-            {
-                DebugText.text = "No location data on photo! :(";
-
-                // Fallback to using the current camera
-                Camera camera = CameraCache.Main;
-                this.worldMatrix = camera.cameraToWorldMatrix;
-                this.projectionMatrix = camera.projectionMatrix;
-                this.cameraPosition = camera.transform.position;
-
-                StartCoroutine(AnalyzeImage());
-            }
+            StartCoroutine(AnalyzeImage());
         }
         else 
         { 
