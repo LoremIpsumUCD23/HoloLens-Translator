@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace Description
 {
     /// <summary>
-    /// This Dictionary Client uses an API from Merriam-Webster Dictionary. The API key comes from a registered account.
+    /// This Dictionary Client uses an API from Merriam-Webster Dictionary. 
     /// The usage limit is 1000 API calls per day for each key.
     /// </summary>
     public class DictionaryAPIClient : IDescriptionClient
@@ -16,7 +16,13 @@ namespace Description
         private readonly string _apiKey;
         private readonly string _dictionaryRef;
 
-        // model can be either elementary or intermediate
+        /// <summary>
+        /// The constructor for the Dictionary API client
+        /// It has two possible models to choose from, 'elementary' or 'intermediate'
+        /// </summary>
+        /// <param name="model"> model can be either 'elementary' or 'intermediate' for now</param>
+        /// <param name="apiKey"> API key</param>
+
         public DictionaryAPIClient(string model, string apiKey)
         {
             this._apiKey = apiKey;
@@ -32,11 +38,18 @@ namespace Description
         }
 
         // returns the dictionary description of a word
-        public IEnumerator SendRequest(Caption caption, Action<Caption> callback)
+        /// <summary>
+        /// This method implements an interface forced by IDescriptionClient. It sends a request to MerriamWebster api and
+        /// passes the response from the api to <paramref name="callback"/> at the end. If it causes an error at
+        /// some point of this procedure, it passes the error message to <paramref name="callback"/>.
+        /// </summary>
+        /// <param name="content">Word to be sent to the API</param>
+        /// <param name="callback">An action that gets executed with the translated text</param>
+        /// <returns></returns>
+        public IEnumerator Explain(string content, Action<string> callback)
         {
             // URI for HTTP Calls
-            string uri = "https://dictionaryapi.com/api/v3/references/" + this._dictionaryRef + "/json/" + caption.GetPrimaryTitle() + "?key=" + this._apiKey;
-            Caption result = caption;
+            string uri = "https://dictionaryapi.com/api/v3/references/" + this._dictionaryRef + "/json/" + content + "?key=" + this._apiKey;
 
             // Get call
             using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
@@ -51,31 +64,26 @@ namespace Description
                     // Connection error
                     case UnityWebRequest.Result.ConnectionError:
                         Debug.LogError("Connection Error: " + webRequest.error);
-                        result.SetPrimaryDescription("Connection Error: " + webRequest.error);
-                        callback(result);
+                        callback("Connection Error: " + webRequest.error);
                         break;
                     // Data Processing error
                     case UnityWebRequest.Result.DataProcessingError:
                         Debug.LogError("Dataprocessing Error: " + webRequest.error);
-                        result.SetPrimaryDescription("Dataprocessing Error: " + webRequest.error);
-                        callback(result);
+                        callback("Dataprocessing Error: " + webRequest.error);
                         break;
                     // HTTP error
                     case UnityWebRequest.Result.ProtocolError:
                         Debug.LogError("Http Error: " + webRequest.error);
-                        result.SetPrimaryDescription("Http Error: " + webRequest.error);
-                        callback(result);
+                        callback("Http Error: " + webRequest.error);
                         break;
                     // No Error
                     case UnityWebRequest.Result.Success:
                         List<Item> res = JsonConvert.DeserializeObject<List<Item>>(webRequest.downloadHandler.text);
                         if (res.Count == 0){
-                            result.SetPrimaryDescription("No such word");
-                            callback(result);
+                            callback("No such word");
                             break;
                         }
-                        result.SetPrimaryDescription(res[0].shortdef[0]);
-                        callback(result);
+                        callback(res[0].shortdef[0]);
                         break;
                 }
             }

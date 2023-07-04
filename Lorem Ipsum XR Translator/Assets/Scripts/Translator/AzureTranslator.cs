@@ -26,7 +26,7 @@ namespace Translator
         }
 
 
-        public IEnumerator Translate(Caption caption, string from, string[] to, Action<Caption> callback)
+        public IEnumerator Translate(string originalText, string from, string[] to, Action<string> callback)
         {
             string url = AzureTranslator.endpoint + string.Format("from={0}", from);
             for (int i = 0; i < to.Length; i ++)
@@ -35,12 +35,12 @@ namespace Translator
             }
 
             // Create the request body
-            string requestBody = "[{ \"Text\": \"" + caption.GetPrimaryTitle() + "|" + caption.GetPrimaryDescription() + "\" }]";
-            byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
+            string requestBody = "[{ \"Text\": \"" + originalText + "\" }]";
 
             // Send a request
-            using (UnityWebRequest request = UnityWebRequest.Post(url, requestBody))
+            using (UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))
             {
+                byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
                 request.uploadHandler = new UploadHandlerRaw(requestData);
 
                 // Set the request headers
@@ -62,20 +62,16 @@ namespace Translator
                 if (request.result != UnityWebRequest.Result.Success)
                 {
                     Debug.Log("Error: " + request.error);
-                    caption.SetTranslatedDescription("Error: " + request.error);
-                    callback(caption);
+                    callback("Error: " + request.error);
                 }
                 else
                 {
                     string responseText = request.downloadHandler.text;
                     // Parse and process the response as needed
                     Debug.Log("Translation response: " + responseText);
-                    string[] resultText = responseText.Split("|");
-                    caption.SetTranslatedTitle(resultText[0]);
-                    caption.SetTranslatedDescription(resultText[1]);
-                    callback(caption);
+                    callback(responseText);
                 }
-            } 
+            }
         }
     }
 }
