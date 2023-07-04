@@ -3,6 +3,11 @@ import json
 
 image_path = 'examples/desk.jpeg'
 image = cv2.imread(image_path)
+
+image = cv2.imread('examples/image4.jpg')
+image_path = 'examples/desk.jpeg'
+image = cv2.imread(image_path)
+
 image = cv2.resize(image, (640, 480))
 h = image.shape[0]
 w = image.shape[1]
