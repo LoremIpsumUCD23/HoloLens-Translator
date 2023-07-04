@@ -36,7 +36,7 @@ namespace Translator
             }
 
             // Create the request body
-            string requestBody = "[{ \"Text\": \"" + caption.GetPrimaryTitle() + "|" + caption.GetPrimaryDescription() + "\" }]";
+            string requestBody = "[{ \"Text\": \"" + caption.GetPrimaryTitle() + "<|>" + caption.GetPrimaryDescription() + "\" }]";
 
             // Send a request
             using (UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))
@@ -75,7 +75,7 @@ namespace Translator
                     Debug.Log(res[0]);
                     Debug.Log(res[0].translations[0]);
                     Debug.Log(res[0].translations[0].text);
-                    string[] resultStrings = res[0].translations[0].text.Split("|");
+                    string[] resultStrings = res[0].translations[0].text.Split("<|>");
                     caption.SetTranslatedTitle(resultStrings[0]);
                     caption.SetTranslatedDescription(resultStrings[1]);
                     callback(caption);
