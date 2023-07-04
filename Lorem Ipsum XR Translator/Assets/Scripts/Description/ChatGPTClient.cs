@@ -29,12 +29,12 @@ namespace Description
         /// passes the response from the api to <paramref name="callback"/> at the end. If it causes an error at
         /// some point of this procedure, it passes the error message to <paramref name="callback"/>.
         /// </summary>
-        /// <param name="content">Text that is explained in this method.</param>
+        /// <param name="caption">Text that is explained in this method.</param>
         /// <param name="callback">An action that gets executed with the translated text.</param>
-        public IEnumerator Explain(string content, Action<string> callback)
+        public IEnumerator Explain(Caption caption, Action<Caption> callback)
         {
             // Create body of the request. PromtpRequest -> json -> bytes
-            var reqBody = new PromptRequest(this._model, content, 10, 0.0f);
+            var reqBody = new PromptRequest(this._model, "Definition of " + caption.GetPrimaryTitle(), 10, 0.0f);
             byte[] reqBodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(reqBody));
 
             using (UnityWebRequest www = new UnityWebRequest(ChatGPTClient.Url, UnityWebRequest.kHttpVerbPOST))
@@ -55,13 +55,15 @@ namespace Description
                 if (www.result == UnityWebRequest.Result.ConnectionError)
                 {
                     Debug.LogError("Connection Error: " + www.error);
-                    callback("Connection Error: " + www.error);
+                    caption.SetPrimaryDescription("Connection Error: " + www.error);
+                    callback(caption);
                 }
                 // Got a reponse with Protocol Error
                 else if (www.result == UnityWebRequest.Result.ProtocolError)
                 {
                     Debug.LogError("Protocol Error: " + www.error);
-                    callback("Protocol Error: " + www.error);
+                    caption.SetPrimaryDescription("Protocol Error: " + www.error);
+                    callback(caption);
                 }
                 // Got a response without any error
                 else
@@ -82,7 +84,8 @@ namespace Description
                         else message = res.choices[0].text;
                     }
                     Debug.Log(message.Trim(',', '\n'));
-                    callback(message.Trim(',', '\n'));
+                    caption.SetPrimaryDescription(message.Trim(',', '\n'));
+                    callback(caption);
                 }
             }
         }

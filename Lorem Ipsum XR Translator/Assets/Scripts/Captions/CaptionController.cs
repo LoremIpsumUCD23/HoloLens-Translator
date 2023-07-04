@@ -1,12 +1,9 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using Description;
 using Translator;
 using Config;
-using static UnityEngine.GraphicsBuffer;
 
 public class CaptionController : MonoBehaviour
 {
@@ -67,7 +64,7 @@ public class CaptionController : MonoBehaviour
         cap.SetPrimaryTitle(captionName.Split(":")[0]);
 
         // Get Description
-        StartCoroutine(this._dictionaryClient.SendRequest(cap, this.GetDescriptionFromDict));
+        StartCoroutine(this._dictionaryClient.Explain(cap, this.GetDescriptionFromDict));
     }
 
     private void GetDescriptionFromDict(Caption caption)
@@ -81,7 +78,7 @@ public class CaptionController : MonoBehaviour
             Debug.Log("Got null. Must be something wrong with Description API client's implementation. Try ChatGPT instead");
 
             //string prompt = "Definition of " + target;
-            StartCoroutine(this._chatGPTClient.SendRequest(caption, this.GetDescriptionFromGPT));
+            StartCoroutine(this._chatGPTClient.Explain(caption, this.GetDescriptionFromGPT));
         }
     }
 
