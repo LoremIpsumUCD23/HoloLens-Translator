@@ -80,9 +80,18 @@ namespace Util.Cache
                 this._lruList.RemoveFirst();
             }
 
-            var newItem = new LinkedListNode<Item>(new Item { Key = key, Value = val });
-            this._lruList.AddLast(newItem);
-            this._cache.Add(key, newItem);
+            if (Get(key) != null) // Item already exists
+            {
+                var newItem = new LinkedListNode<Item>(new Item { Key = key, Value = val });
+                this._lruList.AddLast(newItem);
+                this._cache[key] = newItem;
+            }
+            else // Insert new item
+            {
+                var newItem = new LinkedListNode<Item>(new Item { Key = key, Value = val });
+                this._lruList.AddLast(newItem);
+                this._cache.Add(key, newItem);
+            }
         }
 
         /// <summary>

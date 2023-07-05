@@ -10,13 +10,36 @@ public class Caption : MonoBehaviour
     public string translatedDescription;
     public TextMeshPro textObject;
 
-    public void InitializeCaption(string pTitle, string tTitle, string pDesc, string tDesc)
+    public CaptionLibrary CaptionLib;
+
+    public void InitializeCaption(string pTitle, CaptionLibrary captionLib)
     {
         primaryTitle = pTitle;
-        translatedTitle = tTitle;
-        primaryDescription = pDesc; 
-        translatedDescription = tDesc;
+        CaptionLib = captionLib;
+        SetText();
+    }
 
+    void Update()
+    {
+        if (CaptionLib)
+        {
+            string holdString = CaptionLib.HoldString;
+            if (string.IsNullOrEmpty(primaryDescription) || primaryDescription == holdString)
+            {
+                primaryDescription = CaptionLib.TryGetDescription(primaryTitle);
+                SetText();
+            }
+            if (string.IsNullOrEmpty(translatedTitle) || translatedTitle == holdString)
+            {
+                translatedTitle = CaptionLib.TryGetTitleTranslation(primaryTitle);
+                SetText();
+            }
+            if (string.IsNullOrEmpty(translatedDescription) || translatedDescription == holdString)
+            {
+                translatedDescription = CaptionLib.TryGetDescriptionTranslation(primaryTitle);
+                SetText();
+            }
+        }
     }
 
     public void SetPrimaryTitle(string pTitle) { primaryTitle = pTitle; SetText(); }

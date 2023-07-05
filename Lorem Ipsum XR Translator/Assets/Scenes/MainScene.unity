@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 231881446}
   - component: {fileID: 231881445}
   - component: {fileID: 231881444}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: DebugQuad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 237526269}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,6 +415,7 @@ GameObject:
   - component: {fileID: 427166754}
   - component: {fileID: 427166753}
   - component: {fileID: 427166752}
+  - component: {fileID: 427166760}
   m_Layer: 0
   m_Name: Screenshotter Interactable
   m_TagString: Untagged
@@ -604,6 +605,38 @@ Transform:
   m_Father: {fileID: 703683709}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &427166760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427166751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b3eff181cc4244a8a14234096e62fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFocusRequired: 0
+  keywords:
+  - keyword: Analyze
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1685297144}
+          m_TargetAssemblyTypeName: SceneAnalyzer, Assembly-CSharp
+          m_MethodName: StartCapture
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  persistentKeywords: 0
+  speechConfirmationTooltipPrefab: {fileID: 0}
 --- !u!1 &703683708
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,7 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 31a611a779d3499e8e35f1a2018ca841, type: 2}
+  activeProfile: {fileID: 11400000, guid: a81c1eed9ecfeae4caf7fb31abc59d6d, type: 2}
 --- !u!4 &1309104755
 Transform:
   m_ObjectHideFlags: 0
@@ -911,6 +944,7 @@ GameObject:
   - component: {fileID: 1685297145}
   - component: {fileID: 1685297144}
   - component: {fileID: 1685297143}
+  - component: {fileID: 1685297146}
   m_Layer: 0
   m_Name: SceneAnalyzer
   m_TagString: Untagged
@@ -961,6 +995,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1685297146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685297142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c35672b0e5654c94fac6c1ecf9bafe12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1914939194
 GameObject:
   m_ObjectHideFlags: 0
