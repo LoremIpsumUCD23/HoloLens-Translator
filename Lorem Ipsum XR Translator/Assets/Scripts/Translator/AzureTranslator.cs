@@ -27,7 +27,7 @@ namespace Translator
         }
 
 
-        public IEnumerator Translate(Caption caption, string from, string[] to, Action<Caption> callback)
+        public IEnumerator Translate(string originalText, string from, string[] to, Action<string> callback)
         {
             string url = AzureTranslator.endpoint + string.Format("from={0}", from);
             for (int i = 0; i < to.Length; i ++)
@@ -36,7 +36,7 @@ namespace Translator
             }
 
             // Create the request body
-            string requestBody = "[{ \"Text\": \"" + caption.GetPrimaryTitle() + "<|>" + caption.GetPrimaryDescription() + "\" }]";
+            string requestBody = "[{ \"Text\": \"" + originalText + "\" }]";
 
             // Send a request
             using (UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))
@@ -63,8 +63,7 @@ namespace Translator
                 if (request.result != UnityWebRequest.Result.Success)
                 {
                     Debug.Log("Error: " + request.error);
-                    caption.SetTranslatedDescription("Error: " + request.error);
-                    callback(caption);
+                    callback("Error: " + request.error);
                 }
                 else
                 {
@@ -72,13 +71,7 @@ namespace Translator
                     List<Translations> res = JsonConvert.DeserializeObject<List<Translations>>(responseText);
                     // Parse and process the response as needed
                     Debug.Log("Translation response: " + responseText);
-                    Debug.Log(res[0]);
-                    Debug.Log(res[0].translations[0]);
-                    Debug.Log(res[0].translations[0].text);
-                    string[] resultStrings = res[0].translations[0].text.Split("<|>");
-                    caption.SetTranslatedTitle(resultStrings[0]);
-                    caption.SetTranslatedDescription(resultStrings[1]);
-                    callback(caption);
+                    callback(res[0].translations[0].text);
                 }
             }
         }

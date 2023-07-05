@@ -26,16 +26,15 @@ public class CaptionController : MonoBehaviour
 
         // Initialise translator client
         this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
-        // Get a translation in French.
-        //StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
 
         // Initialise description client
         this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
-        // Get a description.
 
         // Initialise description client
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
-        // Get a description.
+
+        // Just testing here:
+        CreateCaption("Test", Vector3.zero);
     }
 
     /// <summary>
@@ -61,32 +60,35 @@ public class CaptionController : MonoBehaviour
         GameObject captionGO = Instantiate(CaptionPrefab, captionLocation, 
             Quaternion.LookRotation(captionLocation - CameraCache.Main.transform.position));
         Caption cap = captionGO.GetComponent<Caption>();
+        // Setting primary title will initialize the caption object.
+        // It will autonomously attempt to fill in its description and translation.
         cap.SetPrimaryTitle(captionName.Split(":")[0]);
 
-        // Get Description
-        StartCoroutine(this._dictionaryClient.Explain(cap, this.GetDescriptionFromDict));
+        CaptionList.Add(cap.gameObject);
     }
 
-    private void GetDescriptionFromDict(Caption caption)
+    private void GetDescriptionFromDict(string result)
     {
-        if (caption.GetPrimaryDescription() != null)
+        if (result != null)
         {
-            StartCoroutine(this._translatorClient.Translate(caption, originalLanguage, targetLanguages, this.GetTranslation));
+            //StartCoroutine(this._translatorClient.Translate(caption, originalLanguage, targetLanguages, this.GetTranslation));
         }
         else
         {
-            Debug.Log("Got null. Must be something wrong with Description API client's implementation. Try ChatGPT instead");
+            result = "Got null. Must be something wrong with Description API client's implementation. Try ChatGPT instead";
+            Debug.Log(result);
 
             //string prompt = "Definition of " + target;
-            StartCoroutine(this._chatGPTClient.Explain(caption, this.GetDescriptionFromGPT));
+            //StartCoroutine(this._chatGPTClient.Explain(caption, this.GetDescriptionFromGPT));
         }
+        //return result;
     }
 
     private void GetDescriptionFromGPT(Caption caption)
     {
         if (caption.GetPrimaryDescription() != null)
         {
-            StartCoroutine(this._translatorClient.Translate(caption, originalLanguage, targetLanguages, this.GetTranslation));
+            //StartCoroutine(this._translatorClient.Translate(caption, originalLanguage, targetLanguages, this.GetTranslation));
         }
         else
         {
@@ -97,16 +99,10 @@ public class CaptionController : MonoBehaviour
     {
         if (caption.GetTranslatedDescription() != null)
         {
-            FinalizeCaption(caption);
         }
         else
         {
             Debug.Log("Got null. Must be something wrong with Translation API client's implementation");
         }
-    }
-
-    private void FinalizeCaption(Caption cap)
-    {
-        CaptionList.Add(cap.gameObject);
     }
 }
