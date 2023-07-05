@@ -36,6 +36,8 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         // Cache usage. It returns a falsy value if the key doesn't exist.
         this._cache = new LRUCache<string, string>(10);
         this._cache.Put("Key", "Value");
+        this._cache.Put("Key", "Updated Value");
+        this._cache.Put("", "How about using an empty string as a key?");
         Debug.Log("Fake Key: " + this._cache.Get("Fake Key"));
         Debug.Log("Key: " + this._cache.Get("Key"));
 
