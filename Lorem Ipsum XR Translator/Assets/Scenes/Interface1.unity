@@ -347,6 +347,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 123254869636968650, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 167519458813532402, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -391,6 +395,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 274507845624892241, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2565462926983481018, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -423,6 +431,14 @@ PrefabInstance:
       propertyPath: iconQuadTexture
       value: 
       objectReference: {fileID: 2800000, guid: ac8550a474419054d9621216812fd098, type: 3}
+    - target: {fileID: 3009022622657665697, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3009022624502158625, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3387837265659659143, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
       propertyPath: iconQuadTexture
       value: 
@@ -435,6 +451,18 @@ PrefabInstance:
       propertyPath: iconQuadTexture
       value: 
       objectReference: {fileID: 2800000, guid: 937867e9be7912d4a903cd401ee0a959, type: 3}
+    - target: {fileID: 4961087165330946455, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 760890341}
+    - target: {fileID: 4961087165330946455, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleFollowMeBehavior
+      objectReference: {fileID: 0}
+    - target: {fileID: 4961087165330946455, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.FollowMeToggle, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
     - target: {fileID: 4987367188409559486, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
       propertyPath: m_Name
       value: SecondaryLanguage
@@ -527,6 +555,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6376582067664713665, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8486062582084656248, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -839,6 +871,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &760890341 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6379754230260484954, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+  m_PrefabInstance: {fileID: 267470398}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d1fea68463e4e84b86c395b654f950d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &793478118
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,8 +966,8 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2303,7 +2346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8451469530216736246, guid: 478732197b53dee4694480aac1a7c98c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8781469162883619712, guid: 478732197b53dee4694480aac1a7c98c, type: 3}
       propertyPath: m_textAlignment

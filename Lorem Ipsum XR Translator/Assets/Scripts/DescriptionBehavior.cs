@@ -46,11 +46,6 @@ public class DescriptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
     }
 
-    public void OpenDescriptionPanel()
-    {
-        DescriptionPanel.SetActive(true);
-    }
-
     public void OnGestureStarted(InputEventData eventData)
     {
         Debug.Log("Gesture Started");
@@ -74,26 +69,6 @@ public class DescriptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
         // Initialise decription client
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
         // Get a description.
-        string prompt = "Definition of " + target;
-        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
-
-    }
-
-    public void RetrieveDescription()
-    {
-        Debug.Log("Retrieving Description");
-        Title.text = word;
-        string target = word;
-        string originalLanguage = "en";
-        string[] targetLanguages = new string[] { "fr" };
-
-        // Get a translation
-        StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
-
-        // Get a description from MerriamWebster.
-        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
-
-        // Get a description from ChatGPT.
         string prompt = "Definition of " + target;
         StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
 
@@ -150,5 +125,39 @@ public class DescriptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
         }
     }
 
+    // Functions to work with onClick()
+
+    public void OpenDescriptionPanel()
+    {
+        DescriptionPanel.SetActive(true);
+    }
+
+    public void RetrieveDescription()
+    {
+        Debug.Log("Retrieving Description");
+        Title.text = word;
+        string target = word;
+        string originalLanguage = "en";
+        string[] targetLanguages = new string[] { "fr" };
+
+        // Get a translation
+        StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
+
+        // Get a description from MerriamWebster.
+        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
+
+        // Get a description from ChatGPT.
+        string prompt = "Definition of " + target;
+        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
+
+    }
+
+    /// <summary>
+    /// Sets the target language
+    /// </summary>
+    private void SetTargetLanguage()
+    {
+
+    }
 
 }
