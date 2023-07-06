@@ -15,6 +15,8 @@ public class DescriptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
     [SerializeField] private TextMeshPro DictionaryText;
     [SerializeField] private TextMeshPro ChatGPTText;
 
+    public GameObject DescriptionPanel;
+
     private ITranslatorClient _translatorClient;
     private IDescriptionClient _chatGPTClient;
     private IDescriptionClient _dictionaryClient;
@@ -33,7 +35,6 @@ public class DescriptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
         word = "cube";
         secondarylanguage = "fr";
-        Title.text = word;
 
         // Initialise translator client
         this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
@@ -43,6 +44,11 @@ public class DescriptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
         // Initialise decription client
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
+    }
+
+    public void OpenDescriptionPanel()
+    {
+        DescriptionPanel.SetActive(true);
     }
 
     public void OnGestureStarted(InputEventData eventData)
@@ -68,6 +74,26 @@ public class DescriptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
         // Initialise decription client
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
         // Get a description.
+        string prompt = "Definition of " + target;
+        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
+
+    }
+
+    public void RetrieveDescription()
+    {
+        Debug.Log("Retrieving Description");
+        Title.text = word;
+        string target = word;
+        string originalLanguage = "en";
+        string[] targetLanguages = new string[] { "fr" };
+
+        // Get a translation
+        StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
+
+        // Get a description from MerriamWebster.
+        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
+
+        // Get a description from ChatGPT.
         string prompt = "Definition of " + target;
         StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
 
@@ -123,4 +149,6 @@ public class DescriptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
             Debug.Log("Got null. Must be something wrong with Description API client's implementation");
         }
     }
+
+
 }
