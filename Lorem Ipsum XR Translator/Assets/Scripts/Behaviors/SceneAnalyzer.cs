@@ -186,6 +186,10 @@ public class SceneAnalyzer : MonoBehaviour
             Physics.Raycast(ray, out hit);
 
             Vector3 targetLocation = ray.origin + ray.direction;
+            if (hit.transform && hit.transform.tag != "caption")
+            {
+                targetLocation = hit.point;
+            }
 
             // Create caption at that location
             CaptionController.CreateCaption(detectedObject.objectName + ": " + detectedObject.confidence, targetLocation);

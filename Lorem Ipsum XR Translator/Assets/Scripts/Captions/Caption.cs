@@ -11,11 +11,13 @@ public class Caption : MonoBehaviour
     public TextMeshPro textObject;
 
     public CaptionLibrary CaptionLib;
+    public CaptionController CaptionCon;
 
-    public void InitializeCaption(string pTitle, CaptionLibrary captionLib)
+    public void InitializeCaption(string pTitle, CaptionLibrary captionLib, CaptionController captionCon)
     {
         primaryTitle = pTitle;
         CaptionLib = captionLib;
+        CaptionCon = captionCon;
         SetText();
     }
 
@@ -82,5 +84,13 @@ public class Caption : MonoBehaviour
     public void Activate(bool active)
     {
         gameObject.SetActive(active);
+    }
+
+    public void Interact()
+    {
+        DescriptionPanel descriptionPanel = CaptionCon.DescriptionPanel.GetComponent<DescriptionPanel>();
+        descriptionPanel.captionRef = this;
+        descriptionPanel.SetText();
+        CaptionCon.DescriptionPanel.SetActive(true);
     }
 }

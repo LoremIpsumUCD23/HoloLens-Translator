@@ -10,6 +10,8 @@ public class CaptionController : MonoBehaviour
 {
     public GameObject CaptionPrefab;
 
+    public GameObject DescriptionPanel;
+
     CaptionLibrary CaptionLib;
     List<GameObject> CaptionList;
 
@@ -58,7 +60,7 @@ public class CaptionController : MonoBehaviour
         Caption cap = captionGO.GetComponent<Caption>();
         // Setting primary title will initialize the caption object.
         // It will autonomously attempt to fill in its description and translation.
-        cap.InitializeCaption(captionName.Split(":")[0], CaptionLib);
+        cap.InitializeCaption(captionName.Split(":")[0], CaptionLib, this);
 
         CaptionList.Add(cap.gameObject);
     }
