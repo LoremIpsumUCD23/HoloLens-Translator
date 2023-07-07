@@ -10,7 +10,7 @@ using Translator;
 using Config;
 
 
-public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
+public class CaptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
 {
     public TextMeshPro TranslationText;
     public TextMeshPro DictionaryText;
@@ -19,11 +19,11 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     private ITranslatorClient _translatorClient;
     private IDescriptionClient _chatGPTClient;
     private IDescriptionClient _dictionaryClient;
-    
+
 
     // for testing.
     private string[] objects = { "cup", "dog", "human", "rocket", "tree" };
-
+    private string word;
 
     void Start()
     {
@@ -33,7 +33,8 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         int index = rnd.Next(objects.Length);
         string target = this.objects[index];
         string originalLanguage = "en";
-        string[] targetLanguages = new string[]{ "fr" };
+        string[] targetLanguages = new string[] { "fr" };
+        word = target;
 
 
         // Initialise translator client
@@ -83,10 +84,10 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     }
 
     public void OnGestureUpdated(InputEventData eventData)
-    {            
+    {
         Debug.Log("Gesture Updated");
     }
- 
+
     public void OnGestureCompleted(InputEventData eventData)
     {
         Debug.Log("Gesture Completed");
@@ -133,5 +134,14 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         }
     }
 
-
+    public void sendDescription()
+    {
+        Debug.Log("Sending DescriptionStarted");
+        DescriptionManager.Title = this.word;
+        DescriptionManager.TranslationText = this.TranslationText.text;
+        DescriptionManager.DictionaryText = this.DictionaryText.text;
+        Debug.Log(DescriptionManager.DictionaryText);
+        DescriptionManager.ChatGPTText = this.ChatGPTText.text;
+    }
 }
+
