@@ -24,7 +24,7 @@ public class ObjectDetectBehavior : MonoBehaviour
         this._objectDetectorClient = new CustomObjectDetector();
         string baseModelPath = Path.Combine(Application.dataPath, "Scripts/ObjectDetection/PythonCustomModel").Replace("\\", "/");
         //StartCoroutine(this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images", this.CallSetSceneObjects));
-        StartCoroutine(this._objectDetectorClient.DetectObjects(baseModelPath, "examples/desk.jpeg", this.CallSetSceneObjects));
+        StartCoroutine(this._objectDetectorClient.DetectObjects(baseModelPath, "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images", this.CallSetSceneObjects));
     }
 
     private void CallSetSceneObjects(string responseText)

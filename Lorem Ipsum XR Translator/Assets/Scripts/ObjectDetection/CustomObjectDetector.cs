@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using Python.Runtime;
 using System.IO;
 
@@ -18,29 +19,52 @@ namespace ObjectDetection
         }
         public IEnumerator DetectObjects(string modelPath, string imagePath, Action<string> callback)
         {
-            // Execute a Python script
-            using (Py.GIL()) // Acquire the Global Interpreter Lock (GIL) for thread safety
+            using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imagePath))
             {
-                dynamic sys = Py.Import("sys");
-                sys.path.append(modelPath); // Add the path to the Python script
+                yield return www.SendWebRequest();
 
-                //string pythonScriptPath = Path.Combine(Application.dataPath, "Scripts/ObjectDetection/PythonCustomModel/object_detection_image.py");
-                //pythonScriptPath = pythonScriptPath.Replace("\\", "/");
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError("Failed to download image: " + www.error);
+                    yield break;
+                }
 
-                dynamic script = Py.Import("object_detection_image");
+                // Get the downloaded texture
+                Texture2D texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
-                script.image_path = imagePath;
-                script.execute();
+                // Convert the texture to a byte array
+                byte[] imageBytes = texture.EncodeToPNG();
 
-                dynamic responseText = script.response_text;
+                // Save the byte array as a temporary image file
+                string tempImagePath = Application.persistentDataPath + "/temp_image.png";
+                File.WriteAllBytes(tempImagePath, imageBytes);
 
-                Debug.Log(responseText);
-                callback(responseText);
+                // Execute a Python script
+                using (Py.GIL()) // Acquire the Global Interpreter Lock (GIL) for thread safety
+                {
+                    dynamic sys = Py.Import("sys");
+                    sys.path.append(modelPath); // Add the path to the Python script
+
+                    dynamic script = Py.Import("object_detection_image");
+                    dynamic globals = Py.CreateScope();
+                    globals.image_path = tempImagePath;
+                    PythonEngine.Exec(script, globals);
+                    dynamic responseText = globals.response_text;
+                    //script.execute();
+                    //script.image_path = tempImagePath;
+                    //script.execute();
+
+                    //dynamic responseText = script.response_text;
+
+                    Debug.Log(responseText);
+                    callback(responseText);
+                }
+
+                // Delete the temporary image file
+                File.Delete(tempImagePath);
             }
-
             // Shutdown Python engine
             PythonEngine.Shutdown();
-            yield return null;
         }
     }
 }
