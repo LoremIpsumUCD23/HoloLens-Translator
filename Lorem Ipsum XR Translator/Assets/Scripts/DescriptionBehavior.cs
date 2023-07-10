@@ -12,6 +12,9 @@ public class DescriptionBehavior : MonoBehaviour
 
     [SerializeField] private GameObject DescriptionPanel;
 
+    /// <summary>
+    /// Retrieves description from the Description Manager
+    /// </summary>
     // Retrieves Description from DescriptionManager
     public void RetrieveDescription()
     {
@@ -19,7 +22,7 @@ public class DescriptionBehavior : MonoBehaviour
         _title.text = DescriptionManager.Title;
         _translationText.text = DescriptionManager.TranslationText;
         _dictionaryText.text = DescriptionManager.DictionaryText;
-        //_chatGPTText.text = DescriptionManager.ChatGPTText;
+        _chatGPTText.text = DescriptionManager.ChatGPTText;
         Debug.Log(_dictionaryText.text);
         DescriptionPanel.SetActive(true);
     }
