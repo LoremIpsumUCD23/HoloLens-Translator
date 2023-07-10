@@ -10,136 +10,144 @@ using Description;
 using Translator;
 using Config;
 
-
-public class CaptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
+namespace UI
 {
-    public TextMeshPro TranslationText;
-    public TextMeshPro DictionaryText;
-    public TextMeshPro ChatGPTText;
-
-    private ITranslatorClient _translatorClient;
-    private IDescriptionClient _chatGPTClient;
-    private IDescriptionClient _dictionaryClient;
-
-
-    // for testing.
-    private string[] objects = { "cup", "dog", "human", "rocket", "tree" };
-    private string word;
-
-    void Start()
+    /// <summary>
+    /// General purpose behavior for captions
+    /// This differs from CubeBehaviour because it sends description to the description manager.
+    /// </summary>
+    public class CaptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
     {
-        Debug.Log("Started");
+        public TextMeshPro TranslationText;
+        public TextMeshPro DictionaryText;
+        public TextMeshPro ChatGPTText;
 
-        var rnd = new System.Random();
-        int index = rnd.Next(objects.Length);
-        string target = this.objects[index];
-        string originalLanguage = "en";
-        string[] targetLanguages = new string[] { "fr" };
-        word = target;
-
-
-        // Initialise translator client
-        this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
-        // Get a translation in French.
-        StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
-
-        // Initialise decription client
-        this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
-        // Get a description.
-        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
-
-        // Initialise decription client
-        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
-        // Get a description.
-        string prompt = "Definition of " + target;
-        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
-    }
-
-    public void OnGestureStarted(InputEventData eventData)
-    {
-        Debug.Log("Gesture Started");
-
-        var rnd = new System.Random();
-        int index = rnd.Next(objects.Length);
-        string target = this.objects[index];
-        string originalLanguage = "en";
-        string[] targetLanguages = new string[] { "fr" };
+        private ITranslatorClient _translatorClient;
+        private IDescriptionClient _chatGPTClient;
+        private IDescriptionClient _dictionaryClient;
 
 
-        // Initialise translator client
-        this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
-        // Get a translation in French.
-        StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
+        // for testing.
+        private string[] objects = { "cup", "dog", "human", "rocket", "tree" };
+        private string word;
 
-        // Initialise decription client
-        this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
-        // Get a description.
-        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
-
-        // Initialise decription client
-        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
-        // Get a description.
-        string prompt = "Definition of " + target;
-        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
-
-    }
-
-    public void OnGestureUpdated(InputEventData eventData)
-    {
-        Debug.Log("Gesture Updated");
-    }
-
-    public void OnGestureCompleted(InputEventData eventData)
-    {
-        Debug.Log("Gesture Completed");
-    }
-
-    public void OnGestureCanceled(InputEventData eventData)
-    {
-        Debug.Log("Gesture Canceled");
-    }
-
-    private void GetTranslation(string responseText)
-    {
-        if (responseText != null)
+        void Start()
         {
-            TranslationText.text = "Translator: " + responseText;
-        }
-        else
-        {
-            Debug.Log("Got null. Must be something wrong with Translation API client's implementation");
-        }
-    }
+            Debug.Log("Started");
 
-    private void GetDescriptionFromDict(string responseText)
-    {
-        if (responseText != null)
-        {
-            DictionaryText.text = "Dict: " + responseText;
-        }
-        else
-        {
-            Debug.Log("Got null. Must be something wrong with Description API client's implementation");
-        }
-    }
+            var rnd = new System.Random();
+            int index = rnd.Next(objects.Length);
+            string target = this.objects[index];
+            string originalLanguage = "en";
+            string[] targetLanguages = new string[] { "fr" };
+            word = target;
 
-    private void GetDescriptionFromGPT(string responseText)
-    {
-        if (responseText != null)
-        {
-            ChatGPTText.text = "GPT: " + responseText;
-        }
-        else
-        {
-            Debug.Log("Got null. Must be something wrong with Description API client's implementation");
-        }
-    }
 
-    public void sendDescription()
-    {
-        Debug.Log("Sending Description to Description Manager");
+            // Initialise translator client
+            this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
+            // Get a translation in French.
+            StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
 
-        DescriptionManager.SetNewDescription(this.word, this.TranslationText.text, this.DictionaryText.text, this.ChatGPTText.text);
+            // Initialise decription client
+            this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
+            // Get a description.
+            StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
+
+            // Initialise decription client
+            this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
+            // Get a description.
+            string prompt = "Definition of " + target;
+            StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
+        }
+
+        public void OnGestureStarted(InputEventData eventData)
+        {
+            Debug.Log("Gesture Started");
+
+            var rnd = new System.Random();
+            int index = rnd.Next(objects.Length);
+            string target = this.objects[index];
+            string originalLanguage = "en";
+            string[] targetLanguages = new string[] { "fr" };
+
+
+            // Initialise translator client
+            this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
+            // Get a translation in French.
+            StartCoroutine(this._translatorClient.Translate(target, originalLanguage, targetLanguages, this.GetTranslation));
+
+            // Initialise decription client
+            this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
+            // Get a description.
+            StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
+
+            // Initialise decription client
+            this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
+            // Get a description.
+            string prompt = "Definition of " + target;
+            StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
+
+        }
+
+        public void OnGestureUpdated(InputEventData eventData)
+        {
+            Debug.Log("Gesture Updated");
+        }
+
+        public void OnGestureCompleted(InputEventData eventData)
+        {
+            Debug.Log("Gesture Completed");
+        }
+
+        public void OnGestureCanceled(InputEventData eventData)
+        {
+            Debug.Log("Gesture Canceled");
+        }
+
+        private void GetTranslation(string responseText)
+        {
+            if (responseText != null)
+            {
+                TranslationText.text = "Translator: " + responseText;
+            }
+            else
+            {
+                Debug.Log("Got null. Must be something wrong with Translation API client's implementation");
+            }
+        }
+
+        private void GetDescriptionFromDict(string responseText)
+        {
+            if (responseText != null)
+            {
+                DictionaryText.text = "Dict: " + responseText;
+            }
+            else
+            {
+                Debug.Log("Got null. Must be something wrong with Description API client's implementation");
+            }
+        }
+
+        private void GetDescriptionFromGPT(string responseText)
+        {
+            if (responseText != null)
+            {
+                ChatGPTText.text = "GPT: " + responseText;
+            }
+            else
+            {
+                Debug.Log("Got null. Must be something wrong with Description API client's implementation");
+            }
+        }
+
+        /// <summary>
+        /// Sends the description of a word from various APIs to the Description Manager
+        /// </summary>
+        public void sendDescription()
+        {
+            Debug.Log("Sending Description to Description Manager");
+
+            DescriptionManager.SetNewDescription(this.word, this.TranslationText.text, this.DictionaryText.text, this.ChatGPTText.text);
+        }
     }
 }
-
