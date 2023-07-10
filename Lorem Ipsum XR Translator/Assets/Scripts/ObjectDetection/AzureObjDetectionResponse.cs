@@ -6,6 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace ObjectDetection
 {
+    /// <summary>
+    /// Rectangle helper class using x,y coordinates with w,h dimensions
+    /// </summary>
     public class Rectangle
     {
         public int x;
@@ -22,6 +25,9 @@ namespace ObjectDetection
         }
     }
 
+    /// <summary>
+    /// Detected Object contains a rectangle location, object name, and confidence level
+    /// </summary>
     public class DetectedObject
     {
         public Rectangle rectangle;
@@ -36,6 +42,9 @@ namespace ObjectDetection
         }
     }
 
+    /// <summary>
+    /// Metadata associated with image detection
+    /// </summary>
     public class Metadata
     {
         public int height;
@@ -50,6 +59,9 @@ namespace ObjectDetection
         }
     }
 
+    /// <summary>
+    /// Response parser for Azure Object Detection
+    /// </summary>
     public class AzureObjDetectionResponse
     {
         public List<DetectedObject> objects;
