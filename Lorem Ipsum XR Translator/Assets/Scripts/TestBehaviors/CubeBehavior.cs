@@ -8,6 +8,7 @@ using TMPro;
 using Description;
 using Translator;
 using Config;
+using Util.Cache;
 
 
 public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
@@ -19,6 +20,9 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     private ITranslatorClient _translatorClient;
     private IDescriptionClient _chatGPTClient;
     private IDescriptionClient _dictionaryClient;
+
+    // You can specify literally any type for the key and value.
+    private ICache<string, string> _cache;
     
 
     // for testing.
@@ -28,6 +32,14 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     void Start()
     {
         Debug.Log("Started");
+
+        // Cache usage. It returns a falsy value if the key doesn't exist.
+        this._cache = new LRUCache<string, string>(10);
+        this._cache.Put("Key", "Value");
+        this._cache.Put("Key", "Updated Value");
+        this._cache.Put("", "How about using an empty string as a key?");
+        Debug.Log("Fake Key: " + this._cache.Get("Fake Key"));
+        Debug.Log("Key: " + this._cache.Get("Key"));
 
         var rnd = new System.Random();
         int index = rnd.Next(objects.Length);
