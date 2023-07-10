@@ -6,25 +6,21 @@ using UI;
 public class LanguageTrigger : MonoBehaviour
 {
     private List<Languages> _languageList;
-    private string[] languages = { "English", "Malay", "Chinese" };
-    private string[] text = { "English Text", "Malay Text", "Chinese Text" };
+    private string[] languages = { "English", "Malay", "Japanese", "Bengali", "Hindi" };
+    private string[] text = { "This sets the secondary language for the descriptions provided.", "Malay Text", "Japanese Text", "Bengali Text", "Hindi Text" };
     private Languages language;
 
     void Awake()
     {
-        language = new Languages();
         _languageList = new List<Languages>();
         for (int i = 0; i < languages.Length;  i++)
         {
+            language = new Languages();
             language.language = languages[i];
             language.text = text[i];
             _languageList.Add(language);
             Debug.Log(language.text);
         }
-        Debug.Log(_languageList);
-        Debug.Log(_languageList[0].language);
-        Debug.Log(_languageList[1].language);
-        Debug.Log(_languageList[2].language);
     }
 
 

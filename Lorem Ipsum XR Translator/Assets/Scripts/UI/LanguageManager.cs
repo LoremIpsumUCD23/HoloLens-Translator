@@ -16,7 +16,6 @@ namespace UI
         private int indexer;
         private int size;
 
-
         public void DisplayNextLanguage()
         {
             Language.text = languagelist[indexer].language;
@@ -37,10 +36,10 @@ namespace UI
             Debug.Log("Starting Language Initialisation");
             indexer = 0;
             this.languagelist = newlanguagelist;
-            Debug.Log(languagelist[0].language);
-            Debug.Log(languagelist[1].language);
-            Debug.Log(languagelist[2].language);
             size = this.languagelist.Count;
+            Language.text = languagelist[indexer].language;
+            Text.text = languagelist[indexer].text;
+            indexer++;
         }
     }
 
