@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using TMPro;
+using System;
 
 // our own namespace
 using Description;
@@ -136,12 +137,9 @@ public class CaptionBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
     public void sendDescription()
     {
-        Debug.Log("Sending DescriptionStarted");
-        DescriptionManager.Title = this.word;
-        DescriptionManager.TranslationText = this.TranslationText.text;
-        DescriptionManager.DictionaryText = this.DictionaryText.text;
-        Debug.Log(DescriptionManager.DictionaryText);
-        DescriptionManager.ChatGPTText = this.ChatGPTText.text;
+        Debug.Log("Sending Description to Description Manager");
+
+        DescriptionManager.SetNewDescription(this.word, this.TranslationText.text, this.DictionaryText.text, this.ChatGPTText.text);
     }
 }
 

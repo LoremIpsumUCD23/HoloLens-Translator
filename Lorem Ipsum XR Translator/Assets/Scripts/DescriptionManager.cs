@@ -20,9 +20,9 @@ public static class DescriptionManager
     public static string ChatGPTText { get; set; }
 
     public static void SetNewDescription(string title, string translation, string dictionary, string chatgpt) {
-        _title = title;
-        _translationText = translation;
-        _dictionaryText = dictionary;
-        _chatGPTText = chatgpt;
+        DescriptionManager.Title = title;
+        DescriptionManager.TranslationText = translation;
+        DescriptionManager.DictionaryText = dictionary;
+        DescriptionManager.ChatGPTText = chatgpt;
     }
 }
