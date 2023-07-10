@@ -11,11 +11,13 @@ namespace ObjectDetection
         private readonly string subscriptionKey;
         private string azureObjApi;
 
+        //initializing object with apiKey
         public AzureObjectDetector(string apiKey)
         {
             this.subscriptionKey = apiKey;
         }
 
+        //calling the Azure API to return response
         public IEnumerator DetectObjects(string modelPath, string imagePath, Action<string> callback)
         {
             byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{\"url\":\"" + imagePath + "\"}");

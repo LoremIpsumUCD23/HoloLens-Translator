@@ -15,16 +15,17 @@ public class ObjectDetectBehavior : MonoBehaviour
     public GameObject borderPrefab;
     public float borderThickness = 2;
 
+    //main client object
     private IObjectDetectorClient _objectDetectorClient;
 
     private void Start()
     {        
         objCategory.text = "loading...";
-        //this._objectDetectorClient = new AzureObjectDetector("c2242d7717124c79baa26bd78f027d8b");
-        this._objectDetectorClient = new CustomObjectDetector();
-        string baseModelPath = Path.Combine(Application.dataPath, "Scripts/ObjectDetection/PythonCustomModel").Replace("\\", "/");
-        //StartCoroutine(this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images", this.CallSetSceneObjects));
-        StartCoroutine(this._objectDetectorClient.DetectObjects(baseModelPath, "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images", this.CallSetSceneObjects));
+        this._objectDetectorClient = new AzureObjectDetector("c2242d7717124c79baa26bd78f027d8b");
+        //this._objectDetectorClient = new CustomObjectDetector();
+        string baseModelPath = Path.Combine(Application.dataPath, "Scripts/ObjectDetection").Replace("\\", "/");
+        StartCoroutine(this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images", this.CallSetSceneObjects));
+        //StartCoroutine(this._objectDetectorClient.DetectObjects(baseModelPath, "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images", this.CallSetSceneObjects));
     }
 
     private void CallSetSceneObjects(string responseText)
@@ -32,25 +33,28 @@ public class ObjectDetectBehavior : MonoBehaviour
         StartCoroutine(SetSceneObjects(responseText));
     }
 
+    //method to set objects in the scene based on json response from the model being called
     private IEnumerator SetSceneObjects(string responseText)
     {
-        //string imgUrl = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images";
-        //using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imgUrl))
-        //{
-        //    yield return www.SendWebRequest();
+        //setting image based on the url
+        string imgUrl = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi5.walmartimages.com%2Fasr%2Fa2e1cf08-bd39-43aa-9a9a-2edac8d9623d.e027078e8cd1d2f0b75ee1c6c9344fbb.jpeg&f=1&nofb=1&ipt=12b04e7da56462e66cbd9871b14ac78607713aa2db1ba7e1278da15171f364ab&ipo=images";
+        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(imgUrl))
+        {
+            yield return www.SendWebRequest();
 
-        //    GC.Collect();
-        //    if (www.result == UnityWebRequest.Result.Success)
-        //    {
-        //        Texture2D texture = DownloadHandlerTexture.GetContent(www);
-        //        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("Failed to load image from URL: " + imgUrl + "\nError: " + www.error);
-        //    }
-        //}
+            GC.Collect();
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                Texture2D texture = DownloadHandlerTexture.GetContent(www);
+                image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
+            }
+            else
+            {
+                Debug.LogError("Failed to load image from URL: " + imgUrl + "\nError: " + www.error);
+            }
+        }
         
+        //setting textmeshpro and border around the objects found in the picture
         objCategory.text = "";
         if (!responseText.Equals("object"))
         {
@@ -62,6 +66,7 @@ public class ObjectDetectBehavior : MonoBehaviour
             float offsetX = image.rectTransform.rect.width / 2f;
             float offsetY = image.rectTransform.rect.height / 2f;
             
+            //loop to go through every object in the list
             foreach (DetectedObject detectedObject in detectedObjects)
             {
                 float borderWidth = detectedObject.rectangle.w * xScale;
