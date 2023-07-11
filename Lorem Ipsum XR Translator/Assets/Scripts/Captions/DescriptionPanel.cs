@@ -15,8 +15,8 @@ public class DescriptionPanel : MonoBehaviour
 
     public void SetText()
     {
-        titleText.text = captionRef.translatedTitle + " / " + captionRef.primaryTitle;
-        descriptionText.text = translateDescription ? captionRef.translatedDescription : captionRef.primaryDescription;
+        titleText.text = captionRef.GetTranslatedTitle() + " / " + captionRef.GetPrimaryTitle();
+        descriptionText.text = translateDescription ? captionRef.GetTranslatedDescription() : captionRef.GetPrimaryDescription();
     }
 
     public void ToggleDescription()

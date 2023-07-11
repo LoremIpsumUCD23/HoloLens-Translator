@@ -10,17 +10,20 @@ using Util.Cache;
 
 public class CaptionLibrary : MonoBehaviour 
 {
+    // Three caches are set up for tracking descriptions and translated titles (primary titles are the key)
     LRUCache<string, string> descriptions;
     LRUCache<string, string> titleTranslations;
     LRUCache<string, string> descriptionTranslations;
 
+    // Services for requesting descriptions/translations
     private ITranslatorClient _translatorClient;
     private IDescriptionClient _chatGPTClient;
     private IDescriptionClient _dictionaryClient;
 
+    // Capacity for our caches (currently arbitrary)
     int cacheCapacity = 100;
 
-
+    // Strings used for string processing logic (may be better ways to handle some of this)
     string holdString = "Processing...";
     string separator = "<|>";
 
@@ -47,6 +50,12 @@ public class CaptionLibrary : MonoBehaviour
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
     }
 
+    /// <summary>
+    /// Attempts to get a description for a given title. If the caption is in the cache, it will be returned.
+    /// If the cache returns a null, it will put in a request to the API to get a description, and set the value to the HoldString (to prevent multiple API calls)
+    /// </summary>
+    /// <param name="title">Caption title to look up</param>
+    /// <returns>Hold String or a description</returns>
     public string TryGetDescription(string title)
     {
         string result = descriptions.Get(title);
@@ -64,16 +73,30 @@ public class CaptionLibrary : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Attempts to get a title translation
+    /// </summary>
+    /// <param name="title">Caption title in primary language</param>
+    /// <returns>Hold String or translated title</returns>
     public string TryGetTitleTranslation(string title)
     {
         return titleTranslations.Get(title);
     }
 
+    /// <summary>
+    /// Attempts to get a translated description
+    /// </summary>
+    /// <param name="title">Caption title in primary language</param>
+    /// <returns>Hold String or translated description</returns>
     public string TryGetDescriptionTranslation(string title)
     {
         return descriptionTranslations.Get(title);
     }
 
+    /// <summary>
+    /// Callback function for completed dictionary description API call. Assigns returned description to cache and requests translation.
+    /// </summary>
+    /// <param name="returned">String array containing primary title in index 0 and primary description in index 1</param>
     private void GetDescriptionFromDict(string[] returned)
     {
         if (returned[1] != null)
@@ -92,6 +115,10 @@ public class CaptionLibrary : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Callback function for completed GPT description API call. Assigns returned description to cache and requests translation.
+    /// </summary>
+    /// <param name="returned">String array containing primary title in index 0 and primary description in index 1</param>
     private void GetDescriptionFromGPT(string[] returned)
     {
         if (returned[1] != null)
@@ -105,6 +132,11 @@ public class CaptionLibrary : MonoBehaviour
             Debug.Log("Got null. Must be something wrong with Description API client's implementation");
         }
     }
+    
+    /// <summary>
+    /// Callback function for completed translation API call. Parses returned results and assigns title and description translations to cache.
+    /// </summary>
+    /// <param name="returned">String array containing primary title in index 0 and translated title and description in index 1 separated by a separator string</param>
     private void GetTranslation(string[] returned)
     {
         if (returned[1] != null)

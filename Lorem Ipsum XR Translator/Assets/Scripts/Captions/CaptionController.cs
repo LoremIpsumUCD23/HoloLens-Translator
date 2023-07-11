@@ -1,9 +1,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-using Description;
-using Translator;
-using Config;
 
 [RequireComponent(typeof(CaptionLibrary))]
 public class CaptionController : MonoBehaviour
@@ -15,24 +12,11 @@ public class CaptionController : MonoBehaviour
     CaptionLibrary CaptionLib;
     List<GameObject> CaptionList;
 
-    private ITranslatorClient _translatorClient;
-    private IDescriptionClient _chatGPTClient;
-    private IDescriptionClient _dictionaryClient;
-
     // Start is called before the first frame update
     void Start()
     {
         CaptionLib = GetComponent<CaptionLibrary>();
         CaptionList = new List<GameObject>();
-
-        // Initialise translator client
-        this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
-
-        // Initialise description client
-        this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
-
-        // Initialise description client
-        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
     }
 
     /// <summary>
