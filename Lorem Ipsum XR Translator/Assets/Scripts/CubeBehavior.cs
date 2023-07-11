@@ -56,13 +56,13 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         // Initialise decription client
         this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
         // Get a description.
-        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
+        StartCoroutine(this._dictionaryClient.Explain(target, this.GetDescriptionFromDict));
 
         // Initialise decription client
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
         // Get a description.
         string prompt = "Definition of " + target;
-        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
+        StartCoroutine(this._chatGPTClient.Explain(prompt, this.GetDescriptionFromGPT));
     }
 
     public void OnGestureStarted(InputEventData eventData)
@@ -84,13 +84,13 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         // Initialise decription client
         this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
         // Get a description.
-        StartCoroutine(this._dictionaryClient.SendRequest(target, this.GetDescriptionFromDict));
+        StartCoroutine(this._dictionaryClient.Explain(target, this.GetDescriptionFromDict));
 
         // Initialise decription client
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
         // Get a description.
         string prompt = "Definition of " + target;
-        StartCoroutine(this._chatGPTClient.SendRequest(prompt, this.GetDescriptionFromGPT));
+        StartCoroutine(this._chatGPTClient.Explain(prompt, this.GetDescriptionFromGPT));
 
     }
 
@@ -109,7 +109,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         Debug.Log("Gesture Canceled");
     }
 
-    private void GetTranslation(string responseText)
+    private void GetTranslation(string[] responseText)
     {
         if (responseText != null)
         {
@@ -121,7 +121,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         }
     }
 
-    private void GetDescriptionFromDict(string responseText)
+    private void GetDescriptionFromDict(string[] responseText)
     {
         if (responseText != null)
         {
@@ -133,7 +133,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         }
     }
 
-    private void GetDescriptionFromGPT(string responseText)
+    private void GetDescriptionFromGPT(string[] responseText)
     {
         if (responseText != null)
         {
