@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 
@@ -72,6 +73,11 @@ namespace Util.Cache
         /// <param name="val">The value to associate with the key.</param>
         public void Put(K key, V val)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException("key can't be null!!");
+            }
+
             if (this._cache.Count >= this._cap)
             {
                 // Remove the least recently used item from the cache when it's full.
@@ -80,18 +86,10 @@ namespace Util.Cache
                 this._lruList.RemoveFirst();
             }
 
-            if (Get(key) != null) // Item already exists
-            {
-                var newItem = new LinkedListNode<Item>(new Item { Key = key, Value = val });
-                this._lruList.AddLast(newItem);
-                this._cache[key] = newItem;
-            }
-            else // Insert new item
-            {
-                var newItem = new LinkedListNode<Item>(new Item { Key = key, Value = val });
-                this._lruList.AddLast(newItem);
-                this._cache.Add(key, newItem);
-            }
+
+            var newItem = new LinkedListNode<Item>(new Item { Key = key, Value = val });
+            this._lruList.AddLast(newItem);
+            this._cache[key] = newItem;
         }
 
         /// <summary>
