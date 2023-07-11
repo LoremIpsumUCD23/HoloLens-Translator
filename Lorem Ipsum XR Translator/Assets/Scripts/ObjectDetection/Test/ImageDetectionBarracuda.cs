@@ -17,7 +17,7 @@ namespace ObjectDetection
             _runtimeModel = ModelLoader.Load(modelAsset);
             _worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, _runtimeModel);
 
-            using (var tensor = new Tensor(1, 224, 224, 3))
+            using (var tensor = new Tensor(1, 416, 416, 3))
             {
                 _worker.Execute(tensor);
                 var output = _worker.PeekOutput();
@@ -36,6 +36,8 @@ namespace ObjectDetection
                     }
                 }
                 Debug.Log(bestClass);
+                Debug.Log("^ Best Class");
+                
                 output.Dispose();
             }
             Debug.Log("No problem");
