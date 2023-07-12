@@ -26,6 +26,8 @@ public class SceneAnalyzer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //this._objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey(), "https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest");
+        this._objectDetectorClient = new LocalObjDetection("mobilenetv2-10");
         CaptionController = GetComponent<CaptionController>();
     }
 
@@ -130,10 +132,7 @@ public class SceneAnalyzer : MonoBehaviour
     public IEnumerator AnalyzeImage()
     {
         DebugText.text = "Analyzing Image";
-        // Record view to image
-        this._objectDetectorClient = new LocalObjDetection("mobilenetv2-10");
-        yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
-            image, this.ProcessAnalysis);
+        yield return this._objectDetectorClient.DetectObjects(image, this.ProcessAnalysis);
     }
 
     /// <summary>

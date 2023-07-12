@@ -23,17 +23,17 @@ namespace ObjectDetection
 
             var runtimeModel = ModelLoader.Load("Assets/Scripts/ObjectDetection/Models/" + modelName + ".onnx");
             this._worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, runtimeModel);
+
+            Debug.Log("Model \"" + modelName + "\" is initialized!!");
         }
 
 
-        public IEnumerator DetectObjects(string modelPath, string imagePath, Action<List<DetectedObject>> callback)
+        public IEnumerator DetectObjects(string imagePath, Action<List<DetectedObject>> callback)
         {
             yield break;
         }
 
-
-        // TODO: Use something else instead of DetectedObject because it's Azure service specific
-        public IEnumerator DetectObjects(string modelPath, Texture2D image, Action<List<DetectedObject>> callback)
+        public IEnumerator DetectObjects(Texture2D image, Action<List<DetectedObject>> callback)
         {
             if (this.models.TryGetValue(this.modelName, out int targetSize))
             {
@@ -55,6 +55,7 @@ namespace ObjectDetection
 
                     output.Dispose();
                 }
+                Debug.Log("Detection done");
             }
             else
             {
