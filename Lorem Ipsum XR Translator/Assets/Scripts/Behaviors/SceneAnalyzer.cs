@@ -7,7 +7,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Windows.WebCam;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEditor.Experimental.GraphView;
 
 public class SceneAnalyzer : MonoBehaviour
 {
@@ -226,7 +225,7 @@ public class SceneAnalyzer : MonoBehaviour
         GameObject sphere = Instantiate(DebugSphere, Vector3.zero, Quaternion.identity, DebugQuad.transform);
         //Debug.Log("posX: " + screenPos.x + " posY: " + screenPos.y + " | screenX: " + Screen.width + " screenY: " + Screen.height);
         Vector3 target = new Vector3(screenPos.x / textureWidth - 0.5f, screenPos.y / textureHeight - 0.5f, 0);
-        Debug.Log(target);
+        //Debug.Log(target);
         sphere.transform.localPosition = Vector3.zero + target;
     }
 
