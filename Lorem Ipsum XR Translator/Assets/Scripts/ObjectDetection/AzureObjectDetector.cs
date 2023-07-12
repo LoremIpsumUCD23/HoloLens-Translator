@@ -13,26 +13,27 @@ namespace ObjectDetection
     {
         private readonly string subscriptionKey;
         private string azureObjApi;
+        private string modelPath;
 
-        public AzureObjectDetector(string apiKey)
+        public AzureObjectDetector(string apiKey, string modelPath)
         {
             this.subscriptionKey = apiKey;
+            this.modelPath = modelPath;
         }
 
         /// <summary>
         /// Detects objects in an image from a provided URL
         /// </summary>
-        /// <param name="modelPath">URL for Azure image detection model</param>
         /// <param name="imagePath">URL for image to be analyzed</param>
         /// <param name="callback">Callback function to send list of detected objects</param>
         /// <returns>IEnumerator waits for web response</returns>
-        public IEnumerator DetectObjects(string modelPath, string imagePath, Action<List<DetectedObject>> callback)
+        public IEnumerator DetectObjects(string imagePath, Action<List<DetectedObject>> callback)
         {
             // Collect byte data from image at URL
             byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{\"url\":\"" + imagePath + "\"}");
 
             // Create a web request and send it (along with our bytedata) to the Azure recognition service
-            using (UnityWebRequest client = new UnityWebRequest(modelPath, "POST"))
+            using (UnityWebRequest client = new UnityWebRequest(this.modelPath, "POST"))
             {
                 client.uploadHandler = new UploadHandlerRaw(byteData);
                 client.downloadHandler = new DownloadHandlerBuffer();
@@ -75,17 +76,16 @@ namespace ObjectDetection
         /// <summary>
         /// Detects objects recognized in a Texture2D image
         /// </summary>
-        /// <param name="modelPath">URL for Azure image detection model</param>
         /// <param name="image">Texture2D image to be analyzed (will be cast to a JPG)</param>
         /// <param name="callback">Callback function to send list of detected objects</param>
         /// <returns>IEnumerator waits for web response</returns>
-        public IEnumerator DetectObjects(string modelPath, Texture2D image, Action<List<DetectedObject>> callback)
+        public IEnumerator DetectObjects(Texture2D image, Action<List<DetectedObject>> callback)
         {
             // Encode our Texture2D to a byte array of JPG data
             byte[] byteData = image.EncodeToJPG();
 
             // Create a web request and send it (along with our bytedata) to the Azure recognition service
-            using (UnityWebRequest client = new UnityWebRequest(modelPath, "POST"))
+            using (UnityWebRequest client = new UnityWebRequest(this.modelPath, "POST"))
             {
                 client.uploadHandler = new UploadHandlerRaw(byteData);
                 client.downloadHandler = new DownloadHandlerBuffer();
