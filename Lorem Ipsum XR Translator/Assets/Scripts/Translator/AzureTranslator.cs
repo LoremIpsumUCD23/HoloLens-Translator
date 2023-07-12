@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using System.Net;
 
 
 namespace Translator
@@ -26,9 +27,11 @@ namespace Translator
         }
 
 
-        public IEnumerator Translate(string originalText, string from, string[] to, Action<string> callback)
+        public IEnumerator Translate(string originalText, string from, string[] to, Action<string[]> callback)
         {
             string url = AzureTranslator.endpoint + string.Format("from={0}", from);
+            string[] returnString = new string[2];
+            returnString[0] = originalText;
             for (int i = 0; i < to.Length; i ++)
             {
                 url += string.Format("&to={0}", to[i]);
@@ -36,11 +39,11 @@ namespace Translator
 
             // Create the request body
             string requestBody = "[{ \"Text\": \"" + originalText + "\" }]";
-            byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
 
             // Send a request
-            using (UnityWebRequest request = UnityWebRequest.Post(url, requestBody))
+            using (UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))
             {
+                byte[] requestData = System.Text.Encoding.UTF8.GetBytes(requestBody);
                 request.uploadHandler = new UploadHandlerRaw(requestData);
 
                 // Set the request headers
@@ -62,16 +65,19 @@ namespace Translator
                 if (request.result != UnityWebRequest.Result.Success)
                 {
                     Debug.Log("Error: " + request.error);
-                    callback("Error: " + request.error);
+                    returnString[1] = "Error: " + request.error;
+                    callback(returnString);
                 }
                 else
                 {
                     string responseText = request.downloadHandler.text;
+                    List<Translations> res = JsonConvert.DeserializeObject<List<Translations>>(responseText);
                     // Parse and process the response as needed
                     Debug.Log("Translation response: " + responseText);
-                    callback(responseText);
+                    returnString[1] = res[0].translations[0].text;
+                    callback(returnString);
                 }
-            } 
+            }
         }
     }
 }

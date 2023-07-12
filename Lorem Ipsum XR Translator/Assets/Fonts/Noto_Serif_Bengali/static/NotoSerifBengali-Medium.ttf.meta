@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: 0df9d0b27aee58f49b28e07431312a96
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Noto Serif Bengali
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 1bf2fbc19440a0c43bcdb219e30f92d4, type: 3}
+  - {fileID: 12800000, guid: 494b378ffdf1ab24ba8855b5392186ba, type: 3}
+  - {fileID: 12800000, guid: 97f6ee678d2c7e0438667a145f5fa895, type: 3}
+  - {fileID: 12800000, guid: 93d365a99c752ab4882c38e803e24337, type: 3}
+  - {fileID: 12800000, guid: 691e153e9bbbed74b8d1a23ffbae23ba, type: 3}
+  - {fileID: 12800000, guid: f9ad5433d326ce64d93c06c3b5e93e7b, type: 3}
+  - {fileID: 12800000, guid: 75f9033f5e1731941860476347a250c3, type: 3}
+  - {fileID: 12800000, guid: ac62ebeb37f66d340bda88093a3f04b2, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
