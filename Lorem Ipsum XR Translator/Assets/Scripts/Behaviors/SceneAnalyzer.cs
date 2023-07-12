@@ -105,9 +105,9 @@ public class SceneAnalyzer : MonoBehaviour
 
             StartCoroutine(AnalyzeImage());
         }
-        else 
-        { 
-            DebugText.text = "Failed to save photo to memory"; 
+        else
+        {
+            DebugText.text = "Failed to save photo to memory";
         }
         // Clean up
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
@@ -131,7 +131,7 @@ public class SceneAnalyzer : MonoBehaviour
     {
         DebugText.text = "Analyzing Image";
         // Record view to image
-        this._objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey());
+        this._objectDetectorClient = new LocalObjDetection("mobilenetv2-10");
         yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
             image, this.ProcessAnalysis);
     }

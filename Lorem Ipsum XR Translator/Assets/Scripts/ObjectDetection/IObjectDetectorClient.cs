@@ -10,7 +10,7 @@ namespace ObjectDetection
     /// </summary>
     public interface IObjectDetectorClient
     {
-        public IEnumerator DetectObjects(string modelPath, string imagePath, Action<List<DetectedObject>> callback);
-        public IEnumerator DetectObjects(string modelPath, Texture2D image, Action<List<DetectedObject>> callback);
+        IEnumerator DetectObjects(string modelPath, string imagePath, Action<List<DetectedObject>> callback);
+        IEnumerator DetectObjects(string modelPath, Texture2D image, Action<List<DetectedObject>> callback);
     }
 }
