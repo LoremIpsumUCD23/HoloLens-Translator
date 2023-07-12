@@ -8,7 +8,7 @@ public class TestTTS : MonoBehaviour
 {
     public TextToSpeech TTS;
 
-    string captionText = "Test text";
+    string captionText = "Hello How are you my friend";
 
     // Start is called before the first frame update
     void Start()
