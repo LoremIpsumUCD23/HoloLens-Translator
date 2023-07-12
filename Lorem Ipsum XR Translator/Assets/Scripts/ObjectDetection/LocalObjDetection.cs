@@ -21,7 +21,7 @@ namespace ObjectDetection
             var runtimeModel = ModelLoader.Load(modelAsset);
             this._worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, runtimeModel);
             this._inputWidth = inputWidth;
-            this._inputHeight = inputHeight;   
+            this._inputHeight = inputHeight;
         }
 
 
@@ -40,87 +40,61 @@ namespace ObjectDetection
                 var output = this._worker.Execute(tensor).PeekOutput();
                 yield return new WaitForCompletion(output);
 
-                // TODO: Process the output and prep a list of DetectedObjects to pass to callback()
-                List<DetectedObject> detectedObjects = new List<DetectedObject>();
-                Debug.Log(output.shape);
                 Debug.Log(output);
-                // float threshold = 0.5f;
-                // for (int i = 0; i < output.shape[2]; i++)
-                // {
-                //     float confidence = output[0, 0, i, 3];
-                //     if (confidence > threshold)
-                //     {
-                //         int classLabel = (int)output[0, 0, i, 2];
 
-                //         float xmin = output[0, 0, i, 4];
-                //         float ymin = output[0, 0, i, 5];
-                //         float xmax = output[0, 0, i, 6];
-                //         float ymax = output[0, 0, i, 7];
-
-                //         // The coordinates are normalized to [0, 1], you may need to scale them back to pixel space.
-                //         // Let's assume the original image size is (imageWidth, imageHeight)
-                //         Rectangle rect = new Rectangle(
-                //             (int)(xmin * this._inputWidth),
-                //             (int)(ymin * this._inputHeight),
-                //             (int)((xmax - xmin) * this._inputWidth), 
-                //             (int)((ymax - ymin) * this._inputHeight));
-
-                //         string className = classLabel.ToString(); // Replace with actual class name if you have a dictionary mapping class labels to names.
-
-                //         detectedObjects.Add(new DetectedObject(rect, className, confidence));
-                //     }
-                // }
+                // TODO: Extract data from the "output" variable. The "output" variable's type is Tensor. 
+                // see: https://docs.unity3d.com/Packages/com.unity.barracuda@3.0/api/Unity.Barracuda.Tensor.html?q=Tensor
+                // see: https://docs.unity3d.com/Packages/com.unity.barracuda@3.0/manual/TensorHandling.html
+                List<DetectedObject> detectedObjects = new List<DetectedObject>();
+                detectedObjects.Add(new DetectedObject(new Rectangle(0, 0, 0, 0), output.ToString(), 1.0f));
 
                 callback(detectedObjects);
-                
                 output.Dispose();
             }
         }
 
 
-        // TODO: Fix resizing 
-        public static Texture2D ResizeTexture(Texture2D sourceTexture, int targetWidth, int targetHeight, GameObject Imagedebug)
+        public static Texture2D ResizeTexture(Texture2D source, int targetWidth, int targetHeight)
         {
-            // Error handling: Check if source texture is null
-            if (sourceTexture == null)
+            Texture2D newTexture = new Texture2D(targetWidth, targetHeight, source.format, false);
+            float incX = (1.0f / (float)targetWidth);
+            float incY = (1.0f / (float)targetHeight);
+            for (int i = 0; i < newTexture.height; ++i)
             {
-                Debug.LogError("Source texture is null");
-                return null;
+                for (int j = 0; j < newTexture.width; ++j)
+                {
+                    newTexture.SetPixel(j, i, source.GetPixelBilinear(incX * ((float)j), incY * ((float)i)));
+                }
             }
-            
-            // Create a copy of the source texture
-            Texture2D copiedTexture = sourceTexture;
-            Debug.Log(sourceTexture.Reinitialize ( targetWidth, targetHeight));
-            sourceTexture.Apply();
-            Imagedebug.GetComponent<Renderer>().material.mainTexture = sourceTexture;
-        
-            // Resize the copied texture
-            // copiedTexture.Reinitialize(targetWidth, targetHeight);
-            
-        
-            return sourceTexture;
+            newTexture.Apply();
+            return newTexture;
         }
 
-        public static Texture2D ResizeTexture(Texture2D sourceTexture, int targetWidth, int targetHeight)
-        {
-            // Error handling: Check if source texture is null
-            if (sourceTexture == null)
-            {
-                Debug.LogError("Source texture is null");
-                return null;
-            }
-            
-            // Create a copy of the source texture
-            Texture2D copiedTexture = UnityEngine.Object.Instantiate(sourceTexture) as Texture2D;
-            copiedTexture.Reinitialize ( targetWidth, targetHeight);
-           
-        
-            // Resize the copied texture
-            // copiedTexture.Reinitialize(targetWidth, targetHeight);
-            // copiedTexture.Apply();
-        
-            return copiedTexture;
-        }
+
+        // NOTE: Leaving it for debuggin. Delete it as soon as it turns out to work properly.
+        //public static Texture2D ResizeTexture(Texture2D source, int targetWidth, int targetHeight, GameObject Imagedebug)
+        //{
+        //    Debug.Log("Before Wdith: " + source.width);
+        //    Debug.Log("Before Height: " + source.height);
+
+        //    Texture2D newTexture = new Texture2D(targetWidth, targetHeight, source.format, false);
+        //    float incX = (1.0f / (float)targetWidth);
+        //    float incY = (1.0f / (float)targetHeight);
+        //    for (int i = 0; i < newTexture.height; ++i)
+        //    {
+        //        for (int j = 0; j < newTexture.width; ++j)
+        //        {
+        //            newTexture.SetPixel(j, i, source.GetPixelBilinear(incX * ((float)j), incY * ((float)i)));
+        //        }
+        //    }
+        //    newTexture.Apply();
+
+        //    Debug.Log("After Wdith: " + newTexture.width);
+        //    Debug.Log("After Height: " + newTexture.height);
+
+        //    Imagedebug.GetComponent<Renderer>().material.mainTexture = newTexture;
+
+        //    return newTexture;
+        //}
     }
-    
 }

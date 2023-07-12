@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.1802834, g: 0.22571361, b: 0.30692232, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -214,7 +214,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 231881443}
   m_LocalRotation: {x: -0, y: -0.16996086, z: -0, w: 0.98545086}
-  m_LocalPosition: {x: -0.774, y: 0.304, z: 1.713}
+  m_LocalPosition: {x: -0.7, y: 0.304, z: 1.713}
   m_LocalScale: {x: 1.4400002, y: 0.936, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -610,7 +610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427166751}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.573, y: -0.002, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 0.010117314, y: 0.2023463, z: 0.0050586564}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -959,7 +959,7 @@ MonoBehaviour:
   CaptionController: {fileID: 1685297143}
   DebugText: {fileID: 1433054108}
   DebugQuad: {fileID: 231881443}
-  modelAsset: {fileID: 5022602860645237092, guid: 2d7a26c4206be2341918c3daaa5fd0bf, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 6ab7f6605a425d44b9c5b9d3cde9d729, type: 3}
 --- !u!4 &1685297145
 Transform:
   m_ObjectHideFlags: 0
