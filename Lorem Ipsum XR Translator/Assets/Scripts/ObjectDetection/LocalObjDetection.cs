@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Barracuda;
+using UnityEngine;
 
 
 namespace ObjectDetection
@@ -10,7 +11,7 @@ namespace ObjectDetection
     {
         private Dictionary<string, int> models = new Dictionary<string, int>()
         {
-            "mobilenetv2-10": 224
+            {  "mobilenetv2-10", 224 }
         };
         private string modelName;
         private IWorker _worker;
@@ -34,61 +35,57 @@ namespace ObjectDetection
         // TODO: Use something else instead of DetectedObject because it's Azure service specific
         public IEnumerator DetectObjects(string modelPath, Texture2D image, Action<List<DetectedObject>> callback)
         {
-            Texture2D resized = LocalObjDetection.ScaleTexture(image, this.models.Get(this.modelName), this.models.Get(this.modelName));
-            using (var tensor = new Tensor(resized, 3))
+            if (this.models.TryGetValue(this.modelName, out int targetSize))
             {
-                yield return null;
+                Texture2D resized = LocalObjDetection.ResizeTexture(image, targetSize, targetSize);
+                using (var tensor = new Tensor(resized, 3))
+                {
+                    yield return null;
 
-                // Execute the model with the input tensor
-                this._worker.Execute(tensor);
+                    // Execute the model with the input tensor
+                    this._worker.Execute(tensor);
 
-                var output = this._worker.PeekOutput();
+                    var output = this._worker.PeekOutput();
 
-                // TODO: Process the output and prep a list of DetectedObjects to pass to callback()
-                Debug.Log(output);
-                List<DetectedObject> detectedObjects = new List<DetectedObject>();
+                    // TODO: Process the output and prep a list of DetectedObjects to pass to callback()
+                    Debug.Log(output);
+                    List<DetectedObject> detectedObjects = new List<DetectedObject>();
 
-                callback(detectedObjects);
+                    callback(detectedObjects);
 
-                output.Dispose();
+                    output.Dispose();
+                }
+            }
+            else
+            {
+                Debug.Log("Image detection failed");
             }
         }
 
 
-        public static Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
+        public static Texture2D ResizeTexture(Texture2D sourceTexture, int targetWidth, int targetHeight)
         {
-            float sourceAspect = (float)source.width / source.height;
-            float targetAspect = (float)targetWidth / targetHeight;
-            int width = source.width;
-            int height = source.height;
-            if (sourceAspect < targetAspect)
-            {
-                // If source aspect is less than target aspect, scale width
-                width = (int) (height * targetAspect);
-            }
-            else
-            {
-                // If source aspect is greater than target aspect, scale height
-                height = (int) (width / targetAspect);
-            }
+            // Create a new RenderTexture with the target dimensions
+            RenderTexture rt = new RenderTexture(targetWidth, targetHeight, 0);
+            rt.antiAliasing = 8; // Adjust the anti-aliasing level as needed
 
-            // Scale the original texture to the new dimensions
-            TextureScale.Bilinear(source, width, height);
+            // Create a temporary camera to render the texture
+            Camera tempCamera = new Camera();
+            tempCamera.targetTexture = rt;
+            tempCamera.Render();
 
-            // Create a new Texture2D of the target size and center the scaled image on it
-            Texture2D result = new Texture2D(targetWidth, targetHeight);
-            for (int y = 0; y < targetHeight; y++)
-            {
-                for (int x = 0; x < targetWidth; x++)
-                {
-                    // The color at each pixel will be that of the original texture if it falls within the scaled image region, or black otherwise
-                    int sourceX = x - (width - targetWidth) / 2;
-                    int sourceY = y - (height - targetHeight) / 2;
-                    result.SetPixel(x, y, (sourceX >= 0 && sourceY >= 0 && sourceX < width && sourceY < height) ? source.GetPixel(sourceX, sourceY) : Color.black);
-                }
-            }
-            result.Apply();
-            return result;
+            // Set the target texture as the active RenderTexture
+            RenderTexture.active = rt;
+
+            // Create a new Texture2D and read pixels from the active RenderTexture
+            Texture2D resizedTexture = new Texture2D(targetWidth, targetHeight);
+            resizedTexture.ReadPixels(new Rect(0, 0, targetWidth, targetHeight), 0, 0);
+            resizedTexture.Apply();
+
+            // Clean up temporary objects
+            RenderTexture.active = null;
+
+            return resizedTexture;
         }
     }
 }
