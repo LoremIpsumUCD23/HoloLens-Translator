@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Windows.WebCam;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEditor.Experimental.GraphView;
 
 public class SceneAnalyzer : MonoBehaviour
 {
@@ -22,6 +23,13 @@ public class SceneAnalyzer : MonoBehaviour
     private Matrix4x4 worldMatrix;
     private Matrix4x4 projectionMatrix;
     private Vector3 cameraPosition;
+    float textureWidth;
+    float textureHeight;
+
+    // RAYCAST DEBUG
+    public GameObject DebugRaycast;
+    public GameObject DebugSphere;
+    bool RAYCAST_DEBUG = true;
 
     // Start is called before the first frame update
     void Start()
@@ -100,8 +108,14 @@ public class SceneAnalyzer : MonoBehaviour
 
             // Grab location, projection, and world information from camera at the time of capture
             Camera camera = CameraCache.Main;
-            this.worldMatrix = camera.cameraToWorldMatrix;
-            this.projectionMatrix = camera.projectionMatrix;
+            if (!photoCaptureFrame.TryGetCameraToWorldMatrix(out worldMatrix))
+            {
+                worldMatrix = camera.cameraToWorldMatrix;
+            }
+            if (!photoCaptureFrame.TryGetProjectionMatrix(out projectionMatrix))
+            {
+                projectionMatrix = camera.projectionMatrix;
+            }
             this.cameraPosition = camera.transform.position;
 
             StartCoroutine(AnalyzeImage());
@@ -130,6 +144,8 @@ public class SceneAnalyzer : MonoBehaviour
     /// <returns>IEnumerator waits on image processing result from Azure</returns>
     public IEnumerator AnalyzeImage()
     {
+        textureWidth = image.width;
+        textureHeight = image.height; 
         DebugText.text = "Analyzing Image";
         // Record view to image
         yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
@@ -145,6 +161,23 @@ public class SceneAnalyzer : MonoBehaviour
         DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
+
+        if (RAYCAST_DEBUG)
+        {
+            Vector2[] targets = new Vector2[4];
+            targets[0] = new Vector2(0, 0);
+            targets[1] = new Vector2(0, Screen.height);
+            targets[2] = new Vector2(Screen.width, 0);
+            targets[3] = new Vector2(Screen.width, Screen.height);
+            // Get Frustum:
+            for (int i = 0; i < 4; i++)
+            {
+                DrawDebugRay(targets[i]);
+                DrawDebugSphere(targets[i]);
+            }
+
+        }
+
         foreach (DetectedObject detectedObject in detectedObjects)
         {
 
@@ -158,6 +191,12 @@ public class SceneAnalyzer : MonoBehaviour
             Debug.DrawRay(ray.origin, ray.direction, Color.red, 60f);
             Physics.Raycast(ray, out hit);
 
+            if (RAYCAST_DEBUG)
+            {
+                DrawDebugRay(averagePos);
+                DrawDebugSphere(averagePos);
+            }
+
             Vector3 targetLocation = ray.origin + ray.direction;
             if (hit.transform && hit.transform.tag != "caption")
             {
@@ -167,6 +206,28 @@ public class SceneAnalyzer : MonoBehaviour
             // Create caption at that location
             CaptionController.CreateCaption(detectedObject.objectName + ": " + detectedObject.confidence, targetLocation);
         }
+    }
+
+    void DrawDebugRay(Vector2 screenPos)
+    {
+        GameObject line = Instantiate(DebugRaycast, cameraPosition, Quaternion.identity);
+        line.GetComponent<Renderer>().material.color = Color.red;
+        LineRenderer lr = line.GetComponent<LineRenderer>();
+
+        Ray ray = ScreenToWorldRay(screenPos, worldMatrix, projectionMatrix.inverse, cameraPosition);
+
+        Vector3 target = ray.origin + ray.direction * 3;
+
+        lr.SetPosition(1, target);
+    }
+
+    void DrawDebugSphere(Vector2 screenPos)
+    {
+        GameObject sphere = Instantiate(DebugSphere, Vector3.zero, Quaternion.identity, DebugQuad.transform);
+        //Debug.Log("posX: " + screenPos.x + " posY: " + screenPos.y + " | screenX: " + Screen.width + " screenY: " + Screen.height);
+        Vector3 target = new Vector3(screenPos.x / textureWidth - 0.5f, screenPos.y / textureHeight - 0.5f, 0);
+        Debug.Log(target);
+        sphere.transform.localPosition = Vector3.zero + target;
     }
 
     /// <summary>
@@ -182,7 +243,7 @@ public class SceneAnalyzer : MonoBehaviour
     {
         float screenWidth = Screen.width;
         float screenHeight = Screen.height;
-        screenPosition = new Vector2(screenPosition.x, screenHeight - screenPosition.y);
+        screenPosition = new Vector2((screenPosition.x / textureWidth) * screenWidth, screenHeight - (screenPosition.y / textureHeight) * screenHeight);
 
         Vector4 clipSpace = new Vector4(((screenPosition.x * 2.0f) / screenWidth) - 1.0f, (1.0f - (2.0f * screenPosition.y) / screenHeight), 0.0f, 1.0f);
 
