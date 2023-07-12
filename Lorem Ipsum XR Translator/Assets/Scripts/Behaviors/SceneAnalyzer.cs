@@ -27,6 +27,7 @@ public class SceneAnalyzer : MonoBehaviour
     void Start()
     {
         CaptionController = GetComponent<CaptionController>();
+        _objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey());
     }
 
     /// <summary>
@@ -131,7 +132,6 @@ public class SceneAnalyzer : MonoBehaviour
     {
         DebugText.text = "Analyzing Image";
         // Record view to image
-        this._objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey());
         yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
             image, this.ProcessAnalysis);
     }
