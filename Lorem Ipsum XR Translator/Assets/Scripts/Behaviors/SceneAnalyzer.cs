@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.Windows.WebCam;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
+using Unity.Barracuda;
+
 public class SceneAnalyzer : MonoBehaviour
 {
     public CaptionController CaptionController;
@@ -23,11 +25,13 @@ public class SceneAnalyzer : MonoBehaviour
     private Matrix4x4 projectionMatrix;
     private Vector3 cameraPosition;
 
+    public NNModel modelAsset;
+
     // Start is called before the first frame update
     void Start()
     {
         //this._objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey(), "https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest");
-        this._objectDetectorClient = new LocalObjDetection("mobilenetv2-10");
+        this._objectDetectorClient = new LocalObjDetection(modelAsset, 1200, 1200);
         CaptionController = GetComponent<CaptionController>();
     }
 
@@ -144,6 +148,7 @@ public class SceneAnalyzer : MonoBehaviour
         DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
+        LocalObjDetection.ResizeTexture(image,216,216, DebugQuad);
         foreach (DetectedObject detectedObject in detectedObjects)
         {
 

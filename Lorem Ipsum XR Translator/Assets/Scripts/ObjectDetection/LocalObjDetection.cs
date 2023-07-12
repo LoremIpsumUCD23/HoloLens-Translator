@@ -9,22 +9,19 @@ namespace ObjectDetection
 {
     public class LocalObjDetection : IObjectDetectorClient
     {
-        private Dictionary<string, int> models = new Dictionary<string, int>()
-        {
-            {  "mobilenetv2-10", 224 }
-        };
-        private string modelName;
         private IWorker _worker;
 
-        public LocalObjDetection(string modelName)
+        private int _inputWidth;
+
+        private int _inputHeight;
+
+
+        public LocalObjDetection(NNModel modelAsset, int inputWidth, int inputHeight)
         {
-            if (!models.ContainsKey(modelName)) throw new ArgumentException("Model \"" + modelName + "\" is not supported.");
-            this.modelName = modelName;
-
-            var runtimeModel = ModelLoader.Load("Assets/Scripts/ObjectDetection/Models/" + modelName + ".onnx");
+            var runtimeModel = ModelLoader.Load(modelAsset);
             this._worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, runtimeModel);
-
-            Debug.Log("Model \"" + modelName + "\" is initialized!!");
+            this._inputWidth = inputWidth;
+            this._inputHeight = inputHeight;   
         }
 
 
@@ -33,60 +30,97 @@ namespace ObjectDetection
             yield break;
         }
 
+
         public IEnumerator DetectObjects(Texture2D image, Action<List<DetectedObject>> callback)
         {
-            if (this.models.TryGetValue(this.modelName, out int targetSize))
+            Texture2D resized = LocalObjDetection.ResizeTexture(image, this._inputWidth, this._inputHeight);
+            using (var tensor = new Tensor(resized, 3))
             {
-                Texture2D resized = LocalObjDetection.ResizeTexture(image, targetSize, targetSize);
-                using (var tensor = new Tensor(resized, 3))
-                {
-                    yield return null;
+                // Execute the model with the input tensor
+                var output = this._worker.Execute(tensor).PeekOutput();
+                yield return new WaitForCompletion(output);
 
-                    // Execute the model with the input tensor
-                    this._worker.Execute(tensor);
+                // TODO: Process the output and prep a list of DetectedObjects to pass to callback()
+                List<DetectedObject> detectedObjects = new List<DetectedObject>();
+                Debug.Log(output.shape);
+                Debug.Log(output);
+                // float threshold = 0.5f;
+                // for (int i = 0; i < output.shape[2]; i++)
+                // {
+                //     float confidence = output[0, 0, i, 3];
+                //     if (confidence > threshold)
+                //     {
+                //         int classLabel = (int)output[0, 0, i, 2];
 
-                    var output = this._worker.PeekOutput();
+                //         float xmin = output[0, 0, i, 4];
+                //         float ymin = output[0, 0, i, 5];
+                //         float xmax = output[0, 0, i, 6];
+                //         float ymax = output[0, 0, i, 7];
 
-                    // TODO: Process the output and prep a list of DetectedObjects to pass to callback()
-                    Debug.Log(output);
-                    List<DetectedObject> detectedObjects = new List<DetectedObject>();
+                //         // The coordinates are normalized to [0, 1], you may need to scale them back to pixel space.
+                //         // Let's assume the original image size is (imageWidth, imageHeight)
+                //         Rectangle rect = new Rectangle(
+                //             (int)(xmin * this._inputWidth),
+                //             (int)(ymin * this._inputHeight),
+                //             (int)((xmax - xmin) * this._inputWidth), 
+                //             (int)((ymax - ymin) * this._inputHeight));
 
-                    callback(detectedObjects);
+                //         string className = classLabel.ToString(); // Replace with actual class name if you have a dictionary mapping class labels to names.
 
-                    output.Dispose();
-                }
-                Debug.Log("Detection done");
-            }
-            else
-            {
-                Debug.Log("Image detection failed");
+                //         detectedObjects.Add(new DetectedObject(rect, className, confidence));
+                //     }
+                // }
+
+                callback(detectedObjects);
+                
+                output.Dispose();
             }
         }
 
+
+        // TODO: Fix resizing 
+        public static Texture2D ResizeTexture(Texture2D sourceTexture, int targetWidth, int targetHeight, GameObject Imagedebug)
+        {
+            // Error handling: Check if source texture is null
+            if (sourceTexture == null)
+            {
+                Debug.LogError("Source texture is null");
+                return null;
+            }
+            
+            // Create a copy of the source texture
+            Texture2D copiedTexture = sourceTexture;
+            Debug.Log(sourceTexture.Reinitialize ( targetWidth, targetHeight));
+            sourceTexture.Apply();
+            Imagedebug.GetComponent<Renderer>().material.mainTexture = sourceTexture;
+        
+            // Resize the copied texture
+            // copiedTexture.Reinitialize(targetWidth, targetHeight);
+            
+        
+            return sourceTexture;
+        }
 
         public static Texture2D ResizeTexture(Texture2D sourceTexture, int targetWidth, int targetHeight)
         {
-            // Create a new RenderTexture with the target dimensions
-            RenderTexture rt = new RenderTexture(targetWidth, targetHeight, 0);
-            rt.antiAliasing = 8; // Adjust the anti-aliasing level as needed
-
-            // Create a temporary camera to render the texture
-            Camera tempCamera = new Camera();
-            tempCamera.targetTexture = rt;
-            tempCamera.Render();
-
-            // Set the target texture as the active RenderTexture
-            RenderTexture.active = rt;
-
-            // Create a new Texture2D and read pixels from the active RenderTexture
-            Texture2D resizedTexture = new Texture2D(targetWidth, targetHeight);
-            resizedTexture.ReadPixels(new Rect(0, 0, targetWidth, targetHeight), 0, 0);
-            resizedTexture.Apply();
-
-            // Clean up temporary objects
-            RenderTexture.active = null;
-
-            return resizedTexture;
+            // Error handling: Check if source texture is null
+            if (sourceTexture == null)
+            {
+                Debug.LogError("Source texture is null");
+                return null;
+            }
+            
+            // Create a copy of the source texture
+            Texture2D copiedTexture = UnityEngine.Object.Instantiate(sourceTexture) as Texture2D;
+            copiedTexture.Reinitialize ( targetWidth, targetHeight);
+           
+        
+            // Resize the copied texture
+            // copiedTexture.Reinitialize(targetWidth, targetHeight);
+            // copiedTexture.Apply();
+        
+            return copiedTexture;
         }
     }
+    
 }
