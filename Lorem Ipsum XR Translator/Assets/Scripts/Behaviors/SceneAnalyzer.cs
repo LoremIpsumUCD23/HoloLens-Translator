@@ -31,7 +31,7 @@ public class SceneAnalyzer : MonoBehaviour
     void Start()
     {
         //this._objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey(), "https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest");
-        this._objectDetectorClient = new LocalObjDetection(modelAsset, 416, 416);
+        this._objectDetectorClient = new LocalObjDetection(modelAsset, 1200, 1200);
         CaptionController = GetComponent<CaptionController>();
     }
 

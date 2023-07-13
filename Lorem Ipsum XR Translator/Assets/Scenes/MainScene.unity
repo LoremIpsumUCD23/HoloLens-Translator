@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1802834, g: 0.22571361, b: 0.30692232, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -959,7 +959,7 @@ MonoBehaviour:
   CaptionController: {fileID: 1685297143}
   DebugText: {fileID: 1433054108}
   DebugQuad: {fileID: 231881443}
-  modelAsset: {fileID: 5022602860645237092, guid: 6ab7f6605a425d44b9c5b9d3cde9d729, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 46a2b5eaccf68ac478e9101e5189e4cf, type: 3}
 --- !u!4 &1685297145
 Transform:
   m_ObjectHideFlags: 0
