@@ -22,6 +22,9 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     private IDescriptionClient _dictionaryClient;
 
 
+    private ICache<string, string>_cache;
+
+
     // for testing.
     private string[] objects = { "cup", "dog", "human", "rocket", "tree" };
 
