@@ -1,18 +1,22 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(CaptionLibrary))]
 public class CaptionController : MonoBehaviour
 {
     public GameObject CaptionPrefab;
 
+    public GameObject DescriptionPanel;
+
+    CaptionLibrary CaptionLib;
     List<GameObject> CaptionList;
 
     // Start is called before the first frame update
     void Start()
     {
-        CaptionList = new List<GameObject>();    
+        CaptionLib = GetComponent<CaptionLibrary>();
+        CaptionList = new List<GameObject>();
     }
 
     /// <summary>
@@ -35,10 +39,13 @@ public class CaptionController : MonoBehaviour
     /// <param name="captionLocation">The Vector location of where the caption should be placed</param>
     public void CreateCaption(string captionName, Vector3 captionLocation)
     {
-        GameObject caption = Instantiate(CaptionPrefab, captionLocation, 
+        GameObject captionGO = Instantiate(CaptionPrefab, captionLocation, 
             Quaternion.LookRotation(captionLocation - CameraCache.Main.transform.position));
-        caption.transform.Find("CaptionText").GetComponent<TextMeshPro>().text = captionName;
+        Caption cap = captionGO.GetComponent<Caption>();
+        // Setting primary title will initialize the caption object.
+        // It will autonomously attempt to fill in its description and translation.
+        cap.InitializeCaption(captionName.Split(":")[0], CaptionLib, this);
 
-        CaptionList.Add(caption);
+        CaptionList.Add(cap.gameObject);
     }
 }
