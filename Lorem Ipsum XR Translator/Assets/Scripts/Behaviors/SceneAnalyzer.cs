@@ -13,6 +13,7 @@ public class SceneAnalyzer : MonoBehaviour
     public CaptionController CaptionController;
     public TextMeshPro DebugText;
     public GameObject DebugQuad;
+    public TextMesh ToggleText;
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
@@ -28,7 +29,9 @@ public class SceneAnalyzer : MonoBehaviour
     // RAYCAST DEBUG
     public GameObject DebugRaycast;
     public GameObject DebugSphere;
+    public List<GameObject> DebugObjects;
     bool RAYCAST_DEBUG = true;
+    bool USE_PHOTO_LOC_DATA = true;
 
     // Start is called before the first frame update
     void Start()
@@ -106,16 +109,19 @@ public class SceneAnalyzer : MonoBehaviour
             }
 
             // Grab location, projection, and world information from camera at the time of capture
-            Camera camera = CameraCache.Main;
-            if (!photoCaptureFrame.TryGetCameraToWorldMatrix(out worldMatrix))
+            if (photoCaptureFrame.hasLocationData && USE_PHOTO_LOC_DATA)
             {
+                photoCaptureFrame.TryGetProjectionMatrix(out worldMatrix);
+                photoCaptureFrame.TryGetProjectionMatrix(out projectionMatrix);
+                cameraPosition = worldMatrix.GetColumn(3);
+            }
+            else
+            {
+                Camera camera = CameraCache.Main;
                 worldMatrix = camera.cameraToWorldMatrix;
-            }
-            if (!photoCaptureFrame.TryGetProjectionMatrix(out projectionMatrix))
-            {
                 projectionMatrix = camera.projectionMatrix;
+                cameraPosition = camera.transform.position;
             }
-            this.cameraPosition = camera.transform.position;
 
             StartCoroutine(AnalyzeImage());
         }
@@ -163,11 +169,12 @@ public class SceneAnalyzer : MonoBehaviour
 
         if (RAYCAST_DEBUG)
         {
+            ClearDebugObjects();
             Vector2[] targets = new Vector2[4];
             targets[0] = new Vector2(0, 0);
-            targets[1] = new Vector2(0, Screen.height);
-            targets[2] = new Vector2(Screen.width, 0);
-            targets[3] = new Vector2(Screen.width, Screen.height);
+            targets[1] = new Vector2(0, textureHeight);
+            targets[2] = new Vector2(textureWidth, 0);
+            targets[3] = new Vector2(textureWidth, textureHeight);
             // Get Frustum:
             for (int i = 0; i < 4; i++)
             {
@@ -182,13 +189,16 @@ public class SceneAnalyzer : MonoBehaviour
 
             // Get average position of object's bounding rectangle
             Vector2 averagePos = new Vector2(detectedObject.rectangle.x + detectedObject.rectangle.w / 2,
-                Screen.height - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
+                textureHeight - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
 
             // Cast to find location of object in 3D space
             RaycastHit hit;
             Ray ray = ScreenToWorldRay(averagePos, worldMatrix, projectionMatrix.inverse, cameraPosition);
             Debug.DrawRay(ray.origin, ray.direction, Color.red, 60f);
-            Physics.Raycast(ray, out hit);
+            
+            // Do not collide with other captions
+            LayerMask captionMask = LayerMask.GetMask("Captions");
+            Physics.Raycast(ray, out hit, 5f, ~captionMask);
 
             if (RAYCAST_DEBUG)
             {
@@ -209,7 +219,8 @@ public class SceneAnalyzer : MonoBehaviour
 
     void DrawDebugRay(Vector2 screenPos)
     {
-        GameObject line = Instantiate(DebugRaycast, cameraPosition, Quaternion.identity);
+        GameObject line = Instantiate(DebugRaycast, Vector3.zero, Quaternion.identity);
+        DebugObjects.Add(line);
         line.GetComponent<Renderer>().material.color = Color.red;
         LineRenderer lr = line.GetComponent<LineRenderer>();
 
@@ -217,16 +228,47 @@ public class SceneAnalyzer : MonoBehaviour
 
         Vector3 target = ray.origin + ray.direction * 3;
 
+        lr.SetPosition(0, ray.origin);
         lr.SetPosition(1, target);
     }
 
-    void DrawDebugSphere(Vector2 screenPos)
+    void ClearDebugObjects()
+    {
+        foreach(GameObject obj in DebugObjects)
+        {
+            Destroy(obj);
+        }
+        DebugObjects.Clear();
+    }
+
+    void DrawDebugSphere(Vector2 imagePos)
     {
         GameObject sphere = Instantiate(DebugSphere, Vector3.zero, Quaternion.identity, DebugQuad.transform);
+        DebugObjects.Add(sphere);
         //Debug.Log("posX: " + screenPos.x + " posY: " + screenPos.y + " | screenX: " + Screen.width + " screenY: " + Screen.height);
-        Vector3 target = new Vector3(screenPos.x / textureWidth - 0.5f, screenPos.y / textureHeight - 0.5f, 0);
+        Vector3 target = new Vector3(imagePos.x / textureWidth - 0.5f, imagePos.y / textureHeight - 0.5f, 0);
         //Debug.Log(target);
         sphere.transform.localPosition = Vector3.zero + target;
+    }
+
+    public void ToggleCameraMode()
+    {
+        if (USE_PHOTO_LOC_DATA)
+        {
+            USE_PHOTO_LOC_DATA = false;
+            if (ToggleText)
+            {
+                ToggleText.text = "Camera Mode: Virtual";
+            }
+        }
+        else
+        {
+            USE_PHOTO_LOC_DATA = true;
+            if (ToggleText)
+            {
+                ToggleText.text = "Camera Mode: HW";
+            }
+        }
     }
 
     /// <summary>
@@ -240,11 +282,9 @@ public class SceneAnalyzer : MonoBehaviour
     /// <source>https://forum.unity.com/threads/help-reproducing-screen-to-world-conversion.661558/</source>
     public Ray ScreenToWorldRay(Vector2 screenPosition, Matrix4x4 cameraWorld, Matrix4x4 cameraProjectionInverse, Vector3 cameraOrigin)
     {
-        float screenWidth = Screen.width;
-        float screenHeight = Screen.height;
-        screenPosition = new Vector2((screenPosition.x / textureWidth) * screenWidth, screenHeight - (screenPosition.y / textureHeight) * screenHeight);
+        screenPosition = new Vector2((screenPosition.x / textureWidth) * textureWidth, textureHeight - (screenPosition.y / textureHeight) * textureHeight);
 
-        Vector4 clipSpace = new Vector4(((screenPosition.x * 2.0f) / screenWidth) - 1.0f, (1.0f - (2.0f * screenPosition.y) / screenHeight), 0.0f, 1.0f);
+        Vector4 clipSpace = new Vector4(((screenPosition.x * 2.0f) / textureWidth) - 1.0f, (1.0f - (2.0f * screenPosition.y) / textureHeight), 0.0f, 1.0f);
 
         Vector4 viewSpace = cameraProjectionInverse * clipSpace;
         viewSpace /= viewSpace.w;
