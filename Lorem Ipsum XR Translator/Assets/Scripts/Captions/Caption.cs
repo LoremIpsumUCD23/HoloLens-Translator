@@ -110,9 +110,12 @@ public class Caption : MonoBehaviour
     /// </summary>
     public void Interact()
     {
-        DescriptionPanel descriptionPanel = CaptionCon.DescriptionPanel.GetComponent<DescriptionPanel>();
-        descriptionPanel.captionRef = this;
-        descriptionPanel.SetText();
-        CaptionCon.DescriptionPanel.SetActive(true);
+        if (CaptionCon.DescriptionPanel != null)
+        {
+            DescriptionPanel descriptionPanel = CaptionCon.DescriptionPanel.GetComponent<DescriptionPanel>();
+            descriptionPanel.captionRef = this;
+            descriptionPanel.SetText();
+            CaptionCon.DescriptionPanel.SetActive(true);
+        }
     }
 }

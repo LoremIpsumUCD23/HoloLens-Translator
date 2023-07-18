@@ -13,7 +13,6 @@ public class SceneAnalyzer : MonoBehaviour
     public CaptionController CaptionController;
     public TextMeshPro DebugText;
     public GameObject DebugQuad;
-    public TextMesh ToggleText;
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
@@ -25,13 +24,6 @@ public class SceneAnalyzer : MonoBehaviour
     private Vector3 cameraPosition;
     float textureWidth;
     float textureHeight;
-
-    // RAYCAST DEBUG
-    public GameObject DebugRaycast;
-    public GameObject DebugSphere;
-    public List<GameObject> DebugObjects;
-    bool RAYCAST_DEBUG = true;
-    bool USE_PHOTO_LOC_DATA = true;
 
     // Start is called before the first frame update
     void Start()
@@ -108,20 +100,11 @@ public class SceneAnalyzer : MonoBehaviour
                 DebugQuad.GetComponent<Renderer>().material.mainTexture = targetTexture;
             }
 
-            // Grab location, projection, and world information from camera at the time of capture
-            if (photoCaptureFrame.hasLocationData && USE_PHOTO_LOC_DATA)
-            {
-                photoCaptureFrame.TryGetProjectionMatrix(out worldMatrix);
-                photoCaptureFrame.TryGetProjectionMatrix(out projectionMatrix);
-                cameraPosition = worldMatrix.GetColumn(3);
-            }
-            else
-            {
-                Camera camera = CameraCache.Main;
-                worldMatrix = camera.cameraToWorldMatrix;
-                projectionMatrix = camera.projectionMatrix;
-                cameraPosition = camera.transform.position;
-            }
+            // Get virtual camera data
+            Camera camera = CameraCache.Main;
+            worldMatrix = camera.cameraToWorldMatrix;
+            projectionMatrix = camera.projectionMatrix;
+            cameraPosition = camera.transform.position;
 
             StartCoroutine(AnalyzeImage());
         }
@@ -167,23 +150,6 @@ public class SceneAnalyzer : MonoBehaviour
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
 
-        if (RAYCAST_DEBUG)
-        {
-            ClearDebugObjects();
-            Vector2[] targets = new Vector2[4];
-            targets[0] = new Vector2(0, 0);
-            targets[1] = new Vector2(0, textureHeight);
-            targets[2] = new Vector2(textureWidth, 0);
-            targets[3] = new Vector2(textureWidth, textureHeight);
-            // Get Frustum:
-            for (int i = 0; i < 4; i++)
-            {
-                DrawDebugRay(targets[i]);
-                DrawDebugSphere(targets[i]);
-            }
-
-        }
-
         foreach (DetectedObject detectedObject in detectedObjects)
         {
 
@@ -200,12 +166,6 @@ public class SceneAnalyzer : MonoBehaviour
             LayerMask captionMask = LayerMask.GetMask("Captions");
             Physics.Raycast(ray, out hit, 5f, ~captionMask);
 
-            if (RAYCAST_DEBUG)
-            {
-                DrawDebugRay(averagePos);
-                DrawDebugSphere(averagePos);
-            }
-
             Vector3 targetLocation = ray.origin + ray.direction;
             if (hit.transform && hit.transform.tag != "caption")
             {
@@ -214,60 +174,6 @@ public class SceneAnalyzer : MonoBehaviour
 
             // Create caption at that location
             CaptionController.CreateCaption(detectedObject.objectName + ": " + detectedObject.confidence, targetLocation);
-        }
-    }
-
-    void DrawDebugRay(Vector2 screenPos)
-    {
-        GameObject line = Instantiate(DebugRaycast, Vector3.zero, Quaternion.identity);
-        DebugObjects.Add(line);
-        line.GetComponent<Renderer>().material.color = Color.red;
-        LineRenderer lr = line.GetComponent<LineRenderer>();
-
-        Ray ray = ScreenToWorldRay(screenPos, worldMatrix, projectionMatrix.inverse, cameraPosition);
-
-        Vector3 target = ray.origin + ray.direction * 3;
-
-        lr.SetPosition(0, ray.origin);
-        lr.SetPosition(1, target);
-    }
-
-    void ClearDebugObjects()
-    {
-        foreach(GameObject obj in DebugObjects)
-        {
-            Destroy(obj);
-        }
-        DebugObjects.Clear();
-    }
-
-    void DrawDebugSphere(Vector2 imagePos)
-    {
-        GameObject sphere = Instantiate(DebugSphere, Vector3.zero, Quaternion.identity, DebugQuad.transform);
-        DebugObjects.Add(sphere);
-        //Debug.Log("posX: " + screenPos.x + " posY: " + screenPos.y + " | screenX: " + Screen.width + " screenY: " + Screen.height);
-        Vector3 target = new Vector3(imagePos.x / textureWidth - 0.5f, imagePos.y / textureHeight - 0.5f, 0);
-        //Debug.Log(target);
-        sphere.transform.localPosition = Vector3.zero + target;
-    }
-
-    public void ToggleCameraMode()
-    {
-        if (USE_PHOTO_LOC_DATA)
-        {
-            USE_PHOTO_LOC_DATA = false;
-            if (ToggleText)
-            {
-                ToggleText.text = "Camera Mode: Virtual";
-            }
-        }
-        else
-        {
-            USE_PHOTO_LOC_DATA = true;
-            if (ToggleText)
-            {
-                ToggleText.text = "Camera Mode: HW";
-            }
         }
     }
 

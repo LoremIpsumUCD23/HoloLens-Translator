@@ -399,11 +399,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!4 &394060266 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-  m_PrefabInstance: {fileID: 1155115964}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &703683708
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,156 +429,9 @@ Transform:
   m_Children:
   - {fileID: 305280573}
   - {fileID: 1524296915}
-  - {fileID: 394060266}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!102 &777164637 stripped
-TextMesh:
-  m_CorrespondingSourceObject: {fileID: 102859053046776500, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-  m_PrefabInstance: {fileID: 1155115964}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1155115964
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 703683709}
-    m_Modifications:
-    - target: {fileID: 1881066023246956, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_Name
-      value: ToggleCameraSettings
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.339
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.14
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4582855949261192, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 102859053046776500, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: m_Text
-      value: 'Camera Mode: HW'
-      objectReference: {fileID: 0}
-    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: Dimensions
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1685297144}
-    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleCameraMode
-      objectReference: {fileID: 0}
-    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SceneAnalyzer, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 114718788154663760, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1685297144}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 1685297144}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleCameraMode
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: ToggleCameraMode
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SceneAnalyzer, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: SceneAnalyzer, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6904248756841211994, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
 --- !u!1 &1309104753
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,10 +849,6 @@ MonoBehaviour:
   CaptionController: {fileID: 1685297143}
   DebugText: {fileID: 1433054108}
   DebugQuad: {fileID: 231881443}
-  ToggleText: {fileID: 777164637}
-  DebugRaycast: {fileID: 950895887924602757, guid: a753a749aeff9584e9cac3d7aa9e6687, type: 3}
-  DebugSphere: {fileID: 9195870273370423433, guid: 9db4b6445af748b4b886f8299e645f82, type: 3}
-  DebugObjects: []
 --- !u!4 &1685297145
 Transform:
   m_ObjectHideFlags: 0
