@@ -8,6 +8,7 @@ public class DescriptionPanel : MonoBehaviour
 
     public TextMeshPro titleText;
     public TextMeshPro descriptionText;
+    public GameObject switchButtonObject;
 
     public Caption captionRef;
 
@@ -19,8 +20,11 @@ public class DescriptionPanel : MonoBehaviour
         descriptionText.text = translateDescription ? captionRef.GetTranslatedDescription() : captionRef.GetPrimaryDescription();
     }
 
-    public void ToggleDescription()
+    public void ToggleDescription(bool flagCheck)
     {
+        TextMeshPro buttonText = switchButtonObject.GetComponentInChildren<TextMeshPro>();
+        buttonText.text = translateDescription ? "Switch to Translation" : "Switch to Primary";
+        Debug.Log(translateDescription);
         translateDescription = !translateDescription;
         SetText();
     }

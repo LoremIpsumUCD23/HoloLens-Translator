@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 1900287401}
   - component: {fileID: 1581199782746743406}
   - component: {fileID: 1218288086}
+  - component: {fileID: -6286795877900431937}
   m_Layer: 6
   m_Name: Caption
   m_TagString: Untagged
@@ -320,7 +321,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Interact
           m_BoolArgument: 0
         m_CallState: 2
   onManipulationEnded:
@@ -358,10 +359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9fa567196be5384d97d59b68a43fd26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primaryTitle: 
-  translatedTitle: 
-  primaryDescription: 
-  translatedDescription: 
   textObject: {fileID: 0}
   CaptionLib: {fileID: 0}
   CaptionCon: {fileID: 0}
@@ -378,3 +375,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6286795877900431937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9186442241261801571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+  IsBoundsHandles: 0
