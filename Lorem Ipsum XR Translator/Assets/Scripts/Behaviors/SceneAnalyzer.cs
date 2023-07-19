@@ -22,6 +22,8 @@ public class SceneAnalyzer : MonoBehaviour
     private Matrix4x4 worldMatrix;
     private Matrix4x4 projectionMatrix;
     private Vector3 cameraPosition;
+    float textureWidth;
+    float textureHeight;
 
     // Start is called before the first frame update
     void Start()
@@ -98,11 +100,11 @@ public class SceneAnalyzer : MonoBehaviour
                 DebugQuad.GetComponent<Renderer>().material.mainTexture = targetTexture;
             }
 
-            // Grab location, projection, and world information from camera at the time of capture
+            // Get virtual camera data
             Camera camera = CameraCache.Main;
-            this.worldMatrix = camera.cameraToWorldMatrix;
-            this.projectionMatrix = camera.projectionMatrix;
-            this.cameraPosition = camera.transform.position;
+            worldMatrix = camera.cameraToWorldMatrix;
+            projectionMatrix = camera.projectionMatrix;
+            cameraPosition = camera.transform.position;
 
             StartCoroutine(AnalyzeImage());
         }
@@ -130,6 +132,8 @@ public class SceneAnalyzer : MonoBehaviour
     /// <returns>IEnumerator waits on image processing result from Azure</returns>
     public IEnumerator AnalyzeImage()
     {
+        textureWidth = image.width;
+        textureHeight = image.height; 
         DebugText.text = "Analyzing Image";
         // Record view to image
         yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
@@ -145,18 +149,22 @@ public class SceneAnalyzer : MonoBehaviour
         DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
+
         foreach (DetectedObject detectedObject in detectedObjects)
         {
 
             // Get average position of object's bounding rectangle
             Vector2 averagePos = new Vector2(detectedObject.rectangle.x + detectedObject.rectangle.w / 2,
-                Screen.height - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
+                textureHeight - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
 
             // Cast to find location of object in 3D space
             RaycastHit hit;
             Ray ray = ScreenToWorldRay(averagePos, worldMatrix, projectionMatrix.inverse, cameraPosition);
             Debug.DrawRay(ray.origin, ray.direction, Color.red, 60f);
-            Physics.Raycast(ray, out hit);
+            
+            // Do not collide with other captions
+            LayerMask captionMask = LayerMask.GetMask("Captions");
+            Physics.Raycast(ray, out hit, 5f, ~captionMask);
 
             Vector3 targetLocation = ray.origin + ray.direction;
             if (hit.transform && hit.transform.tag != "caption")
@@ -180,11 +188,9 @@ public class SceneAnalyzer : MonoBehaviour
     /// <source>https://forum.unity.com/threads/help-reproducing-screen-to-world-conversion.661558/</source>
     public Ray ScreenToWorldRay(Vector2 screenPosition, Matrix4x4 cameraWorld, Matrix4x4 cameraProjectionInverse, Vector3 cameraOrigin)
     {
-        float screenWidth = Screen.width;
-        float screenHeight = Screen.height;
-        screenPosition = new Vector2(screenPosition.x, screenHeight - screenPosition.y);
+        screenPosition = new Vector2((screenPosition.x / textureWidth) * textureWidth, textureHeight - (screenPosition.y / textureHeight) * textureHeight);
 
-        Vector4 clipSpace = new Vector4(((screenPosition.x * 2.0f) / screenWidth) - 1.0f, (1.0f - (2.0f * screenPosition.y) / screenHeight), 0.0f, 1.0f);
+        Vector4 clipSpace = new Vector4(((screenPosition.x * 2.0f) / textureWidth) - 1.0f, (1.0f - (2.0f * screenPosition.y) / textureHeight), 0.0f, 1.0f);
 
         Vector4 viewSpace = cameraProjectionInverse * clipSpace;
         viewSpace /= viewSpace.w;
