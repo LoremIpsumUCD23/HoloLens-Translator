@@ -26,7 +26,21 @@ public static class LocalizationSystem
             localizedText.Add("greeting", "नमस्ते");
             // Add all the other translations
         }
-        // Fill for all other languages
+        else if (language == "Japanese")
+        {
+            localizedText.Add("greeting", "こんにちは");
+            // Add all the other translations
+        }
+        else if (language == "Malay")
+        {
+            localizedText.Add("greeting", "Halo");
+            // Add all the other translations
+        }
+        else if (language == "Bengali")
+        {
+            localizedText.Add("greeting", "হ্যালো");
+            // Add all the other translations
+        }
     }
 
     public static string GetCurrentLanguage()

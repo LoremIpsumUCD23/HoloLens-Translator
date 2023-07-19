@@ -25,6 +25,7 @@ namespace TTS
 
             SetConfigAndLanguage();
         }
+    
 
         void SetConfigAndLanguage()
         {
