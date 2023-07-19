@@ -83,15 +83,17 @@ public class Caption : MonoBehaviour
     {
         if (textObject == null)
         {
-            textObject = transform.Find("CaptionText").GetComponent<TextMeshPro>();
+            textObject = transform.GetComponentInChildren<TextMeshPro>();
         }
         if (!string.IsNullOrEmpty(translatedTitle))
         {
             textObject.text = translatedTitle;
+            Debug.Log(textObject.text);
         }
         else // Set our caption with the primary text while we await our translation.
         {
             textObject.text = primaryTitle;
+            Debug.Log(textObject.text);
         }
     }
 
