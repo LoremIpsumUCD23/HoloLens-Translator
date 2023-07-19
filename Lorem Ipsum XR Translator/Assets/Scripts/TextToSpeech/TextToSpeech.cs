@@ -25,7 +25,14 @@ namespace TTS
 
             SetConfigAndLanguage();
         }
-    
+
+        //method to set language accent based on the language in view
+        public void SetLocalAccent(bool translateDescription)
+        {
+            localAccent = translateDescription ? "en-GB" : "ja-JP";
+
+            config.SpeechSynthesisLanguage = localAccent;
+        }
 
         void SetConfigAndLanguage()
         {
