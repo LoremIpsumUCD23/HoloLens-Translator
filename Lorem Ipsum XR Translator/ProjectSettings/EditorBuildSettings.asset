@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: 41ce456baeb651f45879e3d40d0cf4f3
+    path: Assets/Scenes/SpeechToText.unity
+    guid: f697a5a6ce5df9b4bb5326ac00ce33fb
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 5ec0bd620e80d244392909c87623c389, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: b5c12b68757f7124581fa590b84da846, type: 2}

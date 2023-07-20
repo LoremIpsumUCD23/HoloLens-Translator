@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.CognitiveServices.Speech;
+using Microsoft.MixedReality.Toolkit.UI;
 using TMPro;
+using Config;
 
 public class AzureSpeechToTextButton : MonoBehaviour
 {
-    private string speechServiceAPIKey = "1272512de9d14e4ebcab8f56b9bfaeb1";
     private string serviceRegion = "northeurope";
 
-    public TextMeshProUGUI textDisplay;
+    public ToolTip toolTip;
 
     public async void OnButtonPressed()
     {
         Debug.Log("Button was pressed.");
 
-        SpeechConfig config = SpeechConfig.FromSubscription(speechServiceAPIKey, serviceRegion);
+        SpeechConfig config = SpeechConfig.FromSubscription(Secrets.GetSTTSpeechSDKKey(), serviceRegion);
         using (var recognizer = new SpeechRecognizer(config))
         {
             var result = await recognizer.RecognizeOnceAsync();
@@ -23,7 +22,8 @@ public class AzureSpeechToTextButton : MonoBehaviour
             if (result.Reason == ResultReason.RecognizedSpeech)
             {
                 Debug.Log($"We recognized: {result.Text}");
-                textDisplay.text = result.Text;
+                toolTip.ToolTipText = result.Text;
+                toolTip.gameObject.SetActive(true);
             }
             else if (result.Reason == ResultReason.NoMatch)
             {
