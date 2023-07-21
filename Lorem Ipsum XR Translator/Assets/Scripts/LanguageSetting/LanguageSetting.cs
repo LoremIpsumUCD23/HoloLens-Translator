@@ -1,7 +1,7 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Microsoft.MixedReality.Toolkit.UI;
 
 public class LanguageSetting : MonoBehaviour
@@ -14,7 +14,16 @@ public class LanguageSetting : MonoBehaviour
     public PressableButton japaneseButton;
     public PressableButton bengaliButton;
     
-    private string selectedLanguage = "";
+    private string selectedLanguage = ""; 
+
+    public string GetSelectedLanguage()
+    {
+        return selectedLanguage;
+    }
+
+    // You can then access the selected language from another script like below
+    // string language = gameObject.GetComponent<LanguageSetting>().GetSelectedLanguage();
+
 
     private void Start()
     {
@@ -41,7 +50,6 @@ public class LanguageSetting : MonoBehaviour
             return;
         }
 
-        LocalizationSystem.SetLanguage(selectedLanguage);
         Debug.Log("Language confirmed: " + selectedLanguage);
     }
 
