@@ -13,17 +13,19 @@ async def root():
 async def root():
     return {"Hello Human! This server is up and running."}
 
-@app.post("/gpt")
+@app.put("/gpt")
 async def root(word):
     return {"ChatGPT response"}
 
-@app.post("/dictionary")
+@app.put("/dictionary")
 async def root(word):
     return {"Dictionary response"}
 
-@app.post("/translation")
+@app.put("/translation")
 async def root(word):
     return {"Translator response"}
 
-
+@app.put("/imageAnalysis")
+async def root(image):
+    return {"Image Analysis response"}
 
