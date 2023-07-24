@@ -43,7 +43,7 @@ def detect():
     elif model not in detectors.keys():
         return generate_response({'message': f'Model {model} is not supported'}, 400)
 
-    # TODO: Object Detection
+    # TODO: Object Detection. You need to choose models that output bounding boxes
     ######################## Example ##########################
     img = request.files['image'].read()
     img = image.load_img(io.BytesIO(img), target_size=(224, 224))
