@@ -19,18 +19,18 @@ public class InitialLanguageTrigger : MonoBehaviour
     private Languages _language;
 
     // Initialise the language list
-    void Awake()
-    {
-        _languageList = new List<Languages>();
-        for (int i = 0; i < _languages.Length;  i++)
-        {
-            _language = new Languages();
-            _language.language = _languages[i];
-            _language.text = _text[i];
-            _languageList.Add(_language);
-            Debug.Log(_language.text);
-        }
-    }
+    //void Awake()
+    //{
+    //    _languageList = new List<Languages>();
+    //    for (int i = 0; i < _languages.Length;  i++)
+    //    {
+    //        _language = new Languages();
+    //        _language.language = _languages[i];
+    //        _language.text = _text[i];
+    //        _languageList.Add(_language);
+    //        Debug.Log(_language.text);
+    //    }
+    //}
 
     /// <summary>
     /// Method to send this class's information to the LanguageManager

@@ -7,7 +7,7 @@ using Translator;
 using UnityEngine;
 using Util;
 using Util.Cache;
-
+using Microsoft.MixedReality.Toolkit.UI;
 
 public class CaptionLibrary : MonoBehaviour
 {
@@ -29,8 +29,13 @@ public class CaptionLibrary : MonoBehaviour
     string separator = "<|>";
 
     // This should be moved to some other translation settings class later.
+    // References to the Language Settings
+    public GameObject SelectLanguagePanel;
+    public PressableButton ConfirmButton;
+    private LanguageSetting languageSetting;
+
     string originalLanguage = "en";
-    string[] targetLanguages = new string[] { "ja" };
+    string[] targetLanguages = new string[] { "en" };
 
     public string HoldString { get => holdString; set => holdString = value; }
 
@@ -49,6 +54,25 @@ public class CaptionLibrary : MonoBehaviour
 
         // Initialise description client
         this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
+
+        // Initialise listener for language selection
+        languageSetting = SelectLanguagePanel.GetComponent<LanguageSetting>();
+        ConfirmButton.ButtonPressed.AddListener(ConfirmLanguageSelection);
+    }
+
+    /// <summary>
+    /// Sets the selected language on this class when the confirm language button is pressed
+    /// </summary>
+    private void ConfirmLanguageSelection()
+    {
+        if (string.IsNullOrEmpty(languageSetting.GetSelectedLanguage()))
+        {
+            Debug.Log("CL: No language selected. Current target language code is: " + targetLanguages[0]);
+            return;
+        }
+
+        targetLanguages = new string[] { languageSetting.GetSelectedLanguageCode() };
+        Debug.Log("CL: Language code confirmed: " + targetLanguages[0]);
     }
 
     /// <summary>

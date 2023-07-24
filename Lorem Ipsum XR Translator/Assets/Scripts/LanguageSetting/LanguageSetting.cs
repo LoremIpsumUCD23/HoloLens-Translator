@@ -14,6 +14,9 @@ public class LanguageSetting : MonoBehaviour
     public PressableButton japaneseButton;
     public PressableButton bengaliButton;
     
+    // A dictionary is used to store languages as keys to the Azure language codes
+    private Dictionary<string, string> _languageCodeDictionary = new Dictionary<string, string>();
+
     private string selectedLanguage = ""; 
 
     public string GetSelectedLanguage()
@@ -24,6 +27,14 @@ public class LanguageSetting : MonoBehaviour
     // You can then access the selected language from another script like below
     // string language = gameObject.GetComponent<LanguageSetting>().GetSelectedLanguage();
 
+    /// <summary>
+    /// Returns the Azure language code for the selected language.
+    /// </summary>
+    /// <returns></returns>
+    public string GetSelectedLanguageCode()
+    {
+        return _languageCodeDictionary[GetSelectedLanguage()];
+    }
 
     private void Start()
     {
@@ -34,6 +45,14 @@ public class LanguageSetting : MonoBehaviour
         malayButton.ButtonPressed.AddListener(() => SetLanguage("Malay"));
         japaneseButton.ButtonPressed.AddListener(() => SetLanguage("Japanese"));
         bengaliButton.ButtonPressed.AddListener(() => SetLanguage("Bengali"));
+
+        // Add the languages we want to the dictionary on start
+        _languageCodeDictionary.Add("English", "en");
+        _languageCodeDictionary.Add("Hindi", "hi");
+        _languageCodeDictionary.Add("Malay", "ms");
+        _languageCodeDictionary.Add("Japanese", "ja");
+        _languageCodeDictionary.Add("Bengali", "bn");
+
     }
 
     private void SetLanguage(string language)
@@ -55,7 +74,6 @@ public class LanguageSetting : MonoBehaviour
 
     private void CancelLanguageSelection()
     {
-        selectedLanguage = "";
         Debug.Log("Language selection cancelled.");
     }
 }
