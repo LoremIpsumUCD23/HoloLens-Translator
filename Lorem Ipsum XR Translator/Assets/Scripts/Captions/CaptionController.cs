@@ -66,7 +66,6 @@ public class CaptionController : MonoBehaviour
         // Configure our newly created or collected caption
         captionGO.transform.position = captionLocation;
         captionGO.transform.rotation = Quaternion.LookRotation(captionLocation - CameraCache.Main.transform.position);
-        captionGO.SetActive(true);
         Caption cap = captionGO.GetComponent<Caption>();
 
         // Setting primary title will initialize the caption object.
