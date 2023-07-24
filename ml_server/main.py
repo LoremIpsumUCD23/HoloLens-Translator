@@ -46,7 +46,7 @@ def detect():
     # TODO: Object Detection. You need to choose models that output bounding boxes
     ######################## Example ##########################
     img = request.files['image'].read()
-    img = image.load_img(io.BytesIO(img), target_size=(224, 224))
+    img = image.load_img(io.BytesIO(img), target_size=(detectors[model]['size'], detectors[model]['size']))
     # Convert the image to a numpy array
     x = image.img_to_array(img)
     # Add a fourth dimension (since Keras expects a list of images)
