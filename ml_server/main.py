@@ -4,6 +4,7 @@ import io
 import numpy as np
 from keras.preprocessing import image
 from keras.applications.resnet50 import ResNet50, preprocess_input, decode_predictions
+from keras.models import load_model
 
 
 
@@ -72,6 +73,8 @@ translators = dict()
 def init_translation_model():
     # TODO: Initialize translation models
     # e.g. translators['s2s'] = { 'en-fr': load_model('s2s.h5') }
+    model = load_model('s2s.h5')
+    translators['s2s'] = { 'en-fr': model }
     pass
 
 @app.route('/translate', methods=['POST'])
@@ -85,6 +88,17 @@ def translate():
     target = request.args.get('to')
     if not target:
         return generate_response({'message': 'Target language has to be provided via parameter'}, 400)
+    
+    # if key in translators[model].keys():
+    #     # For the sake of this example, we'll just assume that the loaded model's predict
+    #     # function directly returns a translated string. In reality, you'd probably need to
+    #     # preprocess the text, run it through the model, then postprocess the result.
+    #     translation = translators[model][key].predict(text)
+    #     data = { 'translation': translation }
+    #     return generate_response(data, 200)
+    # else:
+    #     return generate_response({'message': f'{orig} to {target} translation is not supported'}, 400)
+
 
     # Check if a valid 'model' is given
     model = request.args.get('model')
@@ -92,6 +106,22 @@ def translate():
         return generate_response({'message': 'Pick a translation model'}, 400)
     elif model not in translators.keys():
         return generate_response({'message': f'Model {model} is not supported'}, 400)
+
+    key = orig + '-' + target
+    if key not in translators[model]:
+        return generate_response({'message': f'{orig} to {target} translation is not supported'}, 400)
+
+    # Assuming the text to be translated is sent in JSON format
+    text = request.json.get('text', '')
+
+    # For the sake of this example, we'll just assume that the loaded model's predict
+    # function directly returns a translated string. In reality, you'd probably need to
+    # preprocess the text, run it through the model, then postprocess the result.
+    translation = translators[model][key].predict(text)
+    data = { 'translation': translation }
+    
+    return generate_response(data, 200)  
+
 
     # Translate the text
     text = request.json['text']
