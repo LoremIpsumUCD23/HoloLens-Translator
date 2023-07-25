@@ -66,11 +66,12 @@ def detect():
     return generate_response(data, 200)
 
 
-# key: model name, value: {key: [from]-[to], value: model}
+# key: model name, value: {'lang': [from]-[to], 'model': model}
 translators = dict()
 # Initialize deep learming models for translation
 def init_translation_model():
     # TODO: Initialize translation models
+    # e.g. translators['s2s'] = { 'en-fr': load_model('s2s.h5') }
     pass
 
 @app.route('/translate', methods=['POST'])
@@ -96,8 +97,8 @@ def translate():
     text = request.json['text']
     key = orig + '-' + target
     if key in translators[model].keys():
-        # TODO: Translation
-
+        # TODO: Translation.
+        # e.g. translation = translators[model][key].predict()
         data = { 'translation': translation }
         return generate_response(data, 200)
     else:
