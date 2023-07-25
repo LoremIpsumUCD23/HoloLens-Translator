@@ -4,20 +4,22 @@ using Microsoft.MixedReality.Toolkit.UI;
 using TMPro;
 using Config;
 
-public class AzureSpeechToTextButton : MonoBehaviour
+namespace SST
+{
+public class AzureSpeechToText : MonoBehaviour
 {
     private string serviceRegion = "northeurope";
 
     public ToolTip toolTip;
 
-    public async void OnButtonPressed()
+    public async void SSTRequest()
     {
         Debug.Log("Button was pressed.");
 
         SpeechConfig config = SpeechConfig.FromSubscription(Secrets.GetSTTSpeechSDKKey(), serviceRegion);
-        using (var recognizer = new SpeechRecognizer(config))
+        using (SpeechRecognizer recognizer = new SpeechRecognizer(config))
         {
-            var result = await recognizer.RecognizeOnceAsync();
+            SpeechRecognitionResult result = await recognizer.RecognizeOnceAsync();
 
             if (result.Reason == ResultReason.RecognizedSpeech)
             {
@@ -31,7 +33,7 @@ public class AzureSpeechToTextButton : MonoBehaviour
             }
             else if (result.Reason == ResultReason.Canceled)
             {
-                var cancellation = CancellationDetails.FromResult(result);
+                CancellationDetails cancellation = CancellationDetails.FromResult(result);
                 Debug.Log($"CANCELED: Reason={cancellation.Reason}");
 
                 if (cancellation.Reason == CancellationReason.Error)
@@ -43,5 +45,6 @@ public class AzureSpeechToTextButton : MonoBehaviour
             }
         }
     }
+}
 }
 

@@ -229,11 +229,11 @@ PrefabInstance:
       objectReference: {fileID: 495762616}
     - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnButtonPressed
+      value: SSTRequest
       objectReference: {fileID: 0}
     - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: AzureSpeechToTextButton, Assembly-CSharp
+      value: SST.AzureSpeechToTextButton, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2204069621878992594, guid: 3f1f46cbecbe08e46a303ccfdb5b498a, type: 3}
