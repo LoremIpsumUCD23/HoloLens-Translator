@@ -62,6 +62,7 @@ def detect():
     for (imagenetID, label, prob) in results[0]:
         r = {'label': label, 'probability': float(prob)}
         data['predictions'].append(r)
+    # NOTE: Take into consideration that image is resized. Ask Mansi to work around that.
     ######################## Example ##########################
 
     return generate_response(data, 200)
