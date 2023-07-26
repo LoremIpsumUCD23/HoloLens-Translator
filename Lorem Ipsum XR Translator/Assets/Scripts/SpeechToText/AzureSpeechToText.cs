@@ -3,7 +3,7 @@ using Microsoft.CognitiveServices.Speech;
 using Config;
 using System.Threading.Tasks;
 
-namespace SST
+namespace STT
 {
     public class AzureSpeechToText : MonoBehaviour
     {

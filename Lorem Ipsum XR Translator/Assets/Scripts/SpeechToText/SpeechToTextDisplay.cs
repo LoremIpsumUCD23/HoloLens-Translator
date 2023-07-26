@@ -2,28 +2,30 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using Translator;
+using Config;  
 
-namespace SST
+namespace STT
 {
     public class SpeechToTextDisplay : MonoBehaviour
     {
         [SerializeField]
-        private AzureSpeechToText azureSpeechToText; // Reference to the AzureSpeechToText script
+        private AzureSpeechToText azureSpeechToText; 
 
         [SerializeField]
-        private ToolTip originalToolTip; // Reference to the ToolTip UI element for original text
+        private ToolTip originalToolTip; 
 
         [SerializeField]
-        private ToolTip translatedToolTip; // Reference to the ToolTip UI element for translated text
+        private ToolTip translatedToolTip; 
 
         // Azure Translator setup
         private AzureTranslator azureTranslator;
-        private const string apiKey = "5878a06b7c2c4a66beed0915fe52a400";
+        private string apiKey;  
         private const string location = "northeurope";
-        private const string targetLanguage = "es"; // Example: Spanish. Change to your desired language.
+        private const string targetLanguage = "es"; 
 
         private void Awake()
         {
+            apiKey = Secrets.GetAzureTranslatorKey();  
             azureTranslator = new AzureTranslator(apiKey, location);
         }
 
