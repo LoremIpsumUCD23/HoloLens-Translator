@@ -6263,6 +6263,40 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1053771644856459718, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -3925785931860867377, guid: e86f445e3a96e394797df7044b9a2666, type: 2}
+    - target: {fileID: 5104655863282250852, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_text
+      value: 'Description Text here
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104655863282250852, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e86f445e3a96e394797df7044b9a2666, type: 2}
+    - target: {fileID: 5104655863282250852, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3925785931860867377, guid: e86f445e3a96e394797df7044b9a2666, type: 2}
+    - target: {fileID: 5104655863282250852, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5319079813539573821, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e86f445e3a96e394797df7044b9a2666, type: 2}
+    - target: {fileID: 5319079813539573821, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3925785931860867377, guid: e86f445e3a96e394797df7044b9a2666, type: 2}
+    - target: {fileID: 5319079813539573821, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7048448162009890165, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -6311,6 +6345,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DescriptionPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 7048448162009890166, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7460962174575213357, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -3925785931860867377, guid: e86f445e3a96e394797df7044b9a2666, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
 --- !u!114 &2728814981454467049
