@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Windows.WebCam;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.UI;
 
 public class SceneAnalyzer : MonoBehaviour
 {
@@ -25,19 +26,31 @@ public class SceneAnalyzer : MonoBehaviour
     private Vector3 cameraPosition;
     float textureWidth;
     float textureHeight;
+    const float MAX_RAY_DIST = 5f;
 
     // RAYCAST DEBUG
     public GameObject DebugRaycast;
     public GameObject DebugSphere;
     public List<GameObject> DebugObjects;
+    public List<DetectedObject> previousDetectedObjects;
+    public Vector3 cameraOffset = Vector3.zero;
+    float offsetFactor = 0.001f;
+    public float warpFactor = 0f;
     bool RAYCAST_DEBUG = true;
     bool USE_PHOTO_LOC_DATA = true;
+    public ToolTip factorLabel;
+    public ToolTip verticalLabel;
+    public ToolTip forwardLabel;
+    public ToolTip sideLabel;
+    public ToolTip warpLabel;
 
     // Start is called before the first frame update
     void Start()
     {
         CaptionController = GetComponent<CaptionController>();
         _objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey());
+
+        SetOffsetLabelText();
     }
 
     /// <summary>
@@ -167,6 +180,8 @@ public class SceneAnalyzer : MonoBehaviour
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
 
+        previousDetectedObjects = detectedObjects;
+
         if (RAYCAST_DEBUG)
         {
             ClearDebugObjects();
@@ -190,12 +205,73 @@ public class SceneAnalyzer : MonoBehaviour
             // Get average position of object's bounding rectangle
             Vector2 averagePos = new Vector2(detectedObject.rectangle.x + detectedObject.rectangle.w / 2,
                 textureHeight - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
+            Vector2 imageCenter = new Vector2(textureWidth / 2, textureHeight / 2);
+            Vector2 centerOffset = averagePos - imageCenter;
+            Vector2 warpedPos = averagePos + (centerOffset * warpFactor);
 
             // Cast to find location of object in 3D space
             RaycastHit hit;
-            Ray ray = ScreenToWorldRay(averagePos, worldMatrix, projectionMatrix.inverse, cameraPosition);
+            Ray ray = ScreenToWorldRay(warpedPos, worldMatrix, projectionMatrix.inverse, cameraPosition);
             Debug.DrawRay(ray.origin, ray.direction, Color.red, 60f);
             
+            // Do not collide with other captions
+            LayerMask captionMask = LayerMask.GetMask("Captions");
+            Physics.Raycast(ray, out hit, 5f, ~captionMask);
+
+            if (RAYCAST_DEBUG)
+            {
+                DrawDebugRay(averagePos);
+                DrawDebugSphere(averagePos);
+            }
+
+            Vector3 targetLocation = ray.origin + ray.direction;
+            if (hit.transform && hit.transform.tag != "caption")
+            {
+                targetLocation = hit.point;
+            }
+
+            // Create caption at that location
+            CaptionController.CreateCaption(detectedObject.objectName + ": " + detectedObject.confidence, targetLocation);
+        }
+    }
+
+    public void RecastCaptions()
+    {
+        CaptionController.ClearCaptions();
+
+        if (RAYCAST_DEBUG)
+        {
+            ClearDebugObjects();
+            Vector2[] targets = new Vector2[4];
+            targets[0] = new Vector2(0, 0);
+            targets[1] = new Vector2(0, textureHeight);
+            targets[2] = new Vector2(textureWidth, 0);
+            targets[3] = new Vector2(textureWidth, textureHeight);
+            // Get Frustum:
+            for (int i = 0; i < 4; i++)
+            {
+                DrawDebugRay(targets[i]);
+                DrawDebugSphere(targets[i]);
+            }
+
+        }
+
+        foreach (DetectedObject detectedObject in previousDetectedObjects)
+        {
+
+            // Get average position of object's bounding rectangle
+            Vector2 averagePos = new Vector2(detectedObject.rectangle.x + detectedObject.rectangle.w / 2,
+                textureHeight - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
+
+            Vector2 imageCenter = new Vector2(textureWidth / 2, textureHeight / 2);
+            Vector2 centerOffset = averagePos - imageCenter;
+            Vector2 warpedPos = averagePos + (centerOffset * warpFactor);
+
+            // Cast to find location of object in 3D space
+            RaycastHit hit;
+            Ray ray = ScreenToWorldRay(warpedPos, worldMatrix, projectionMatrix.inverse, cameraPosition + cameraOffset);
+            Debug.DrawRay(ray.origin, ray.direction, Color.red, 60f);
+
             // Do not collide with other captions
             LayerMask captionMask = LayerMask.GetMask("Captions");
             Physics.Raycast(ray, out hit, 5f, ~captionMask);
@@ -224,9 +300,9 @@ public class SceneAnalyzer : MonoBehaviour
         line.GetComponent<Renderer>().material.color = Color.red;
         LineRenderer lr = line.GetComponent<LineRenderer>();
 
-        Ray ray = ScreenToWorldRay(screenPos, worldMatrix, projectionMatrix.inverse, cameraPosition);
+        Ray ray = ScreenToWorldRay(screenPos, worldMatrix, projectionMatrix.inverse, cameraPosition + cameraOffset);
 
-        Vector3 target = ray.origin + ray.direction * 3;
+        Vector3 target = ray.origin + ray.direction * MAX_RAY_DIST;
 
         lr.SetPosition(0, ray.origin);
         lr.SetPosition(1, target);
@@ -268,6 +344,110 @@ public class SceneAnalyzer : MonoBehaviour
             {
                 ToggleText.text = "Camera Mode: HW";
             }
+        }
+    }
+    public void AdjustCamOffsetFactor(bool positive)
+    {
+        if (positive)
+        {
+            offsetFactor *= 10;
+        }
+        else
+        {
+            offsetFactor /= 10;
+        }
+        SetOffsetLabelText();
+    }
+    public void AdjustCamOffsetVertical(bool positive)
+    {
+        if (positive)
+        {
+            cameraOffset.y += offsetFactor;
+        }
+        else
+        {
+            cameraOffset.y -= offsetFactor;
+        }
+        SetOffsetLabelText();
+
+        if (previousDetectedObjects != null && previousDetectedObjects.Count > 0)
+        {
+            RecastCaptions();
+        }
+    }
+    public void AdjustCamOffsetForward(bool positive)
+    {
+        if (positive)
+        {
+            cameraOffset.z += offsetFactor;
+        }
+        else
+        {
+            cameraOffset.z -= offsetFactor;
+        }
+        SetOffsetLabelText();
+
+        if (previousDetectedObjects != null && previousDetectedObjects.Count > 0)
+        {
+            RecastCaptions();
+        }
+    }
+    public void AdjustCamOffsetSide(bool positive)
+    {
+        if (positive)
+        {
+            cameraOffset.x += offsetFactor;
+        }
+        else
+        {
+            cameraOffset.x -= offsetFactor;
+        }
+        SetOffsetLabelText();
+
+        if (previousDetectedObjects != null && previousDetectedObjects.Count > 0)
+        {
+            RecastCaptions();
+        }
+    }
+    public void AdjustCamWarp(bool positive)
+    {
+        if (positive)
+        {
+            warpFactor += offsetFactor;
+        }
+        else
+        {
+            warpFactor -= offsetFactor;
+        }
+        SetOffsetLabelText();
+
+        if (previousDetectedObjects != null && previousDetectedObjects.Count > 0)
+        {
+            RecastCaptions();
+        }
+    }
+
+    void SetOffsetLabelText()
+    {
+        if (factorLabel)
+        {
+            factorLabel.ToolTipText = offsetFactor.ToString("G5");
+        }
+        if (verticalLabel)
+        {
+            verticalLabel.ToolTipText = "V: " + cameraOffset.y.ToString("G5");
+        }
+        if (forwardLabel)
+        {
+            forwardLabel.ToolTipText = "F: " + cameraOffset.z.ToString("G5");
+        }
+        if (sideLabel)
+        {
+            sideLabel.ToolTipText = "S: " + cameraOffset.x.ToString("G5");
+        }
+        if (warpLabel)
+        {
+            warpLabel.ToolTipText = "W: " + warpFactor.ToString("G5");
         }
     }
 
