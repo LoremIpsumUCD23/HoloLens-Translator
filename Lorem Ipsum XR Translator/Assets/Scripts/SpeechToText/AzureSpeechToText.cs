@@ -6,45 +6,45 @@ using Config;
 
 namespace SST
 {
-public class AzureSpeechToText : MonoBehaviour
-{
-    private string serviceRegion = "northeurope";
-
-    public ToolTip toolTip;
-
-    public async void SSTRequest()
+    public class AzureSpeechToText : MonoBehaviour
     {
-        Debug.Log("Button was pressed.");
+        private string serviceRegion = "northeurope";
 
-        SpeechConfig config = SpeechConfig.FromSubscription(Secrets.GetSTTSpeechSDKKey(), serviceRegion);
-        using (SpeechRecognizer recognizer = new SpeechRecognizer(config))
+        public ToolTip toolTip;
+
+        public async void SSTRequest()
         {
-            SpeechRecognitionResult result = await recognizer.RecognizeOnceAsync();
+            Debug.Log("Button was pressed.");
 
-            if (result.Reason == ResultReason.RecognizedSpeech)
+            SpeechConfig config = SpeechConfig.FromSubscription(Secrets.GetSTTSpeechSDKKey(), serviceRegion);
+            using (SpeechRecognizer recognizer = new SpeechRecognizer(config))
             {
-                Debug.Log($"We recognized: {result.Text}");
-                toolTip.ToolTipText = result.Text;
-                toolTip.gameObject.SetActive(true);
-            }
-            else if (result.Reason == ResultReason.NoMatch)
-            {
-                Debug.Log($"NOMATCH: Speech could not be recognized.");
-            }
-            else if (result.Reason == ResultReason.Canceled)
-            {
-                CancellationDetails cancellation = CancellationDetails.FromResult(result);
-                Debug.Log($"CANCELED: Reason={cancellation.Reason}");
+                SpeechRecognitionResult result = await recognizer.RecognizeOnceAsync();
 
-                if (cancellation.Reason == CancellationReason.Error)
+                if (result.Reason == ResultReason.RecognizedSpeech)
                 {
-                    Debug.Log($"CANCELED: ErrorCode={cancellation.ErrorCode}");
-                    Debug.Log($"CANCELED: ErrorDetails={cancellation.ErrorDetails}");
-                    Debug.Log($"CANCELED: Did you update the subscription info?");
+                    Debug.Log($"We recognized: {result.Text}");
+                    toolTip.ToolTipText = result.Text;
+                    toolTip.gameObject.SetActive(true);
+                }
+                else if (result.Reason == ResultReason.NoMatch)
+                {
+                    Debug.Log($"NOMATCH: Speech could not be recognized.");
+                }
+                else if (result.Reason == ResultReason.Canceled)
+                {
+                    CancellationDetails cancellation = CancellationDetails.FromResult(result);
+                    Debug.Log($"CANCELED: Reason={cancellation.Reason}");
+
+                    if (cancellation.Reason == CancellationReason.Error)
+                    {
+                        Debug.Log($"CANCELED: ErrorCode={cancellation.ErrorCode}");
+                        Debug.Log($"CANCELED: ErrorDetails={cancellation.ErrorDetails}");
+                        Debug.Log($"CANCELED: Did you update the subscription info?");
+                    }
                 }
             }
         }
     }
-}
 }
 
