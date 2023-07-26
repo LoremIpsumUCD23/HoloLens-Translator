@@ -1,8 +1,7 @@
 using UnityEngine;
 using Microsoft.CognitiveServices.Speech;
-using Microsoft.MixedReality.Toolkit.UI;
-using TMPro;
 using Config;
+using System.Threading.Tasks;
 
 namespace SST
 {
@@ -10,9 +9,7 @@ namespace SST
     {
         private string serviceRegion = "northeurope";
 
-        public ToolTip toolTip;
-
-        public async void SSTRequest()
+        public async Task<string> SSTRequest()
         {
             Debug.Log("Button was pressed.");
 
@@ -24,12 +21,12 @@ namespace SST
                 if (result.Reason == ResultReason.RecognizedSpeech)
                 {
                     Debug.Log($"We recognized: {result.Text}");
-                    toolTip.ToolTipText = result.Text;
-                    toolTip.gameObject.SetActive(true);
+                    return result.Text;
                 }
                 else if (result.Reason == ResultReason.NoMatch)
                 {
                     Debug.Log($"NOMATCH: Speech could not be recognized.");
+                    return "NOMATCH: Speech could not be recognized.";
                 }
                 else if (result.Reason == ResultReason.Canceled)
                 {
@@ -41,10 +38,12 @@ namespace SST
                         Debug.Log($"CANCELED: ErrorCode={cancellation.ErrorCode}");
                         Debug.Log($"CANCELED: ErrorDetails={cancellation.ErrorDetails}");
                         Debug.Log($"CANCELED: Did you update the subscription info?");
+                        return $"CANCELED: ErrorDetails={cancellation.ErrorDetails}";
                     }
+                    return $"CANCELED: Reason={cancellation.Reason}";
                 }
             }
+            return "Unknown error occurred.";
         }
     }
 }
-
