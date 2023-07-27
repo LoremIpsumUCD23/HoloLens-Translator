@@ -9,6 +9,8 @@ public class CaptionController : MonoBehaviour
 
     public GameObject DescriptionPanel;
 
+    public bool captionActive = true;
+
     CaptionLibrary CaptionLib;
     List<GameObject> CaptionList;
 
@@ -32,6 +34,18 @@ public class CaptionController : MonoBehaviour
         CaptionList.Clear();
     }
 
+    public void HandleCaptions(bool active)
+    {
+        //CaptionControlButton = GetComponent<captionControlButton>();
+        //CaptionControlButton.text = active ? "Show Captions" : "Hide Captions";
+
+        foreach (var c in CaptionList)
+        {
+            c.SetActive(captionActive);
+        }
+
+        captionActive = !captionActive;
+    }
     /// <summary>
     /// Creates a new caption object and places it in the world facing towards the player
     /// </summary>
