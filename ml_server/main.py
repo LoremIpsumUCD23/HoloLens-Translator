@@ -27,7 +27,8 @@ translators = dict()
 # Initialize deep learming models for translation
 def init_translation_model():
     # TODO: Add more models
-    translators['s2s'] = { 'en-fr': load_model('s2s.h5') }
+    model = load_model('s2s.h5')
+    translators['s2s'] = { 'en-fr': model }
 
 
 def create_app():
@@ -120,7 +121,6 @@ def create_app():
         # For the sake of this example, we'll just assume that the loaded model's predict
         # function directly returns a translated string. In reality, you'd probably need to
         # preprocess the text, run it through the model, then postprocess the result.
-        print(translators[model][key])
         translation = translators[model][key].predict(text)
         data = { 'translation': translation }
 
