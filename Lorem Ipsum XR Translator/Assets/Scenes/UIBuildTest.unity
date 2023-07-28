@@ -828,7 +828,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5733978351250233855, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+    - {fileID: 5972206227985548476, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+    - {fileID: 4987367188862318671, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+    - {fileID: 2565462926983481029, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
 --- !u!1 &305280570
 GameObject:
@@ -1303,7 +1307,8 @@ PrefabInstance:
       propertyPath: m_textInfo.characterCount
       value: 12
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3126786009469193213, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
 --- !u!1001 &385939800
 PrefabInstance:
@@ -1312,6 +1317,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6364899553994412578, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
+      propertyPath: iconStyle
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364899553994412578, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 559e1da0e65611c4f93ec931e1e6a8a2, type: 3}
     - target: {fileID: 6364899553994412579, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
       propertyPath: m_Name
       value: CaptionControlButton
@@ -6618,7 +6631,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2059573613}
   - component: {fileID: 2059573616}
-  - component: {fileID: 2059573615}
   - component: {fileID: 2059573614}
   m_Layer: 0
   m_Name: Title
@@ -6739,14 +6751,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2059573616}
   m_maskType: 0
---- !u!222 &2059573615
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2059573612}
-  m_CullTransparentMesh: 0
 --- !u!23 &2059573616
 MeshRenderer:
   m_ObjectHideFlags: 0
