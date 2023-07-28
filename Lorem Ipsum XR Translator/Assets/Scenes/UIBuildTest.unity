@@ -1393,7 +1393,6 @@ GameObject:
   - component: {fileID: 428096751}
   - component: {fileID: 428096750}
   - component: {fileID: 428096749}
-  - component: {fileID: 428096748}
   - component: {fileID: 428096747}
   - component: {fileID: 428096746}
   - component: {fileID: 428096745}
@@ -1487,61 +1486,6 @@ MonoBehaviour:
   handType: 3
   proximityType: 3
   executionOrder: 0
---- !u!114 &428096748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428096743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 181cd563a8349c34ea8978b0bc8d9c7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hostTransform: {fileID: 428096744}
-  manipulationType: 3
-  twoHandedManipulationType: 7
-  allowFarManipulation: 1
-  useForcesForNearManipulation: 0
-  oneHandRotationModeNear: 1
-  oneHandRotationModeFar: 1
-  releaseBehavior: 3
-  transformSmoothingLogicType:
-    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
-      Microsoft.MixedReality.Toolkit.SDK
-  smoothingFar: 1
-  smoothingNear: 1
-  moveLerpTime: 0.001
-  rotateLerpTime: 0.001
-  scaleLerpTime: 0.001
-  enableConstraints: 1
-  constraintsManager: {fileID: 428096749}
-  elasticsManager: {fileID: 0}
-  onManipulationStarted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2047144661}
-        m_TargetAssemblyTypeName: SceneAnalyzer, Assembly-CSharp
-        m_MethodName: StartCapture
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onManipulationEnded:
-    m_PersistentCalls:
-      m_Calls: []
-  onHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  onHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &428096749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1567,7 +1511,7 @@ MeshCollider:
   m_GameObject: {fileID: 428096743}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -1579,7 +1523,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 428096743}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1667,7 +1611,7 @@ MonoBehaviour:
   trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0.45, y: 0.25, z: 0}
+  additionalOffset: {x: 0.2, y: 0.2, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!114 &428096757
@@ -1696,7 +1640,7 @@ MonoBehaviour:
   pivotAxis: 7
   minDistance: 0.3
   maxDistance: 0.8
-  defaultDistance: 0.7
+  defaultDistance: 0.6
   maxViewHorizontalDegrees: 40
   maxViewVerticalDegrees: 20
   reorientWhenOutsideParameters: 1
@@ -2464,18 +2408,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
   m_PrefabInstance: {fileID: 373930435}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &868602757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868602755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad790b11351ffef41a8250bfbc23109b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &868602758
 MonoBehaviour:
   m_ObjectHideFlags: 0
