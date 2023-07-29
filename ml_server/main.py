@@ -6,30 +6,33 @@ import io
 import numpy as np
 from keras.preprocessing import image
 from keras.applications.resnet50 import ResNet50, preprocess_input, decode_predictions
-from keras.models import load_model
+
+# For MarianMT model
+from transformers import MarianMTModel, MarianTokenizer
 
 # logging imports
 import google.cloud.logging
 import logging
 
-if os.getenv('ENV', default='local') == 'gcp': client = google.cloud.logging.Client()
-
+if os.getenv('ENV', default='local') == 'gcp':
+    client = google.cloud.logging.Client()
 
 # key: model name, value: {'size': input size, 'model': model}
 detectors = dict()
+
 # Initialize deep learning models for image detection
 def init_detection_model():
-    # TODO: Add more models
     detectors['resnet50'] = {'size': 224, 'model': ResNet50(weights='imagenet')}
 
-# key: model name, value: {'lang': [from]-[to], 'model': model}
-translators = dict()
-# Initialize deep learming models for translation
-def init_translation_model():
-    # TODO: Add more models
-    model = load_model('s2s.h5')
-    translators['s2s'] = { 'en-fr': model }
+# key: model name, value: {'name': model identifier, 'model': model, 'tokenizer': tokenizer}
+translators_marian = dict()
 
+def init_marian_translation_model():
+    model_name = 'Helsinki-NLP/opus-mt-en-fr'
+    model = MarianMTModel.from_pretrained(model_name)
+    tokenizer = MarianTokenizer.from_pretrained(model_name)
+
+    translators_marian['opus-mt-en-fr'] = {'name': model_name, 'model': model, 'tokenizer': tokenizer}
 
 def create_app():
     app = Flask(__name__)
@@ -37,9 +40,8 @@ def create_app():
     init_detection_model()
     logging.info('Object Detection Models Loaded')
 
-    init_translation_model()
-    logging.info('Translation Models Loaded')
-
+    init_marian_translation_model()
+    logging.info('Marian Translation Models Loaded')
 
     def generate_response(data, code):
         return app.response_class(
@@ -48,11 +50,9 @@ def create_app():
             mimetype='application/json'
         )
 
-    # For debugging
     @app.route('/ping', methods=['GET'])
     def ping_pong():
         return generate_response({'message': 'Pong!'}, 200)
-
 
     @app.route('/detect', methods=['POST'])
     def detect():
@@ -95,43 +95,26 @@ def create_app():
 
     @app.route('/translate', methods=['POST'])
     def translate():
-        # Check if 'from' is given
+
         orig = request.args.get('from')
-        if not orig:
-            return generate_response({'message': 'Original language has to be provided via parameter'}, 400)
-
-        # Check if 'to' is given
         target = request.args.get('to')
-        if not target:
-            return generate_response({'message': 'Target language has to be provided via parameter'}, 400)
-
-        # Check if a valid 'model' is given
         model = request.args.get('model')
-        if not model:
-            return generate_response({'message': 'Pick a translation model'}, 400)
-        elif model not in translators.keys():
-            return generate_response({'message': f'Model {model} is not supported'}, 400)
-
-        # Check if translation language pair is supported by the specified model
-        key = orig + '-' + target
-        if key not in translators[model]:
-            return generate_response({'message': f'{orig} to {target} translation is not supported'}, 400)
-
-        # Assuming the text to be translated is sent in JSON format
         text = request.json.get('text', '')
 
-        # For the sake of this example, we'll just assume that the loaded model's predict
-        # function directly returns a translated string. In reality, you'd probably need to
-        # preprocess the text, run it through the model, then postprocess the result.
-        translation = translators[model][key].predict(text)
-        data = { 'translation': translation }
+        if model in translators_marian.keys():
+            marian_model = translators_marian[model]['model']
+            marian_tokenizer = translators_marian[model]['tokenizer']
+            inputs = marian_tokenizer.encode(text, return_tensors="pt", max_length=512, truncation=True)
+            outputs = marian_model.generate(inputs, max_length=512, num_return_sequences=1)
+            translation = marian_tokenizer.decode(outputs[0], skip_special_tokens=True)
+        else:
+            return generate_response({'message': f'Model {model} is not supported'}, 400)
 
+        data = {'translation': translation}
         return generate_response(data, 200)
 
     return app
 
-
-# Run it with "python3 main.py"
 if __name__ == "__main__":
     app = create_app()
     app.run(host='0.0.0.0', port=8080)
