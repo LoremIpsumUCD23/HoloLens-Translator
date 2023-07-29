@@ -72,6 +72,7 @@ namespace ObjectDetection
                 }
             }
         }
+
         /// <summary>
         /// Detects objects recognized in a Texture2D image
         /// </summary>
