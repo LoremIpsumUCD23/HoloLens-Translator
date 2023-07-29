@@ -58,7 +58,7 @@ def create_app():
     def detect():
         # Check if the post request has the 'image' part
         if 'image' not in request.files:
-            return generate_response({'message': 'No file part in the request'}, 400)
+            return generate_response({'message': 'No image part in the request'}, 400)
 
         # Check if a valid model is given
         model = request.args.get('model')
@@ -83,8 +83,10 @@ def create_app():
         # Prepare the results for JSON response
         data = {'predictions': []}
         for (imagenetID, label, prob) in results[0]:
-            r = {'label': label, 'probability': float(prob)}
-            data['predictions'].append(r)
+            if float(prob) > 0.2:
+                # these keys are fixed. change the values.
+                r = {'label': label, 'confidence': float(prob), 'x': 1, 'y': 1, 'w': 1, 'h': 1}
+                data['predictions'].append(r)
         # NOTE: Take into consideration that image is resized. Ask Mansi to work around that.
         ######################## Example ##########################
 
