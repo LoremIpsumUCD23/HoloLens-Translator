@@ -57,7 +57,7 @@ public class CaptionLibrary : MonoBehaviour
 
         // Initialise listener for language selection
         languageSetting = SelectLanguagePanel.GetComponent<LanguageSetting>();
-        ConfirmButton.ButtonPressed.AddListener(ConfirmLanguageSelection);
+        ConfirmButton.GetComponent<Interactable>().OnClick.AddListener(ConfirmLanguageSelection);
     }
 
     /// <summary>
