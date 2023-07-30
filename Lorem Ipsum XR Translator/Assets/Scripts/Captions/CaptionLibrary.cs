@@ -75,10 +75,15 @@ public class CaptionLibrary : MonoBehaviour
         Debug.Log("CL: Language code confirmed: " + targetLanguages[0]);
     }
 
+    /// <summary>
+    /// Getter for confirmed secondary language
+    /// </summary>
+    /// <returns></returns>
     public string GetSecondaryLanguage()
     {
         return targetLanguages[0];
     }
+
     /// <summary>
     /// Attempts to get a description for a given title. If the caption is in the cache, it will be returned.
     /// If the cache returns a null, it will put in a request to the API to get a description, and set the value to the HoldString (to prevent multiple API calls)
