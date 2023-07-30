@@ -57,7 +57,7 @@ public class CaptionLibrary : MonoBehaviour
 
         // Initialise listener for language selection
         languageSetting = SelectLanguagePanel.GetComponent<LanguageSetting>();
-        ConfirmButton.ButtonPressed.AddListener(ConfirmLanguageSelection);
+        ConfirmButton.GetComponent<Interactable>().OnClick.AddListener(ConfirmLanguageSelection);
     }
 
     /// <summary>
@@ -73,6 +73,15 @@ public class CaptionLibrary : MonoBehaviour
 
         targetLanguages = new string[] { languageSetting.GetSelectedLanguageCode() };
         Debug.Log("CL: Language code confirmed: " + targetLanguages[0]);
+    }
+
+    /// <summary>
+    /// Getter for confirmed secondary language
+    /// </summary>
+    /// <returns></returns>
+    public string GetSecondaryLanguage()
+    {
+        return targetLanguages[0];
     }
 
     /// <summary>

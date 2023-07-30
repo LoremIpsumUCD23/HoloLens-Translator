@@ -34,11 +34,12 @@ public class CaptionController : MonoBehaviour
         CaptionList.Clear();
     }
 
+    /// <summary>
+    /// Show/hide captions based on toggled selections
+    /// </summary>
+    /// <param name="active"></param>
     public void HandleCaptions(bool active)
     {
-        //CaptionControlButton = GetComponent<captionControlButton>();
-        //CaptionControlButton.text = active ? "Show Captions" : "Hide Captions";
-
         foreach (var c in CaptionList)
         {
             c.SetActive(captionActive);
@@ -46,6 +47,7 @@ public class CaptionController : MonoBehaviour
 
         captionActive = !captionActive;
     }
+
     /// <summary>
     /// Creates a new caption object and places it in the world facing towards the player
     /// </summary>

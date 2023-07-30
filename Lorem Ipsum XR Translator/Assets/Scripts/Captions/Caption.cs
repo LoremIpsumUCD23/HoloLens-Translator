@@ -8,6 +8,8 @@ public class Caption : MonoBehaviour
     public CaptionLibrary CaptionLib;
     public CaptionController CaptionCon;
 
+    string secondaryLanguage;
+
     string primaryTitle;
     string translatedTitle;
     string primaryDescription;
@@ -116,6 +118,7 @@ public class Caption : MonoBehaviour
         {
             DescriptionPanel descriptionPanel = CaptionCon.DescriptionPanel.GetComponent<DescriptionPanel>();
             descriptionPanel.captionRef = this;
+            descriptionPanel.SetSecondaryLanguage(CaptionLib.GetSecondaryLanguage());
             descriptionPanel.SetText();
             CaptionCon.DescriptionPanel.SetActive(true);
         }
