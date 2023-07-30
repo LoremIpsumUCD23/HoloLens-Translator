@@ -40,11 +40,18 @@ public class LanguageSetting : MonoBehaviour
     {
         confirmButton.ButtonPressed.AddListener(ConfirmLanguageSelection);
         cancelButton.ButtonPressed.AddListener(CancelLanguageSelection);
-        englishButton.ButtonPressed.AddListener(() => SetLanguage("English"));
-        hindiButton.ButtonPressed.AddListener(() => SetLanguage("Hindi"));
-        malayButton.ButtonPressed.AddListener(() => SetLanguage("Malay"));
-        japaneseButton.ButtonPressed.AddListener(() => SetLanguage("Japanese"));
-        bengaliButton.ButtonPressed.AddListener(() => SetLanguage("Bengali"));
+        //englishButton.ButtonPressed.AddListener(() => SetLanguage("English"));
+        //hindiButton.ButtonPressed.AddListener(() => SetLanguage("Hindi"));
+        //malayButton.ButtonPressed.AddListener(() => SetLanguage("Malay"));
+        //japaneseButton.ButtonPressed.AddListener(() => SetLanguage("Japanese"));
+        //bengaliButton.ButtonPressed.AddListener(() => SetLanguage("Bengali"));
+
+        englishButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("English"));
+        hindiButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Hindi"));
+        malayButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Malay"));
+        japaneseButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Japanese"));
+        bengaliButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Bengali"));
+
 
         // Add the languages we want to the dictionary on start
         _languageCodeDictionary.Add("English", "en");
