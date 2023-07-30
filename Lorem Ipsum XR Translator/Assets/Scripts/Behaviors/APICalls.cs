@@ -39,7 +39,7 @@ public class APICalls : MonoBehaviour
         }
 
 
-        //FeedbackClient client = new FeedbackClient("http://192.168.0.172:8080");
+        //FeedbackClient client = new FeedbackClient(Secrets.GetFeedbackServerEndpoint());
         //StartCoroutine(client.PutFeedback("translation", "s2s", true));
     }
 
