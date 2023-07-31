@@ -174,7 +174,7 @@ namespace STT
 
     [System.Serializable]
     public class Wrapper
-        {
-            public TranslationResponse[] array;
-        }
+    {
+    public TranslationResponse[] array;
+    }
 }
