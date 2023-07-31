@@ -44,7 +44,7 @@ public class CaptionLibrary : MonoBehaviour
 
     private System.Random _rand;
     // Should be either "dictionary" or "chatgpt"
-    private string _descriptionModel = "";
+    private string _descriptionModel = "unknown";
 
     public string HoldString { get => holdString; set => holdString = value; }
 
