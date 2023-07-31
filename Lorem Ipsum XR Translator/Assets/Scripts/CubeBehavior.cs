@@ -21,9 +21,9 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     private IDescriptionClient _chatGPTClient;
     private IDescriptionClient _dictionaryClient;
 
-    // You can specify literally any type for the key and value.
-    private ICache<string, string> _cache;
-    
+
+    private ICache<string, string>_cache;
+
 
     // for testing.
     private string[] objects = { "cup", "dog", "human", "rocket", "tree" };
@@ -45,7 +45,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         int index = rnd.Next(objects.Length);
         string target = this.objects[index];
         string originalLanguage = "en";
-        string[] targetLanguages = new string[]{ "fr" };
+        string[] targetLanguages = new string[]{ "bn" , "zh-Hant" };
 
 
         // Initialise translator client
@@ -73,7 +73,7 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
         int index = rnd.Next(objects.Length);
         string target = this.objects[index];
         string originalLanguage = "en";
-        string[] targetLanguages = new string[] { "fr" };
+        string[] targetLanguages = new string[]{ "bn" , "ja" };
 
 
         // Initialise translator client
@@ -95,10 +95,10 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
     }
 
     public void OnGestureUpdated(InputEventData eventData)
-    {            
+    {
         Debug.Log("Gesture Updated");
     }
- 
+
     public void OnGestureCompleted(InputEventData eventData)
     {
         Debug.Log("Gesture Completed");
@@ -111,9 +111,9 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
     private void GetTranslation(string[] responseText)
     {
-        if (responseText != null)
+        if (responseText != null && responseText.Length > 1)
         {
-            TranslationText.text = "Translator: " + responseText;
+            TranslationText.text = "Translator: " + responseText[1];
         }
         else
         {
@@ -123,9 +123,9 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
     private void GetDescriptionFromDict(string[] responseText)
     {
-        if (responseText != null)
+        if (responseText != null && responseText.Length > 1)
         {
-            DictionaryText.text = "Dict: " + responseText;
+            DictionaryText.text = "Dict: " + responseText[1];
         }
         else
         {
@@ -135,9 +135,9 @@ public class CubeBehavior : MonoBehaviour, IMixedRealityGestureHandler
 
     private void GetDescriptionFromGPT(string[] responseText)
     {
-        if (responseText != null)
+        if (responseText != null && responseText.Length > 1)
         {
-            ChatGPTText.text = "GPT: " + responseText;
+            ChatGPTText.text = "GPT: " + responseText[1];
         }
         else
         {

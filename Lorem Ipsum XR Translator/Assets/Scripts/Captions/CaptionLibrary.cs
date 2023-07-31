@@ -11,9 +11,9 @@ using Util.Cache;
 public class CaptionLibrary : MonoBehaviour 
 {
     // Three caches are set up for tracking descriptions and translated titles (primary titles are the key)
-    LRUCache<string, string> descriptions;
-    LRUCache<string, string> titleTranslations;
-    LRUCache<string, string> descriptionTranslations;
+    ICache<string, string> descriptions;
+    ICache<string, string> titleTranslations;
+    ICache<string, string> descriptionTranslations;
 
     // Services for requesting descriptions/translations
     private ITranslatorClient _translatorClient;
