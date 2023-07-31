@@ -22,8 +22,13 @@ public class SceneAnalyzer : MonoBehaviour
     private Matrix4x4 worldMatrix;
     private Matrix4x4 projectionMatrix;
     private Vector3 cameraPosition;
-    float textureWidth;
-    float textureHeight;
+    private float textureWidth;
+    private float textureHeight;
+
+    // Constants for camera offset and optical warp based on device testing
+    private Vector3 CAMERA_OFFSET = new Vector3(0, 0.009f, 0.05f);
+    private const float OPTICAL_WARP_FACTOR = 0.521f;
+    private const float MAX_RAY_DIST = 3.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -156,17 +161,22 @@ public class SceneAnalyzer : MonoBehaviour
             // Get average position of object's bounding rectangle
             Vector2 averagePos = new Vector2(detectedObject.rectangle.x + detectedObject.rectangle.w / 2,
                 textureHeight - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
+            // Find the center of our image
+            Vector2 imageCenter = new Vector2(textureWidth / 2, textureHeight / 2);
+            // Get the offset of our target position relative to the center of the image
+            Vector2 centerOffset = averagePos - imageCenter;
+            // Warp the target position by our constant warp factor
+            Vector2 warpedPos = averagePos + (centerOffset * OPTICAL_WARP_FACTOR);
 
-            // Cast to find location of object in 3D space
+            // Cast to find location of object in 3D space (using optical warp, and adjusting camera by virtual offset)
             RaycastHit hit;
-            Ray ray = ScreenToWorldRay(averagePos, worldMatrix, projectionMatrix.inverse, cameraPosition);
-            Debug.DrawRay(ray.origin, ray.direction, Color.red, 60f);
+            Ray ray = ScreenToWorldRay(warpedPos, worldMatrix, projectionMatrix.inverse, cameraPosition + CAMERA_OFFSET);
             
             // Do not collide with other captions
             LayerMask captionMask = LayerMask.GetMask("Captions");
-            Physics.Raycast(ray, out hit, 5f, ~captionMask);
+            Physics.Raycast(ray, out hit, MAX_RAY_DIST * 1.5f, ~captionMask);
 
-            Vector3 targetLocation = ray.origin + ray.direction;
+            Vector3 targetLocation = ray.origin + ray.direction * MAX_RAY_DIST;
             if (hit.transform && hit.transform.tag != "caption")
             {
                 targetLocation = hit.point;
