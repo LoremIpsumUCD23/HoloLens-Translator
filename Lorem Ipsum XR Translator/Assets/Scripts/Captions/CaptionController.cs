@@ -57,7 +57,7 @@ public class CaptionController : MonoBehaviour
     /// <param name="active"></param>
     public void HandleCaptions(bool active)
     {
-        foreach (var c in CaptionList)
+        foreach (GameObject c in ActiveCaptions)
         {
             c.SetActive(captionActive);
         }
