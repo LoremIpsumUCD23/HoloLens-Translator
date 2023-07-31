@@ -22,7 +22,6 @@ public class CaptionController : MonoBehaviour
         ActiveCaptions = new List<GameObject>();
 
         CaptionPool = new ObjectPool<GameObject>(OnCaptionCreate, OnCaptionGet, OnCaptionRelease, OnCaptionDestroy);
-        //Debug.Log("Created Caption Pool seeded with " + CaptionPool.CountActive + "/ " + CaptionPool.CountAll + " entries");
     }
 
     /// <summary>
@@ -37,7 +36,6 @@ public class CaptionController : MonoBehaviour
             //go.SetActive(false);
         }
         ActiveCaptions.Clear();
-        //Debug.Log("Cleared captions. Inactive: " + CaptionPool.CountInactive + " Active: " + CaptionPool.CountActive);
     }
 
     /// <summary>
@@ -73,8 +71,6 @@ public class CaptionController : MonoBehaviour
         cap.InitializeCaption(captionName.Split(":")[0], CaptionLib, this);
 
         ActiveCaptions.Add(cap.gameObject);
-
-        //Debug.Log("New caption created. Pool Capacity: " + CaptionPool.CountActive + " / " + CaptionPool.CountAll + " CaptionList: " + CaptionList.Count);
 
         // Return the newly created caption object if desired (primarily for testing).
         return cap;
