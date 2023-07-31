@@ -847,6 +847,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CaptionController: {fileID: 1685297143}
+  DebugText: {fileID: 1433054108}
+  DebugQuad: {fileID: 231881443}
 --- !u!4 &1685297145
 Transform:
   m_ObjectHideFlags: 0
