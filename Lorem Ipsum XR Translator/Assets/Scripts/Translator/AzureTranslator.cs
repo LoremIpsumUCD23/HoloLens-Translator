@@ -26,7 +26,7 @@ namespace Translator
         private readonly string apiKey;
         private readonly string location;
 
-        public AzureTranslator(string apiKey,string location)
+        public AzureTranslator(string apiKey, string location)
         {
             this.apiKey = apiKey;
             this.location = location;

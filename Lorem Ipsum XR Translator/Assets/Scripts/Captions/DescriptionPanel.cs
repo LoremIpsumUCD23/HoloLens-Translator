@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine;
 using TTS;
 
+using Config;
+
+
 public class DescriptionPanel : MonoBehaviour
 {
 
