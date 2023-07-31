@@ -31,9 +31,7 @@ public class CaptionController : MonoBehaviour
     {
         foreach (GameObject go in ActiveCaptions)
         {
-            //AvailableCaptionList.Enqueue(go);
             CaptionPool.Release(go);
-            //go.SetActive(false);
         }
         ActiveCaptions.Clear();
     }
@@ -121,10 +119,6 @@ public class CaptionController : MonoBehaviour
     /// </summary>
     private void OnApplicationQuit()
     {
-        foreach (GameObject go in ActiveCaptions)
-        {
-            CaptionPool.Release(go);
-        }
         ActiveCaptions.Clear();
         CaptionPool.Clear();
     }
