@@ -14,12 +14,12 @@ public class LanguageSetting : MonoBehaviour
     public PressableButton malayButton;
     public PressableButton japaneseButton;
     public PressableButton bengaliButton;
-    
+
     // A dictionary is used to store languages as keys and their corresponding Azure language codes as values
     private Dictionary<string, string> _languageCodeDictionary = new Dictionary<string, string>();
 
     // Variable to store the selected language
-    private string selectedLanguage = ""; 
+    private string selectedLanguage = "";
 
     // Method to return the selected language
     public string GetSelectedLanguage()
