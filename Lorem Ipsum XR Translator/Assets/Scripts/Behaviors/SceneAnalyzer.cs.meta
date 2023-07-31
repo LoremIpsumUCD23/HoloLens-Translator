@@ -3,11 +3,7 @@ guid: e9d7c513f519b944c941cab6181d56b5
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - CaptionController: {instanceID: 0}
-  - DebugText: {instanceID: 0}
-  - DebugQuad: {instanceID: 0}
-  - DebugRaycast: {fileID: 950895887924602757, guid: a753a749aeff9584e9cac3d7aa9e6687, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

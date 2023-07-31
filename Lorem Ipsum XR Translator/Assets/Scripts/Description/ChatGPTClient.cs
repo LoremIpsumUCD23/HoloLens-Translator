@@ -31,14 +31,11 @@ namespace Description
         /// </summary>
         /// <param name="content">Text that is explained in this method.</param>
         /// <param name="callback">An action that gets executed with the translated text.</param>
-        public IEnumerator Explain(string content, Action<string[]> callback)
+        public IEnumerator Explain(string content, Action<string> callback)
         {
             // Create body of the request. PromtpRequest -> json -> bytes
             var reqBody = new PromptRequest(this._model, content, 10, 0.0f);
             byte[] reqBodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(reqBody));
-
-            string[] returnString = new string[2];
-            returnString[0] = content;
 
             using (UnityWebRequest www = new UnityWebRequest(ChatGPTClient.Url, UnityWebRequest.kHttpVerbPOST))
             {
@@ -57,16 +54,14 @@ namespace Description
                 // Got a response with Connection Error
                 if (www.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    returnString[1] = "Connection Error: " + www.error;
-                    Debug.LogError(returnString[1]);
-                    callback(returnString);
+                    Debug.LogError("Connection Error: " + www.error);
+                    callback("Connection Error: " + www.error);
                 }
                 // Got a reponse with Protocol Error
                 else if (www.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    returnString[1] = "Protocol Error: " + www.error;
-                    Debug.LogError(returnString[1]);
-                    callback(returnString);
+                    Debug.LogError("Protocol Error: " + www.error);
+                    callback("Protocol Error: " + www.error);
                 }
                 // Got a response without any error
                 else
@@ -86,9 +81,8 @@ namespace Description
                         else if (res.choices == null || res.choices.Count == 0) message = "choices is empty. Read the ChatGPT document for more details.";
                         else message = res.choices[0].text;
                     }
-                    returnString[1] = message.Trim(',', '\n');
-                    Debug.Log(returnString[1]);
-                    callback(returnString);
+                    Debug.Log(message.Trim(',', '\n'));
+                    callback(message.Trim(',', '\n'));
                 }
             }
         }
