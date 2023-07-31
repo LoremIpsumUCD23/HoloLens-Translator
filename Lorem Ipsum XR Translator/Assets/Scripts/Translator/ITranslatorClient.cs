@@ -15,6 +15,6 @@ namespace Translator
         /// <param name="from">The language which <paramref name="originalText"/> is written in.</param>
         /// <param name="to">Target language(s) which <paramref name="originalText"/> is translated into.</param>
         /// <param name="callback">An action that gets executed with the translated text.</param>
-        public IEnumerator Translate(string originalText, string from, string[] to, Action<string> callback);
+        public IEnumerator Translate(string originalText, string from, string[] to, Action<string[]> callback);
     }
 }
