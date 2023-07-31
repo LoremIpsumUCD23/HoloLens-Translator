@@ -160,7 +160,7 @@ public class SceneAnalyzer : MonoBehaviour
 
             // Get average position of object's bounding rectangle
             Vector2 averagePos = new Vector2(detectedObject.rectangle.x + detectedObject.rectangle.w / 2,
-             textureHeight - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
+            textureHeight - detectedObject.rectangle.y - detectedObject.rectangle.h / 2);
             // Find the center of our image
             Vector2 imageCenter = new Vector2(textureWidth / 2, textureHeight / 2);
             // Get the offset of our target position relative to the center of the image
