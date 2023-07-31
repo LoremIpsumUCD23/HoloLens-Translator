@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3107,7 +3107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1083346667
 Transform:
   m_ObjectHideFlags: 0
@@ -6949,6 +6949,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: -3925785931860867377, guid: e86f445e3a96e394797df7044b9a2666, type: 2}
+    - target: {fileID: 1298755854883093947, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: additionalOffset.z
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 5104655863282250852, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
       propertyPath: m_text
       value: 'Description Text here
@@ -8154,7 +8158,7 @@ MonoBehaviour:
   trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalOffset: {x: 0, y: 0, z: 0.3}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!23 &8291708631711440166
