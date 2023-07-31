@@ -11,8 +11,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 public class SceneAnalyzer : MonoBehaviour
 {
     public CaptionController CaptionController;
-    public TextMeshPro DebugText;
-    public GameObject DebugQuad;
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
@@ -44,7 +42,6 @@ public class SceneAnalyzer : MonoBehaviour
     /// There might be an issue with camera capture occurring on main thread, and not asynchronously at all.
     public void StartCapture()
     {
-        DebugText.text = "Beginning screenshot process";
         PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
     }
 
@@ -54,7 +51,6 @@ public class SceneAnalyzer : MonoBehaviour
     /// <param name="captureObject">The photo capture data</param>
     private void OnPhotoCaptureCreated(PhotoCapture captureObject)
     {
-        DebugText.text = "Photo Created";
         photoCaptureObject = captureObject;
 
         Resolution cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
@@ -80,7 +76,7 @@ public class SceneAnalyzer : MonoBehaviour
         }
         else
         {
-            DebugText.text = "Unable to start photo mode!";
+            Debug.Log("Unable to start photo mode!");
         }
     }
 
@@ -100,10 +96,6 @@ public class SceneAnalyzer : MonoBehaviour
             // Copy the raw image data into our target texture
             photoCaptureFrame.UploadImageDataToTexture(targetTexture);
             this.image = targetTexture;
-            if (DebugQuad)
-            {
-                DebugQuad.GetComponent<Renderer>().material.mainTexture = targetTexture;
-            }
 
             // Get virtual camera data
             Camera camera = CameraCache.Main;
@@ -115,7 +107,7 @@ public class SceneAnalyzer : MonoBehaviour
         }
         else 
         { 
-            DebugText.text = "Failed to save photo to memory"; 
+            Debug.Log("Failed to save photo to memory"); 
         }
         // Clean up
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
@@ -139,7 +131,6 @@ public class SceneAnalyzer : MonoBehaviour
     {
         textureWidth = image.width;
         textureHeight = image.height; 
-        DebugText.text = "Analyzing Image";
         // Record view to image
         yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
             image, this.ProcessAnalysis);
@@ -151,7 +142,6 @@ public class SceneAnalyzer : MonoBehaviour
     /// <param name="detectedObjects">List of objects detected by the image recognition service</param>
     private void ProcessAnalysis(List<DetectedObject> detectedObjects)
     {
-        DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
 
