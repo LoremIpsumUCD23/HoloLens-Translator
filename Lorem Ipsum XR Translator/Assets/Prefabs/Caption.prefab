@@ -31,7 +31,6 @@ Transform:
   - {fileID: 8195723215864005715}
   - {fileID: 8195723216836049165}
   - {fileID: 7523139445518295727}
-  - {fileID: 9075113737823201293}
   m_Father: {fileID: 8195723216869888833}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -67,9 +66,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 553576868499949270}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &810258016846063897
-MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -77,6 +73,14 @@ MeshFilter:
   m_GameObject: {fileID: 603768935111592203}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &3562669994501635987
+=======
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.21, y: 0}
+  m_SizeDelta: {x: 5, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!23 &7529610583172509738
+>>>>>>> main
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,8 +281,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &2342499833048150305
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,8 +473,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &3329046985736506286
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,8 +583,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -926,8 +930,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -938,8 +942,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Caption
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ef0bf895722320846b314721236179eb, type: 2}
-  m_sharedMaterial: {fileID: -1119804263073132521, guid: ef0bf895722320846b314721236179eb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1116,8 +1120,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -1424,8 +1428,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -1434,7 +1438,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -1571,8 +1575,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f98e7663599230e419addf153615c144, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   movingButtonVisuals: {fileID: 8195723215710142173}
   distanceSpaceMode: 1
   startPushDistance: -0.008
@@ -1586,7 +1590,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8195723216350320062}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: OnHandPressTouched
         m_Mode: 1
         m_Arguments:
@@ -1594,14 +1598,14 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   TouchEnd:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8195723216350320062}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: OnHandPressUntouched
         m_Mode: 1
         m_Arguments:
@@ -1609,14 +1613,14 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   ButtonPressed:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8195723216350320062}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: OnHandPressTriggered
         m_Mode: 1
         m_Arguments:
@@ -1624,11 +1628,11 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 8195723216350320033}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
@@ -1636,14 +1640,14 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   ButtonReleased:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8195723216350320062}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: OnHandPressCompleted
         m_Mode: 1
         m_Arguments:
@@ -1651,11 +1655,11 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 8195723216350320033}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
@@ -1663,7 +1667,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   movingButtonIconText: {fileID: 168758552896891808}
@@ -1681,8 +1685,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 881d1ff8f009f5148b9f192e6ba31223, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   routingTarget: {fileID: 1656768700511632131}
   InteractableOnClick: 1
 --- !u!114 &1656768700511632131
@@ -1695,8 +1699,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
   isGlobal: 0
@@ -1729,7 +1733,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   Events:
@@ -1737,7 +1741,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 8327230929258392626}
-          m_TargetAssemblyTypeName: 
+          m_TargetAssemblyTypeName:
           m_MethodName: AnimateInHighlightPlate
           m_Mode: 1
           m_Arguments:
@@ -1745,7 +1749,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: 
+            m_StringArgument:
             m_BoolArgument: 0
           m_CallState: 2
     ClassName: InteractableOnFocusReceiver
@@ -1757,7 +1761,7 @@ MonoBehaviour:
       Name: OnFocusOff
       Tooltip: Focus has left the object
       IntValue: 0
-      StringValue: 
+      StringValue:
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -1781,7 +1785,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 8327230929258392626}
-            m_TargetAssemblyTypeName: 
+            m_TargetAssemblyTypeName:
             m_MethodName: AnimateOutHighlightPlate
             m_Mode: 1
             m_Arguments:
@@ -1789,7 +1793,7 @@ MonoBehaviour:
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
-              m_StringArgument: 
+              m_StringArgument:
               m_BoolArgument: 0
             m_CallState: 2
       Options: []
@@ -1797,7 +1801,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 8195723216350320033}
-          m_TargetAssemblyTypeName: 
+          m_TargetAssemblyTypeName:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
@@ -1805,7 +1809,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: 
+            m_StringArgument:
             m_BoolArgument: 0
           m_CallState: 2
     ClassName: InteractableOnPressReceiver
@@ -1817,7 +1821,7 @@ MonoBehaviour:
       Name: OnRelease
       Tooltip: The button is released
       IntValue: 0
-      StringValue: 
+      StringValue:
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -1841,7 +1845,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 8195723216350320033}
-            m_TargetAssemblyTypeName: 
+            m_TargetAssemblyTypeName:
             m_MethodName: PlayOneShot
             m_Mode: 2
             m_Arguments:
@@ -1849,7 +1853,7 @@ MonoBehaviour:
               m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
-              m_StringArgument: 
+              m_StringArgument:
               m_BoolArgument: 0
             m_CallState: 2
       Options: []
@@ -1858,7 +1862,7 @@ MonoBehaviour:
       Name: InteractionFilter
       Tooltip: Specify whether press event is for near or far interaction
       IntValue: 2
-      StringValue: 
+      StringValue:
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -1993,8 +1997,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   eventsToReceive: 0
   debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
@@ -2012,8 +2016,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cf098d972aeb8b4daa70b00381af006, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   mainLabelText: {fileID: 8195723215864005712}
   interactable: {fileID: 1656768700511632131}
   seeItSayItLabel: {fileID: 0}
@@ -2125,8 +2129,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &8195723216836049164
 GameObject:
   m_ObjectHideFlags: 0
@@ -2304,8 +2308,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &8987289222160409611
 GameObject:
   m_ObjectHideFlags: 0
@@ -2577,8 +2581,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f98e7663599230e419addf153615c144, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   movingButtonVisuals: {fileID: 2342499833048150305}
   distanceSpaceMode: 1
   startPushDistance: -0.008
@@ -2592,7 +2596,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2342499832676457026}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: OnHandPressTouched
         m_Mode: 1
         m_Arguments:
@@ -2600,14 +2604,14 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   TouchEnd:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2342499832676457026}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: OnHandPressUntouched
         m_Mode: 1
         m_Arguments:
@@ -2615,14 +2619,14 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   ButtonPressed:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2342499832676457026}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: OnHandPressTriggered
         m_Mode: 1
         m_Arguments:
@@ -2630,11 +2634,11 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2342499832676457053}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
@@ -2642,14 +2646,14 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   ButtonReleased:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2342499832676457026}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: OnHandPressCompleted
         m_Mode: 1
         m_Arguments:
@@ -2657,11 +2661,11 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2342499832676457053}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
@@ -2669,7 +2673,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
   movingButtonIconText: {fileID: 6010257087023965276}
@@ -2687,8 +2691,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 881d1ff8f009f5148b9f192e6ba31223, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   routingTarget: {fileID: 5170470620392535295}
   InteractableOnClick: 1
 --- !u!114 &5170470620392535295
@@ -2701,8 +2705,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
   isGlobal: 0
@@ -2746,7 +2750,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2499341187878200270}
-          m_TargetAssemblyTypeName: 
+          m_TargetAssemblyTypeName:
           m_MethodName: AnimateInHighlightPlate
           m_Mode: 1
           m_Arguments:
@@ -2754,7 +2758,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: 
+            m_StringArgument:
             m_BoolArgument: 0
           m_CallState: 2
     ClassName: InteractableOnFocusReceiver
@@ -2766,7 +2770,7 @@ MonoBehaviour:
       Name: OnFocusOff
       Tooltip: Focus has left the object
       IntValue: 0
-      StringValue: 
+      StringValue:
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -2790,7 +2794,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 2499341187878200270}
-            m_TargetAssemblyTypeName: 
+            m_TargetAssemblyTypeName:
             m_MethodName: AnimateOutHighlightPlate
             m_Mode: 1
             m_Arguments:
@@ -2798,7 +2802,7 @@ MonoBehaviour:
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
-              m_StringArgument: 
+              m_StringArgument:
               m_BoolArgument: 0
             m_CallState: 2
       Options: []
@@ -2806,7 +2810,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2342499832676457053}
-          m_TargetAssemblyTypeName: 
+          m_TargetAssemblyTypeName:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
@@ -2814,7 +2818,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: 
+            m_StringArgument:
             m_BoolArgument: 0
           m_CallState: 2
     ClassName: InteractableOnPressReceiver
@@ -2826,7 +2830,7 @@ MonoBehaviour:
       Name: OnRelease
       Tooltip: The button is released
       IntValue: 0
-      StringValue: 
+      StringValue:
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -2850,7 +2854,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 2342499832676457053}
-            m_TargetAssemblyTypeName: 
+            m_TargetAssemblyTypeName:
             m_MethodName: PlayOneShot
             m_Mode: 2
             m_Arguments:
@@ -2858,7 +2862,7 @@ MonoBehaviour:
               m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
-              m_StringArgument: 
+              m_StringArgument:
               m_BoolArgument: 0
             m_CallState: 2
       Options: []
@@ -2867,7 +2871,7 @@ MonoBehaviour:
       Name: InteractionFilter
       Tooltip: Specify whether press event is for near or far interaction
       IntValue: 2
-      StringValue: 
+      StringValue:
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -3002,8 +3006,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   eventsToReceive: 0
   debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
@@ -3021,8 +3025,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cf098d972aeb8b4daa70b00381af006, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   mainLabelText: {fileID: 5310343158456491989}
   interactable: {fileID: 5170470620392535295}
   seeItSayItLabel: {fileID: 2598636607231501959}
@@ -3049,8 +3053,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9fa567196be5384d97d59b68a43fd26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   textObject: {fileID: 0}
   CaptionLib: {fileID: 0}
   CaptionCon: {fileID: 0}
@@ -3064,8 +3068,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   autoConstraintSelection: 1
   selectedConstraints: []
 --- !u!114 &97037024983480262
@@ -3078,8 +3082,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 181cd563a8349c34ea8978b0bc8d9c7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   hostTransform: {fileID: 8908215704997351500}
   manipulationType: 3
   twoHandedManipulationType: 7
@@ -3121,7 +3125,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   ShowTetherWhenManipulating: 0
   IsBoundsHandles: 0
