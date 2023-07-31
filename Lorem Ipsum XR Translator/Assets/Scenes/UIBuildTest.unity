@@ -1017,7 +1017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
       propertyPath: m_text
-      value: ANALYSE
+      value: Analyse
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
       propertyPath: m_fontSize
@@ -1030,6 +1030,10 @@ PrefabInstance:
     - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
       propertyPath: m_margin.z
       value: -0.069740914
+      objectReference: {fileID: 0}
+    - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
       propertyPath: m_fontSizeBase
@@ -6634,6 +6638,7 @@ MonoBehaviour:
   CaptionController: {fileID: 2047144660}
   DebugText: {fileID: 1034932021}
   DebugQuad: {fileID: 1193252452}
+  captionControlButton: {fileID: 7728042104586672877}
 --- !u!4 &2047144662
 Transform:
   m_ObjectHideFlags: 0
@@ -8124,6 +8129,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CaptionControlButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6364899553994412579, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6364899553994412583, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -8134,11 +8143,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6364899553994412587, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.37
+      value: 0.4104
       objectReference: {fileID: 0}
     - target: {fileID: 6364899553994412587, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.27
+      value: 0.1901
       objectReference: {fileID: 0}
     - target: {fileID: 6364899553994412587, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8174,6 +8183,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
+--- !u!1 &7728042104586672877 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6364899553994412579, guid: fd1f38d31e3ce2240a23456d4b2c9b9e, type: 3}
+  m_PrefabInstance: {fileID: 7728042104586672876}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &8291708631711440166
 MeshRenderer:
   m_ObjectHideFlags: 0

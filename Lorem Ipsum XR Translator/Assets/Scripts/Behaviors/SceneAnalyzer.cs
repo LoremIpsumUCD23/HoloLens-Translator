@@ -13,6 +13,7 @@ public class SceneAnalyzer : MonoBehaviour
     public CaptionController CaptionController;
     public TextMeshPro DebugText;
     public GameObject DebugQuad;
+    public GameObject captionControlButton;
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
@@ -154,7 +155,7 @@ public class SceneAnalyzer : MonoBehaviour
         DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
-
+        captionControlButton.SetActive(true);
         foreach (DetectedObject detectedObject in detectedObjects)
         {
 
