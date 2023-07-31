@@ -21,10 +21,7 @@ namespace STT
         /// </summary>
         public async Task<string> SSTRequest()
         {
-            /// <summary>
-            /// This debug log provides a message when the Button is pressed
-            /// </summary>
-            Debug.Log("Button was pressed.");
+            
 
             /// <summary>
             /// Here a SpeechConfig object is created using a subscription key (retrieved from Secrets.GetSTTSpeechSDKKey()) and the service region.

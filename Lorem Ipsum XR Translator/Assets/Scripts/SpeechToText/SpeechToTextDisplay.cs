@@ -151,27 +151,30 @@ namespace STT
             }
         }
 
-         /// <summary>
-        ///TranslationResponse,TranslationItem and Wrapper these are serializable helper classes used to deserialize the JSON response from the Azure Translator service.
-        /// It requests Azure's Speech to Text service and translation service to recognize speech and then displays the recognized and translated text in the tooltips.
-        /// </summary>
-        [System.Serializable]
-        public class TranslationResponse
-        {
-            public TranslationItem[] translations;
-        }
+         
+    }
+    
+       
+    /// <summary>
+    ///TranslationResponse,TranslationItem and Wrapper these are serializable helper classes used to deserialize the JSON response from the Azure Translator service.
+    /// It requests Azure's Speech to Text service and translation service to recognize speech and then displays the recognized and translated text in the tooltips.
+    /// </summary>
+    [System.Serializable]
+    public class TranslationResponse
+    {
+        public TranslationItem[] translations;
+    }
 
-        [System.Serializable]
-        public class TranslationItem
+    [System.Serializable]
+    public class TranslationItem
         {
             public string text;
             public string to;
         }
 
-        [System.Serializable]
-        public class Wrapper
+    [System.Serializable]
+    public class Wrapper
         {
             public TranslationResponse[] array;
         }
-    }
 }
