@@ -9,5 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SpeechToText.unity
     guid: f697a5a6ce5df9b4bb5326ac00ce33fb
   m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: eb774bd4a9127e0498741f4eb86810ee, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 5ec0bd620e80d244392909c87623c389, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: b5c12b68757f7124581fa590b84da846, type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 9ad56b10b4b000c49af812713fc312cc, type: 2}

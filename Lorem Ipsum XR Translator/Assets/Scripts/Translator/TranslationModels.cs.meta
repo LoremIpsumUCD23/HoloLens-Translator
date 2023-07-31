@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Lorem Ipsum XR Translator/Assets/Scripts/Translator/TranslationModels.cs.meta
 guid: 67ae9d9ece6e10942a07f98459de83d4
+========
+guid: 845a6d26b516545458dc174b66b8e7f0
+>>>>>>>> origin/ui-fix:Lorem Ipsum XR Translator/Assets/Scripts/Behaviors/ToggleActive.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
