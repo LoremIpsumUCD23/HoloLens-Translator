@@ -1,4 +1,4 @@
-using Config;
+﻿using Config;
 using Description;
 using System;
 using System.Collections;
@@ -26,7 +26,7 @@ public class CaptionLibrary : MonoBehaviour
 
     // Strings used for string processing logic (may be better ways to handle some of this)
     string holdString = "Processing...";
-    string separator = "<|>";
+    string separator = "🙄";
 
     // This should be moved to some other translation settings class later.
     // References to the Language Settings
