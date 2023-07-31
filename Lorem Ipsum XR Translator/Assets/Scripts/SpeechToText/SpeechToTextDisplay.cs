@@ -167,14 +167,14 @@ namespace STT
 
     [System.Serializable]
     public class TranslationItem
-        {
+    {
         public string text;
         public string to;
-        }
+    }
 
     [System.Serializable]
     public class Wrapper
     {
-    public TranslationResponse[] array;
+        public TranslationResponse[] array;
     }
 }
