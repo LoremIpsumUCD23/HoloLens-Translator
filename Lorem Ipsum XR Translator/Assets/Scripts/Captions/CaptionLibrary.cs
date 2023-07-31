@@ -29,7 +29,7 @@ public class CaptionLibrary : MonoBehaviour
 
     // Strings used for string processing logic (may be better ways to handle some of this)
     string holdString = "Processing...";
-    string separator = "<->";
+    string separator = ":";
 
     // This should be moved to some other translation settings class later.
     // References to the Language Settings
@@ -116,7 +116,7 @@ public class CaptionLibrary : MonoBehaviour
         else
         {
             // Request a new description. It's diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
-            //descriptions.Put(title, holdString);
+            descriptions.Put(title, holdString);
 
             if (this._rand.NextDouble() > 0.5)
             {
@@ -162,7 +162,7 @@ public class CaptionLibrary : MonoBehaviour
         if (returned[1] != null)
         {
             // The cache is diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
-            //descriptions.Put(returned[0], returned[1]);
+            descriptions.Put(returned[0], returned[1]);
             string toTranslate = returned[0] + separator + returned[1];
             StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
         }
@@ -185,7 +185,7 @@ public class CaptionLibrary : MonoBehaviour
         if (returned[1] != null)
         {
             // The cache is diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
-            //descriptions.Put(returned[0], returned[1]);
+            descriptions.Put(returned[0], returned[1]);
             string toTranslate = returned[0] + separator + returned[1];
             StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
         }
@@ -203,10 +203,10 @@ public class CaptionLibrary : MonoBehaviour
     {
         if (returned[1] != null)
         {
-            string[] original = returned[0].Split(separator);
-            string[] results = returned[1].Split(separator);
-            titleTranslations.Put(original[0], results[0]);
-            descriptionTranslations.Put(original[0], results[1]);
+            string[] parsedOriginal = returned[0].Split(separator);
+            string[] parsedTranslations = returned[1].Split(separator);
+            titleTranslations.Put(parsedOriginal[0], parsedTranslations[0]);
+            descriptionTranslations.Put(parsedOriginal[0], parsedTranslations[1]);
         }
         else
         {

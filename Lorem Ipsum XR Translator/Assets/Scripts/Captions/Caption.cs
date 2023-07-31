@@ -10,10 +10,10 @@ public class Caption : MonoBehaviour
 
     string secondaryLanguage;
 
-    string primaryTitle;
-    string translatedTitle;
-    string primaryDescription;
-    string translatedDescription;
+    public string primaryTitle;
+    public string translatedTitle;
+    public string primaryDescription;
+    public string translatedDescription;
 
     public void SetPrimaryTitle(string pTitle) { primaryTitle = pTitle; SetText(); }
 
