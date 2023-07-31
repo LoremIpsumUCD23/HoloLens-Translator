@@ -171,7 +171,6 @@ public class SceneAnalyzer : MonoBehaviour
             // Cast to find location of object in 3D space (using optical warp, and adjusting camera by virtual offset)
             RaycastHit hit;
             Ray ray = ScreenToWorldRay(warpedPos, worldMatrix, projectionMatrix.inverse, cameraPosition + CAMERA_OFFSET);
-            //Debug.DrawRay(ray.origin, ray.direction, Color.red, 60f);
             
             // Do not collide with other captions
             LayerMask captionMask = LayerMask.GetMask("Captions");
