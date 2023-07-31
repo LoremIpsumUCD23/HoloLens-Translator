@@ -168,8 +168,8 @@ namespace STT
     [System.Serializable]
     public class TranslationItem
         {
-            public string text;
-            public string to;
+        public string text;
+        public string to;
         }
 
     [System.Serializable]
