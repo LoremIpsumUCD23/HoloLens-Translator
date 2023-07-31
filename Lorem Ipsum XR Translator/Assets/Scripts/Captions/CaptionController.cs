@@ -1,6 +1,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 [RequireComponent(typeof(CaptionLibrary))]
 public class CaptionController : MonoBehaviour
@@ -12,13 +13,17 @@ public class CaptionController : MonoBehaviour
     public bool captionActive = true;
 
     CaptionLibrary CaptionLib;
-    List<GameObject> CaptionList;
+
+    List<GameObject> ActiveCaptions;
+    ObjectPool<GameObject> CaptionPool;
 
     // Start is called before the first frame update
     void Start()
     {
         CaptionLib = GetComponent<CaptionLibrary>();
-        CaptionList = new List<GameObject>();
+        ActiveCaptions = new List<GameObject>();
+
+        CaptionPool = new ObjectPool<GameObject>(OnCaptionCreate, OnCaptionGet, OnCaptionRelease, OnCaptionDestroy);
     }
 
     /// <summary>
@@ -26,19 +31,32 @@ public class CaptionController : MonoBehaviour
     /// </summary>
     public void ClearCaptions()
     {
-        // Pooling our caption objects might be more performant?
-        foreach (var c in CaptionList)
+        foreach (GameObject go in ActiveCaptions)
         {
-            Destroy(c);
+            CaptionPool.Release(go);
         }
-        CaptionList.Clear();
+        ActiveCaptions.Clear();
     }
 
+    /// <summary>
+    /// Removes a specified caption that the user has requested to close.
+    /// </summary>
+    /// <param name="caption">Caption reference to be removed</param>
+    public void RemoveCaption(Caption caption)
+    {
+        CaptionPool.Release(caption.gameObject);
+
+        // Need to find caption in current caption list and remove it. Unfortunately O(n) operation
+        // This should be fine since caption list should never be particularly large.
+        ActiveCaptions.Remove(caption.gameObject);
+    }
+
+    /// <summary>
+    /// Show/hide captions based on toggled selections
+    /// </summary>
+    /// <param name="active"></param>
     public void HandleCaptions(bool active)
     {
-        //CaptionControlButton = GetComponent<captionControlButton>();
-        //CaptionControlButton.text = active ? "Show Captions" : "Hide Captions";
-
         foreach (var c in CaptionList)
         {
             c.SetActive(captionActive);
@@ -46,20 +64,78 @@ public class CaptionController : MonoBehaviour
 
         captionActive = !captionActive;
     }
+
     /// <summary>
     /// Creates a new caption object and places it in the world facing towards the player
     /// </summary>
     /// <param name="captionName">The text to be displayed on the caption</param>
     /// <param name="captionLocation">The Vector location of where the caption should be placed</param>
-    public void CreateCaption(string captionName, Vector3 captionLocation)
+    public Caption CreateCaption(string captionName, Vector3 captionLocation)
     {
-        GameObject captionGO = Instantiate(CaptionPrefab, captionLocation,
-            Quaternion.LookRotation(captionLocation - CameraCache.Main.transform.position));
+        // Check the pool for available captions first. If none, make a new one.
+        GameObject captionGO = CaptionPool.Get();
+
+        // Configure our newly created or collected caption
+        captionGO.transform.position = captionLocation;
+        captionGO.transform.rotation = Quaternion.LookRotation(captionLocation - CameraCache.Main.transform.position);
         Caption cap = captionGO.GetComponent<Caption>();
+
         // Setting primary title will initialize the caption object.
         // It will autonomously attempt to fill in its description and translation.
         cap.InitializeCaption(captionName.Split(":")[0], CaptionLib, this);
 
-        CaptionList.Add(cap.gameObject);
+        ActiveCaptions.Add(cap.gameObject);
+
+        // Return the newly created caption object if desired (primarily for testing).
+        return cap;
+    }
+
+    #region Pooling Callbacks
+
+    /// <summary>
+    /// Called when a new caption object needs to be created by the caption pool.
+    /// </summary>
+    /// <returns>GameObject of newly instantiated CaptionPrefab object</returns>
+    GameObject OnCaptionCreate()
+    {
+        return Instantiate(CaptionPrefab);
+    }
+
+    /// <summary>
+    /// Called when a caption is requested. Sets the gameobject to be active.
+    /// </summary>
+    /// <param name="cap">Caption game object being requested</param>
+    void OnCaptionGet(GameObject cap)
+    {
+        cap.SetActive(true);
+    }
+
+    /// <summary>
+    /// Called when caption is released. Sets gameobject to be inactive.
+    /// </summary>
+    /// <param name="cap">Caption game object being released</param>
+    void OnCaptionRelease(GameObject cap)
+    {
+        cap.SetActive(false);
+    }
+
+    /// <summary>
+    /// Destroys the caption game object.
+    /// </summary>
+    /// <param name="cap">Caption game object to be destroyed</param>
+    void OnCaptionDestroy(GameObject cap)
+    {
+        Destroy(cap);
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Clean out our pool on application quit.
+    /// </summary>
+    private void OnApplicationQuit()
+    {
+        ActiveCaptions.Clear();
+        CaptionPool.Clear();
     }
 }
