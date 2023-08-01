@@ -53,7 +53,7 @@ MonoBehaviour:
       axisConstraint: 0
   - localizationKey: 
     keyword: Analyze
-    keyCode: 9
+    keyCode: 0
     action:
       id: 0
       description: None

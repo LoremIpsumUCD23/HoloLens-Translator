@@ -14,6 +14,7 @@ public class SceneAnalyzer : MonoBehaviour
     public TextMeshPro DebugText;
     public GameObject DebugQuad;
     public GameObject captionControlButton;
+    public ParticleSystem LoadingPS;
     bool captionButtonFlag = false;
 
     private PhotoCapture photoCaptureObject = null;
@@ -53,6 +54,10 @@ public class SceneAnalyzer : MonoBehaviour
             captionButtonFlag = true;
         }
         PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
+        if (LoadingPS != null)
+        {
+            LoadingPS.Play();
+        }
     }
 
     /// <summary>
@@ -88,6 +93,10 @@ public class SceneAnalyzer : MonoBehaviour
         else
         {
             DebugText.text = "Unable to start photo mode!";
+            if(LoadingPS != null)
+            {
+                LoadingPS.Stop();
+            }
         }
     }
 
@@ -122,7 +131,11 @@ public class SceneAnalyzer : MonoBehaviour
         }
         else 
         { 
-            DebugText.text = "Failed to save photo to memory"; 
+            DebugText.text = "Failed to save photo to memory";
+            if (LoadingPS != null)
+            {
+                LoadingPS.Stop();
+            }
         }
         // Clean up
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
@@ -150,6 +163,7 @@ public class SceneAnalyzer : MonoBehaviour
         // Record view to image
         yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
             image, this.ProcessAnalysis);
+
     }
 
     /// <summary>
@@ -158,6 +172,10 @@ public class SceneAnalyzer : MonoBehaviour
     /// <param name="detectedObjects">List of objects detected by the image recognition service</param>
     private void ProcessAnalysis(List<DetectedObject> detectedObjects)
     {
+        if (LoadingPS != null)
+        {
+            LoadingPS.Stop();
+        }
         DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
