@@ -114,7 +114,7 @@ public class CaptionLibrary : MonoBehaviour
             string titleTrans = TryGetTitleTranslation(title);
             if (string.IsNullOrEmpty(titleTrans) && result != holdString)
             {
-                Debug.Log("Have description but no current translation. Request retranslation");
+                //Debug.Log("Have description but no current translation. Request retranslation");
                 string toTranslate = title + separator + result;
                 string key = title + "_" + languageSetting.GetSelectedLanguageCode();
                 titleTranslations.Put(key, holdString);
@@ -194,12 +194,13 @@ public class CaptionLibrary : MonoBehaviour
         {
             // The cache is diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
             descriptions.Put(returned[0], returned[1]);
-            string toTranslate = returned[0] + separator + returned[1];
-            StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
+            //string toTranslate = returned[0] + separator + returned[1];
+            //StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
         }
         else
         {
             string result = "Got null. Must be something wrong with Description API client's implementation. Try ChatGPT instead";
+            descriptions.Put(returned[0], "Unable to get a definition.");
             Debug.Log(result);
 
             string prompt = "Definition of " + returned[0];
@@ -217,12 +218,13 @@ public class CaptionLibrary : MonoBehaviour
         {
             // The cache is diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
             descriptions.Put(returned[0], returned[1]);
-            string toTranslate = returned[0] + separator + returned[1];
-            StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
+            //string toTranslate = returned[0] + separator + returned[1];
+            //StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
         }
         else
         {
             Debug.Log("Got null. Must be something wrong with Description API client's implementation");
+            descriptions.Put(returned[0], "Unable to get a definition.");
         }
     }
 
