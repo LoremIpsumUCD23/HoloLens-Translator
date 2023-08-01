@@ -13,9 +13,7 @@ public class SceneAnalyzer : MonoBehaviour
     public CaptionController CaptionController;
     public TextMeshPro DebugText;
     public GameObject DebugQuad;
-    public GameObject captionControlButton;
     public ParticleSystem LoadingPS;
-    bool captionButtonFlag = false;
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
@@ -48,11 +46,6 @@ public class SceneAnalyzer : MonoBehaviour
     public void StartCapture()
     {
         DebugText.text = "Beginning screenshot process";
-        if (!captionButtonFlag)
-        {
-            captionControlButton.SetActive(true);
-            captionButtonFlag = true;
-        }
         PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
         if (LoadingPS != null)
         {
