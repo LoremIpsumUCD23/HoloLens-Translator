@@ -142,7 +142,7 @@ PrefabInstance:
     - target: {fileID: 1537115806125884074, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 11400000, guid: 1227d456a9ee3104b81cdd24fcf43f21, type: 2}
     - target: {fileID: 1537115806125884074, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: m_textAlignment
       value: 65535
@@ -150,7 +150,7 @@ PrefabInstance:
     - target: {fileID: 1537115806125884074, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: -1169305575794041360, guid: 1227d456a9ee3104b81cdd24fcf43f21, type: 2}
     - target: {fileID: 1537115806125884074, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: m_TextStyleHashCode
       value: -1183493901
@@ -170,7 +170,7 @@ PrefabInstance:
     - target: {fileID: 8102129296322141565, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: -1169305575794041360, guid: 1227d456a9ee3104b81cdd24fcf43f21, type: 2}
     - target: {fileID: 8217189920156946147, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -579,11 +579,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8222863950748663225, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22490819
+      value: 0.19908288
       objectReference: {fileID: 0}
     - target: {fileID: 8222863950748663225, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.039725002
+      value: 0.03999707
       objectReference: {fileID: 0}
     - target: {fileID: 8329787883158438443, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
       propertyPath: toolTipText
