@@ -17,54 +17,13 @@ namespace TTS
 
         private SpeechConfig config;
 
-        //Dictionary for TTS language code
-        public Dictionary<string, string> langDict = new Dictionary<string, string>{
-            { "en", "en-GB" },
-            { "ja","ja-JP" },
-            { "bn","ba-IN" },
-            { "hi","hi-IN" },
-            { "ms","ms-MY" }
-        };
-
         private AudioSource audioSource;
-
-        private string otherLanguage = "";
 
         void Start()
         {
             audioSource = gameObject.GetComponent<AudioSource>();
 
             SetConfigAndLanguage();
-        }
-
-        /// <summary>
-        /// Setter for secondary language audio
-        /// </summary>
-        /// <param name="otherLanguageString"></param>
-        public void SetOtherLanguage(string otherLanguageString)
-        {
-            otherLanguage = langDict[otherLanguageString];
-            Debug.Log("TTS: "+ otherLanguage); 
-        }
-
-        /// <summary>
-        /// Getter for secondary language audio
-        /// </summary>
-        /// <returns></returns>
-        public string GetOtherLanguage()
-        {
-            return otherLanguage;
-        }
-
-        /// <summary>
-        /// Set language accent based on the language in view
-        /// </summary>
-        /// <param name="translateDescription"></param>
-        public void SetLocalAccent(bool translateDescription)
-        {
-            localAccent = translateDescription ? "en-GB" : otherLanguage;
-
-            config.SpeechSynthesisLanguage = localAccent;
         }
 
         void SetConfigAndLanguage()

@@ -23,14 +23,6 @@ namespace ObjectDetection
             w = (int)rectJson["w"];
             h = (int)rectJson["h"];
         }
-
-        public Rectangle(int x, int y, int w, int h)
-        {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-        }
     }
 
     /// <summary>
@@ -47,13 +39,6 @@ namespace ObjectDetection
             rectangle = new Rectangle((JObject)objJson["rectangle"]);
             objectName = (string)objJson["object"];
             confidence = (float)objJson["confidence"];
-        }
-
-        public DetectedObject(Rectangle rec, string name, float confidence)
-        {
-            this.rectangle = rec;
-            this.objectName = name;
-            this.confidence = confidence;
         }
     }
 
@@ -95,30 +80,6 @@ namespace ObjectDetection
             foreach (JObject obj in objectsJson)
             {
                 objects.Add(new DetectedObject(obj));
-            }
-        }
-    }
-
-    /// <summary>
-    /// Response parser for Custom Object Detection
-    /// </summary>
-    public class CustomObjDetectionResponse
-    {
-        public List<DetectedObject> objects;
-
-        public CustomObjDetectionResponse(string jsonResponse)
-        {
-            JObject jsonMainResponse = JObject.Parse(jsonResponse);
-
-            objects = new List<DetectedObject>();
-            JArray objectsJson = (JArray)jsonMainResponse["predictions"];
-            foreach (JObject obj in objectsJson)
-            {
-                objects.Add(new DetectedObject(
-                  new Rectangle((int)obj["x"], (int)obj["y"], (int)obj["w"], (int)obj["h"]),
-                  (string)obj["label"],
-                  (float)obj["confidence"])
-                );
             }
         }
     }
