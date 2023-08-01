@@ -84,6 +84,7 @@ namespace Description
                         break;
                     // No Error
                     case UnityWebRequest.Result.Success:
+                        Debug.Log(webRequest.downloadHandler.text);
                         List<Item> res = JsonConvert.DeserializeObject<List<Item>>(webRequest.downloadHandler.text);
                         if (res.Count == 0){
                             returnString[1] = "No such word";

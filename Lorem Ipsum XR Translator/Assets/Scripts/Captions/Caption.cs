@@ -34,6 +34,9 @@ public class Caption : MonoBehaviour
     public void InitializeCaption(string pTitle, CaptionLibrary captionLib, CaptionController captionCon)
     {
         primaryTitle = pTitle;
+        SetPrimaryDescription("");
+        SetTranslatedTitle("");
+        SetTranslatedDescription("");
         CaptionLib = captionLib;
         CaptionCon = captionCon;
         SetText();
@@ -90,12 +93,12 @@ public class Caption : MonoBehaviour
         if (!string.IsNullOrEmpty(translatedTitle))
         {
             textObject.text = translatedTitle;
-            Debug.Log(textObject.text);
+            //Debug.Log(textObject.text);
         }
         else // Set our caption with the primary text while we await our translation.
         {
             textObject.text = primaryTitle;
-            Debug.Log(textObject.text);
+            //Debug.Log(textObject.text);
         }
     }
 

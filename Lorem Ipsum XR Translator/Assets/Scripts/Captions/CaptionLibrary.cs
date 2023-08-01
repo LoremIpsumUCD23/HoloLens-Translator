@@ -81,7 +81,7 @@ public class CaptionLibrary : MonoBehaviour
     /// </summary>
     private void ConfirmLanguageSelection()
     {
-        if (string.IsNullOrEmpty(languageSetting.GetSelectedLanguage()))
+        if (string.IsNullOrEmpty(languageSetting.GetSelectedLanguageCode()))
         {
             Debug.Log("CL: No language selected. Current target language code is: " + targetLanguages[0]);
             return;
@@ -111,6 +111,15 @@ public class CaptionLibrary : MonoBehaviour
         string result = descriptions.Get(title);
         if (!string.IsNullOrEmpty(result))
         {
+            string titleTrans = TryGetTitleTranslation(title);
+            if (string.IsNullOrEmpty(titleTrans) && result != holdString)
+            {
+                Debug.Log("Have description but no current translation. Request retranslation");
+                string toTranslate = title + separator + result;
+                string key = title + "_" + languageSetting.GetSelectedLanguageCode();
+                titleTranslations.Put(key, holdString);
+                StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
+            }
             return result;
         }
         else
@@ -140,7 +149,18 @@ public class CaptionLibrary : MonoBehaviour
     /// <returns>Hold String or translated title</returns>
     public string TryGetTitleTranslation(string title)
     {
-        return titleTranslations.Get(title);
+        string key = title + "_" + languageSetting.GetSelectedLanguageCode();
+        string result = titleTranslations.Get(key);
+        if (!string.IsNullOrEmpty(result))
+        {
+            return result;
+        }
+        else
+        {
+            //titleTranslations.Put(key, holdString);
+
+            return null;
+        }
     }
 
     /// <summary>
@@ -150,7 +170,18 @@ public class CaptionLibrary : MonoBehaviour
     /// <returns>Hold String or translated description</returns>
     public string TryGetDescriptionTranslation(string title)
     {
-        return descriptionTranslations.Get(title);
+        string key = title + "_" + languageSetting.GetSelectedLanguageCode();
+        string result = descriptionTranslations.Get(key);
+        if (!string.IsNullOrEmpty (result))
+        {
+            return result;
+        }
+        else
+        {
+            //descriptionTranslations.Put(key, holdString);
+
+            return null;
+        }
     }
 
     /// <summary>
@@ -205,8 +236,10 @@ public class CaptionLibrary : MonoBehaviour
         {
             string[] parsedOriginal = returned[0].Split(separator);
             string[] parsedTranslations = returned[1].Split(separator);
-            titleTranslations.Put(parsedOriginal[0], parsedTranslations[0]);
-            descriptionTranslations.Put(parsedOriginal[0], parsedTranslations[1]);
+            string key = parsedOriginal[0] + "_" + languageSetting.GetSelectedLanguageCode();
+            Debug.Log(key);
+            titleTranslations.Put(key, parsedTranslations[0]);
+            descriptionTranslations.Put(key, parsedTranslations[1]);
         }
         else
         {
