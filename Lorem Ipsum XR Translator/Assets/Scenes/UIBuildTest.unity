@@ -1606,8 +1606,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5931198887527984356, guid: 478732197b53dee4694480aac1a7c98c, type: 3}
       propertyPath: m_text
-      value: '1. Objects can be identified using by saying "analyse", or by clicking
-        on the analyse button on the menu.
+      value: '1. Objects can be identified by saying "analyse", or by clicking on
+        the analyse button on the menu below.
 
 
         2. After analysing, captions
@@ -1616,7 +1616,12 @@ PrefabInstance:
 
 
         3. Play around with the
-        buttons on the panels to see what they do.'
+        buttons on the panels to see what they do.
+
+
+        4. You could select
+        another language to work with and even explore speech-to-text from the main
+        menu.'
       objectReference: {fileID: 0}
     - target: {fileID: 5931198887527984356, guid: 478732197b53dee4694480aac1a7c98c, type: 3}
       propertyPath: m_textAlignment
@@ -18974,15 +18979,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'This application helps to identify objects around you and provides a description
-    of it.
+    of it along with its pronounciations.
 
 
-    There is a menu in front of you that will provide additional help
-    in navigation.
+    There is a menu in front of you that
+    will provide additional help in navigation.
 
 
-    But before you begin, you should set your preferred second
-    language.'
+    But before you begin, you should
+    set your preferred second language.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
