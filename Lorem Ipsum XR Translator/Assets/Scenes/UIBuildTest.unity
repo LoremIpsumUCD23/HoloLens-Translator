@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.1802834, g: 0.22571361, b: 0.30692232, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12057,7 +12057,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 810851548559892812}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0038, y: 0.0396, z: 0}
+  m_LocalPosition: {x: -0.0458, y: 0.1277, z: 0}
   m_LocalScale: {x: 0.4, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12375,7 +12375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &810851548281615061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14488,7 +14488,6 @@ MonoBehaviour:
   firstConfirmButton: {fileID: 1245749453550189546}
   confirmButton: {fileID: 2665275990627999294}
   cancelButton: {fileID: 6592221931117660837}
-  englishButton: {fileID: 679466924275043161}
   hindiButton: {fileID: 679466924156806154}
   malayButton: {fileID: 679466924908811998}
   japaneseButton: {fileID: 679466923941392411}
@@ -33860,6 +33859,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3291731557105409980, guid: 3a6edff71a286544d93e4dcbc1753967, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3291731557474717756, guid: 3a6edff71a286544d93e4dcbc1753967, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -34096,6 +34099,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 7402068685763079348, guid: 3a6edff71a286544d93e4dcbc1753967, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.042
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402068685763079348, guid: 3a6edff71a286544d93e4dcbc1753967, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.055
+      objectReference: {fileID: 0}
     - target: {fileID: 7438233391112783818, guid: 3a6edff71a286544d93e4dcbc1753967, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -34151,6 +34162,10 @@ PrefabInstance:
     - target: {fileID: 7655456249329284705, guid: 3a6edff71a286544d93e4dcbc1753967, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7655456249329284705, guid: 3a6edff71a286544d93e4dcbc1753967, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7700266116898485355, guid: 3a6edff71a286544d93e4dcbc1753967, type: 3}
       propertyPath: m_Layer

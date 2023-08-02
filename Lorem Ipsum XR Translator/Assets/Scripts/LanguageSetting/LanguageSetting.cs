@@ -10,7 +10,7 @@ public class LanguageSetting : MonoBehaviour
     public PressableButton firstConfirmButton;
     public PressableButton confirmButton;
     public PressableButton cancelButton;
-    public PressableButton englishButton;
+    //public PressableButton englishButton;
     public PressableButton hindiButton;
     public PressableButton malayButton;
     public PressableButton japaneseButton;
@@ -20,7 +20,7 @@ public class LanguageSetting : MonoBehaviour
     private Dictionary<string, string> _languageCodeDictionary = new Dictionary<string, string>();
 
     // Variable to store the selected language
-    private string selectedLanguage = "";
+    private string selectedLanguage = "English";
 
     // Method to return the selected language
     public string GetSelectedLanguage()
@@ -53,7 +53,7 @@ public class LanguageSetting : MonoBehaviour
         //japaneseButton.ButtonPressed.AddListener(() => SetLanguage("Japanese"));
         //bengaliButton.ButtonPressed.AddListener(() => SetLanguage("Bengali"));
 
-        englishButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("English"));
+        //englishButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("English"));
         hindiButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Hindi"));
         malayButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Malay"));
         japaneseButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Japanese"));
