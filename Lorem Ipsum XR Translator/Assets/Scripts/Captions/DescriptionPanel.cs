@@ -59,5 +59,10 @@ public class DescriptionPanel : MonoBehaviour
     public void PlayAudioDescription()
     {
         ttsObject.PlayAudio(titleText.text+"\n\n"+ descriptionText.text);
+
+    }
+
+    public void StopAudioCall() {
+        ttsObject.StopAudio();
     }
 }

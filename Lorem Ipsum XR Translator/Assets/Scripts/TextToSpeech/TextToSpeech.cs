@@ -37,6 +37,13 @@ namespace TTS
             SetConfigAndLanguage();
         }
 
+        public void StopAudio()
+        {
+            if (audioSource != null)
+            {
+                audioSource.Stop();
+            }
+        }
         /// <summary>
         /// Setter for secondary language audio
         /// </summary>

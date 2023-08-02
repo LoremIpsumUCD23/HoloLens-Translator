@@ -120,6 +120,10 @@ public class Caption : MonoBehaviour
         if (CaptionCon.DescriptionPanel != null)
         {
             DescriptionPanel descriptionPanel = CaptionCon.DescriptionPanel.GetComponent<DescriptionPanel>();
+            if (descriptionPanel.ttsObject != null)
+            {
+                descriptionPanel.StopAudioCall();
+            }
             descriptionPanel.captionRef = this;
             descriptionPanel.SetSecondaryLanguage(CaptionLib.GetSecondaryLanguage());
             descriptionPanel.SetText();
