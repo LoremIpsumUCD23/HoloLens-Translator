@@ -14,6 +14,7 @@ public class DescriptionPanel : MonoBehaviour
     public TextMeshPro descriptionText;
     public GameObject switchButtonObject;
     public TextToSpeech ttsObject;
+    public GameObject feedbackSection;
 
     string secondaryLanguage;
 
@@ -62,7 +63,17 @@ public class DescriptionPanel : MonoBehaviour
 
     }
 
-    public void StopAudioCall() {
+    public void StopAudioCall()
+    {
         ttsObject.StopAudio();
+    }
+
+    public void RemoveFeedbackSection()
+    {
+        if (feedbackSection != null)
+        {
+            feedbackSection.SetActive(false);
+        }
+        captionRef.feedbackSent = true;
     }
 }

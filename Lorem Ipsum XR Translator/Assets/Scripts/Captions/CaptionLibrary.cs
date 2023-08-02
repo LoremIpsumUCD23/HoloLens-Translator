@@ -131,11 +131,13 @@ public class CaptionLibrary : MonoBehaviour
 
             if (this._rand.NextDouble() > 0.5)
             {
+                Debug.Log("[INFO] Use dictionary");
                 StartCoroutine(_dictionaryClient.Explain(title, GetDescriptionFromDict));
                 this._descriptionModel = "dictionry";
             }
             else
             {
+                Debug.Log("[INFO] Use chatgpt");
                 StartCoroutine(_dictionaryClient.Explain(title, GetDescriptionFromGPT));
                 this._descriptionModel = "chatgpt";
             }
