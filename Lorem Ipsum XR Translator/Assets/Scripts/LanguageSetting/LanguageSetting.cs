@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 public class LanguageSetting : MonoBehaviour
 {
     // The different buttons for confirming, cancelling and selecting a language
+    public PressableButton firstConfirmButton;
     public PressableButton confirmButton;
     public PressableButton cancelButton;
     public PressableButton englishButton;
@@ -43,6 +44,7 @@ public class LanguageSetting : MonoBehaviour
     private void Start()
     {
         // Add listeners to the buttons for when they are pressed
+        firstConfirmButton.ButtonPressed.AddListener(ConfirmLanguageSelection);
         confirmButton.ButtonPressed.AddListener(ConfirmLanguageSelection);
         cancelButton.ButtonPressed.AddListener(CancelLanguageSelection);
         //englishButton.ButtonPressed.AddListener(() => SetLanguage("English"));

@@ -35,6 +35,7 @@ public class CaptionLibrary : MonoBehaviour
     // References to the Language Settings
     public GameObject SelectLanguagePanel;
     public PressableButton ConfirmButton;
+    public PressableButton firstConfirmButton;
     private LanguageSetting languageSetting;
 
     string originalLanguage = "en";
@@ -70,6 +71,7 @@ public class CaptionLibrary : MonoBehaviour
 
         // Initialise listener for language selection
         languageSetting = SelectLanguagePanel.GetComponent<LanguageSetting>();
+        firstConfirmButton.GetComponent<Interactable>().OnClick.AddListener(ConfirmLanguageSelection);
         ConfirmButton.GetComponent<Interactable>().OnClick.AddListener(ConfirmLanguageSelection);
 
         // Ininitialise a client for sending requests to the feedback server
