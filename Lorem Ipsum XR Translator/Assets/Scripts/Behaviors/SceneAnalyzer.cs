@@ -31,11 +31,17 @@ public class SceneAnalyzer : MonoBehaviour
     private const float OPTICAL_WARP_FACTOR = 0.521f;
     private const float MAX_RAY_DIST = 3.1f;
 
+    // Timer
+    private System.Diagnostics.Stopwatch timer;
+    private System.Diagnostics.Stopwatch apiTimer;
+
     // Start is called before the first frame update
     void Start()
     {
         CaptionController = GetComponent<CaptionController>();
         _objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey());
+        timer = new System.Diagnostics.Stopwatch();
+        apiTimer = new System.Diagnostics.Stopwatch();
     }
 
     /// <summary>
@@ -46,6 +52,10 @@ public class SceneAnalyzer : MonoBehaviour
     public void StartCapture()
     {
         DebugText.text = "Beginning screenshot process";
+
+        Debug.Log("Timer starting..");
+        timer.Start();
+
         PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
         if (LoadingPS != null)
         {
@@ -153,6 +163,7 @@ public class SceneAnalyzer : MonoBehaviour
         textureWidth = image.width;
         textureHeight = image.height; 
         DebugText.text = "Analyzing Image";
+        apiTimer.Start();
         // Record view to image
         yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
             image, this.ProcessAnalysis);
@@ -203,6 +214,9 @@ public class SceneAnalyzer : MonoBehaviour
 
             // Create caption at that location
             CaptionController.CreateCaption(detectedObject.objectName + ": " + detectedObject.confidence, targetLocation);
+
+            Debug.Log("API Call: " + apiTimer.ElapsedMilliseconds + " ms");
+            Debug.Log("Total Elapsed: " + timer.ElapsedMilliseconds + " ms");
         }
     }
 
