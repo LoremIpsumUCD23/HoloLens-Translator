@@ -3,6 +3,7 @@ using ObjectDetection;
 using Feedback;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class SceneAnalyzer : MonoBehaviour
     private IObjectDetectorClient _objectDetectorGCPClient;
     private string _detectionService = "unknown";
     private System.Random _rand;
-    private double _probAzure = 0.5;
+    private double _probAzure = 0.0;
 
     // Feedback
     private FeedbackClient _feedbackClient;
@@ -35,6 +36,7 @@ public class SceneAnalyzer : MonoBehaviour
     private Vector3 cameraPosition;
     private float textureWidth;
     private float textureHeight;
+    private bool analyzing = false;
 
     // Constants for camera offset and optical warp based on device testing
     private Vector3 CAMERA_OFFSET = new Vector3(0, 0.009f, 0.05f);
@@ -65,6 +67,13 @@ public class SceneAnalyzer : MonoBehaviour
     /// There might be an issue with camera capture occurring on main thread, and not asynchronously at all.
     public void StartCapture()
     {
+        // Don't allow multiple attempts at capturing until the capture process is complete.
+        if (analyzing)
+        {
+            return;
+        }
+
+        analyzing = true;
         DebugText.text = "Beginning screenshot process";
 
         Debug.Log("Timer starting..");
@@ -110,7 +119,9 @@ public class SceneAnalyzer : MonoBehaviour
         else
         {
             DebugText.text = "Unable to start photo mode!";
-            if(LoadingPS != null)
+            analyzing = false;
+            photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
+            if (LoadingPS != null)
             {
                 LoadingPS.Stop();
             }
@@ -122,7 +133,7 @@ public class SceneAnalyzer : MonoBehaviour
     /// </summary>
     /// <param name="result">The result of the photo capture operation</param>
     /// <param name="photoCaptureFrame">The captured photo data</param>
-    private void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
+    private async void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
         if (result.success)
         {
@@ -144,11 +155,12 @@ public class SceneAnalyzer : MonoBehaviour
             projectionMatrix = camera.projectionMatrix;
             cameraPosition = camera.transform.position;
 
-            StartCoroutine(AnalyzeImage());
+           await AnalyzeImage();
         }
         else 
         { 
             DebugText.text = "Failed to save photo to memory";
+            analyzing = false;
             if (LoadingPS != null)
             {
                 LoadingPS.Stop();
@@ -172,7 +184,7 @@ public class SceneAnalyzer : MonoBehaviour
     /// Coroutine to analyze an image. This sends the image off to our image recognition service and awaits the result
     /// </summary>
     /// <returns>IEnumerator waits on image processing result from Azure</returns>
-    public IEnumerator AnalyzeImage()
+    public async Task AnalyzeImage()
     {
         textureWidth = image.width;
         textureHeight = image.height; 
@@ -183,14 +195,14 @@ public class SceneAnalyzer : MonoBehaviour
         {
             Debug.Log("Use Azure Object Detection");
             this._detectionService = "Azure";
-            yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
-           image, this.ProcessAnalysis);
+            await this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
+            image, this.ProcessAnalysis);
         }
         else
         {
             Debug.Log("Use GCP Object Detection");
             this._detectionService = "GCP";
-            yield return this._objectDetectorGCPClient.DetectObjects("", image, this.ProcessAnalysis);
+            await this._objectDetectorGCPClient.DetectObjects("", image, this.ProcessAnalysis);
         }
     }
 
@@ -204,6 +216,7 @@ public class SceneAnalyzer : MonoBehaviour
         {
             LoadingPS.Stop();
         }
+        analyzing = false;
         DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
