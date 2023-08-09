@@ -74,7 +74,7 @@ MonoBehaviour:
       axisConstraint: 0
   - localizationKey: 
     keyword: Help
-    keyCode: 0
+    keyCode: 9
     action:
       id: 0
       description: None

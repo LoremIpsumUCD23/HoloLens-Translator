@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using TMPro;
 
 // Unity class to handle the language settings
 public class LanguageSetting : MonoBehaviour
@@ -15,6 +16,9 @@ public class LanguageSetting : MonoBehaviour
     public PressableButton malayButton;
     public PressableButton japaneseButton;
     public PressableButton bengaliButton;
+
+    // Field for Feedback Text
+    [SerializeField] TextMeshPro FeedbackText;
 
     // A dictionary is used to store languages as keys and their corresponding Azure language codes as values
     private Dictionary<string, string> _languageCodeDictionary = new Dictionary<string, string>();
@@ -73,6 +77,7 @@ public class LanguageSetting : MonoBehaviour
     private void SetLanguage(string language)
     {
         selectedLanguage = language;
+        FeedbackText.text = "Current Language Selected : " + GetSelectedLanguage();
         Debug.Log("Language selected: " + language);
     }
 
