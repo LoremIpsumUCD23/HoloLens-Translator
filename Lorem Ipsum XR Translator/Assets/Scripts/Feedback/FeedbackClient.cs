@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 
 namespace Feedback
@@ -28,7 +29,13 @@ namespace Feedback
         /// </example>
         public IEnumerator PutFeedback(string service, string model, bool isPositive)
         {
-            byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{\"model\": \"" + model + "\", \"is_positive\": \"" + isPositive.ToString().ToLower() + "\"}");
+            var data = new { model = model, is_positive = isPositive };
+
+            string jsonString = JsonConvert.SerializeObject(data);
+
+            Debug.Log("Feedback Request: " + jsonString);
+
+            byte[] byteData = System.Text.Encoding.UTF8.GetBytes(jsonString);
 
             // Create a web request and send it (along with our bytedata) to the Azure recognition service
             using (UnityWebRequest client = new UnityWebRequest(host + "/feedback/" + service, "POST"))

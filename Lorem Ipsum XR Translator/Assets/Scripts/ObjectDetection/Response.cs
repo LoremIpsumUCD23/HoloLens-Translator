@@ -122,4 +122,42 @@ namespace ObjectDetection
             }
         }
     }
+
+    public class GCPObjDetectionResponse
+    {
+        public List<DetectedObject> objects = new List<DetectedObject>();
+
+        public GCPObjDetectionResponse(string res, int origWidth, int origHeight)
+        {
+            JObject resObj = JObject.Parse(res);
+            JArray responses = (JArray)resObj["responses"];
+            if (responses == null || responses.Count == 0)
+            {
+                return;
+            }
+
+            JObject firstObj = (JObject)responses[0];
+            JArray annotations = (JArray)firstObj["localizedObjectAnnotations"];
+            if (annotations == null || annotations.Count == 0)
+            {
+                return;
+            }
+
+            foreach (JObject obj in annotations)
+            {
+                JObject boundingPoly =  (JObject)obj["boundingPoly"];
+                JArray normalizedVertices = (JArray)boundingPoly["normalizedVertices"];
+                // TODO: Calculate rectangles using origWidth and origHeight
+                objects.Add(new DetectedObject(
+                  new Rectangle(
+                      (int)(origWidth  *  (float)normalizedVertices[0]["x"]),
+                      (int)(origHeight *  (float)normalizedVertices[0]["y"]),
+                      (int)(origWidth  * ((float)normalizedVertices[1]["x"] - (float)normalizedVertices[0]["x"])),
+                      (int)(origHeight * ((float)normalizedVertices[2]["y"] - (float)normalizedVertices[0]["y"]))),
+                  (string)obj["name"],
+                  (float)obj["score"])
+                );
+            }
+        }
+    }
 }

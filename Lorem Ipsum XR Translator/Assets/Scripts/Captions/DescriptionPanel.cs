@@ -14,7 +14,8 @@ public class DescriptionPanel : MonoBehaviour
     public TextMeshPro descriptionText;
     public GameObject switchButtonObject;
     public TextToSpeech ttsObject;
-    public GameObject feedbackSection;
+    public GameObject detectionFeedbackSection;
+    public GameObject descriptionFeedbackSection;
 
     string secondaryLanguage;
 
@@ -68,12 +69,23 @@ public class DescriptionPanel : MonoBehaviour
         ttsObject.StopAudio();
     }
 
-    public void RemoveFeedbackSection()
+    public void RemoveDetectionFeedbackSection()
     {
-        if (feedbackSection != null)
+        if (detectionFeedbackSection != null)
         {
-            feedbackSection.SetActive(false);
+            detectionFeedbackSection.SetActive(false);
         }
-        captionRef.feedbackSent = true;
+        captionRef.detectionFeedbackSent = true;
     }
+
+
+    public void RemoveDescriptionFeedbackSection()
+    {
+        if (descriptionFeedbackSection != null)
+        {
+            descriptionFeedbackSection.SetActive(false);
+        }
+        captionRef.descriptionFeedbackSent = true;
+    }
+
 }

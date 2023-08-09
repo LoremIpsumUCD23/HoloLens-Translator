@@ -14,7 +14,8 @@ public class Caption : MonoBehaviour
     public string translatedTitle;
     public string primaryDescription;
     public string translatedDescription;
-    public bool feedbackSent;
+    public bool detectionFeedbackSent;
+    public bool descriptionFeedbackSent;
 
     public void SetPrimaryTitle(string pTitle) { primaryTitle = pTitle; SetText(); }
 
@@ -40,7 +41,8 @@ public class Caption : MonoBehaviour
         SetTranslatedDescription("");
         CaptionLib = captionLib;
         CaptionCon = captionCon;
-        feedbackSent = false;
+        detectionFeedbackSent = false;
+        descriptionFeedbackSent = false;
         SetText();
     }
 
@@ -130,9 +132,13 @@ public class Caption : MonoBehaviour
             descriptionPanel.SetSecondaryLanguage(CaptionLib.GetSecondaryLanguage());
             descriptionPanel.SetText();
             CaptionCon.DescriptionPanel.SetActive(true);
-            if (!feedbackSent)
+            if (!detectionFeedbackSent)
             {
-                descriptionPanel.feedbackSection.SetActive(true);
+                descriptionPanel.detectionFeedbackSection.SetActive(true);
+            }
+            if (!descriptionFeedbackSent)
+            {
+                descriptionPanel.descriptionFeedbackSection.SetActive(true);
             }
         }
     }

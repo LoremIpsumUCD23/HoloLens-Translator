@@ -129,7 +129,7 @@ public class CaptionLibrary : MonoBehaviour
             // Request a new description. It's diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
             descriptions.Put(title, holdString);
 
-            if (this._rand.NextDouble() > 0.5)
+            if (this._rand.NextDouble() > 0.5 && !title.Contains(" "))
             {
                 Debug.Log("[INFO] Use dictionary");
                 StartCoroutine(_dictionaryClient.Explain(title, GetDescriptionFromDict));
@@ -138,7 +138,7 @@ public class CaptionLibrary : MonoBehaviour
             else
             {
                 Debug.Log("[INFO] Use chatgpt");
-                StartCoroutine(_dictionaryClient.Explain(title, GetDescriptionFromGPT));
+                StartCoroutine(_chatGPTClient.Explain(title, GetDescriptionFromGPT));
                 this._descriptionModel = "chatgpt";
             }
 
