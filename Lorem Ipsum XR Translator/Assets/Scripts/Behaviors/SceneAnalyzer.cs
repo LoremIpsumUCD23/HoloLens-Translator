@@ -1,5 +1,6 @@
 using Config;
 using ObjectDetection;
+using Feedback;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Windows.WebCam;
 using Microsoft.MixedReality.Toolkit.Utilities;
+
+
 
 public class SceneAnalyzer : MonoBehaviour
 {
@@ -17,6 +20,13 @@ public class SceneAnalyzer : MonoBehaviour
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
+    private IObjectDetectorClient _objectDetectorGCPClient;
+    private string _detectionService = "unknown";
+    private System.Random _rand;
+    private double _probAzure = 0.5;
+
+    // Feedback
+    private FeedbackClient _feedbackClient;
 
     // Data for scene analysis:
     private Texture2D image;
@@ -39,7 +49,11 @@ public class SceneAnalyzer : MonoBehaviour
     void Start()
     {
         CaptionController = GetComponent<CaptionController>();
+        // For randomising Azure and GCP calls
+        _rand = new System.Random();
         _objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey());
+        _objectDetectorGCPClient = new GCPObjectDetection(Secrets.GetGCPCloudVisionKey());
+        _feedbackClient = new FeedbackClient(Secrets.GetFeedbackServerEndpoint());
         timer = new System.Diagnostics.Stopwatch();
         apiTimer = new System.Diagnostics.Stopwatch();
     }
@@ -164,10 +178,20 @@ public class SceneAnalyzer : MonoBehaviour
         textureHeight = image.height; 
         DebugText.text = "Analyzing Image";
         apiTimer.Start();
-        // Record view to image
-        yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
-            image, this.ProcessAnalysis);
 
+        if (this._rand.NextDouble() <= this._probAzure)
+        {
+            Debug.Log("Use Azure Object Detection");
+            this._detectionService = "Azure";
+            yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
+           image, this.ProcessAnalysis);
+        }
+        else
+        {
+            Debug.Log("Use GCP Object Detection");
+            this._detectionService = "GCP";
+            yield return this._objectDetectorGCPClient.DetectObjects("", image, this.ProcessAnalysis);
+        }
     }
 
     /// <summary>
@@ -248,5 +272,17 @@ public class SceneAnalyzer : MonoBehaviour
         Vector3 worldDirection = Vector3.Normalize(modifiedWorldSpace);
 
         return new Ray(cameraOrigin, worldDirection);
+    }
+
+    public void PutGoodFeedbackForObjectDetection()
+    {
+        Debug.Log("Send a positive feedback to feedback server (object detection)");
+        StartCoroutine(this._feedbackClient.PutFeedback("detection", this._detectionService, true));
+    }
+
+    public void PutBadFeedbackForObjectDetection()
+    {
+        Debug.Log("Send a negative feedback to feedback server (object detection)");
+        StartCoroutine(this._feedbackClient.PutFeedback("detection", this._detectionService, false));
     }
 }
