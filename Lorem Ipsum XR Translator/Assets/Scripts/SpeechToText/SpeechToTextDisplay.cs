@@ -21,7 +21,7 @@ namespace STT
         private AzureTranslator azureTranslator;
         private string apiKey;
         private const string location = "northeurope";
-        private const string targetLanguage = "hi";
+        private const string targetLanguage = "ja";
 
         private void Awake()
         {
