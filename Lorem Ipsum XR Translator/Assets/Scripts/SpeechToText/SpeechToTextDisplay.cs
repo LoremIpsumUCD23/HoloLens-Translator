@@ -18,11 +18,20 @@ namespace STT
         [SerializeField]
         private ToolTip translatedToolTip;
 
+        public CaptionLibrary captionLib;
         private AzureTranslator azureTranslator;
         private string apiKey;
         private const string location = "northeurope";
-        private const string targetLanguage = "ja";
+        private string targetLanguage = "en";
 
+        /// <summary>
+        /// Method to set the target language for speech to text based on language selected from panel
+        /// </summary>
+        public void SetTargetLanguage()
+        {
+            targetLanguage = captionLib.GetSecondaryLanguage();
+            Debug.Log("STT Language Check: " + targetLanguage);
+        }
         private void Awake()
         {
             apiKey = Secrets.GetAzureTranslatorKey();
@@ -52,6 +61,7 @@ namespace STT
 
         public async void OnRequestSpeechToText()
         {
+            SetTargetLanguage();
             string recognizedText = await azureSpeechToText.SSTRequest();
             DisplayInToolTip(originalToolTip, recognizedText);
             StartCoroutine(TranslateAndDisplay(recognizedText));
