@@ -21,7 +21,26 @@ def create_translation_service():
 
     @app.route('/translate', methods=['POST'])
     def translate():
-        # [Your translation code here]
+        try:
+            # Get the text from the request
+            text = request.json['text']
+            lang = request.json.get('lang', 'opus-mt-en-fr') # You can specify the language model if you have multiple
+
+            # Get the corresponding model and tokenizer
+            translator = translators_marian[lang]
+            model = translator['model']
+            tokenizer = translator['tokenizer']
+
+            # Tokenize the text and generate translation
+            inputs = tokenizer.encode(text, return_tensors="pt", max_length=512, truncation=True)
+            outputs = model.generate(inputs, max_length=512, num_return_sequences=1)
+            decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+            # Return the translation
+            return json.jsonify({'translation': decoded})
+        except Exception as e:
+            # Handle errors
+            return json.jsonify({'error': str(e)}), 400
 
     return app
 
