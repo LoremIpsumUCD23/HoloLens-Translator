@@ -37580,8 +37580,9 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 501780003}
+        m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.UI.FollowMeToggle,
+          Microsoft.MixedReality.Toolkit.SDK
         m_MethodName: ToggleFollowMeBehavior
         m_Mode: 1
         m_Arguments:
