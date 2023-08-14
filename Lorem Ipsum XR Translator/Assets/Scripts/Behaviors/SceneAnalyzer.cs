@@ -18,6 +18,7 @@ public class SceneAnalyzer : MonoBehaviour
     public TextMeshPro DebugText;
     public GameObject DebugQuad;
     public ParticleSystem LoadingPS;
+    public GameObject AnalyzeVisualFeedback;
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
@@ -74,6 +75,7 @@ public class SceneAnalyzer : MonoBehaviour
         }
 
         analyzing = true;
+        AnalyzeVisualFeedback.SetActive(true);
         DebugText.text = "Beginning screenshot process";
 
         Debug.Log("Timer starting..");
@@ -255,6 +257,7 @@ public class SceneAnalyzer : MonoBehaviour
             Debug.Log("API Call: " + apiTimer.ElapsedMilliseconds + " ms");
             Debug.Log("Total Elapsed: " + timer.ElapsedMilliseconds + " ms");
         }
+        AnalyzeVisualFeedback.SetActive(false);
     }
 
     /// <summary>
