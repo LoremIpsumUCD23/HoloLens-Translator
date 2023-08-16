@@ -4381,6 +4381,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1227d456a9ee3104b81cdd24fcf43f21, type: 2}
   - {fileID: 11400000, guid: 96da59460f7aca541bcb8b22119d1694, type: 2}
   - {fileID: 11400000, guid: 4c400012a7c45ef4c8bd2d35e76ccfff, type: 2}
+  - {fileID: 11400000, guid: 465ff2cac92609c48b38bfcd0eba0ede, type: 2}
   m_CreationSettings:
     sourceFontFileName: 
     sourceFontFileGUID: dbf5f90d8f7c02641be5791756618ccb
