@@ -8,8 +8,8 @@ namespace Description
     [Serializable]
     class Choice
     {
-        public string text;
         public int index;
+        public Message message;
         public string finish_reason;
     }
 }

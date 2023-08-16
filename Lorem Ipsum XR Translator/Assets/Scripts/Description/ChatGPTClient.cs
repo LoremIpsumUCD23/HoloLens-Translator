@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,7 +12,7 @@ namespace Description
     /// </summary>
     public class ChatGPTClient : IDescriptionClient
     {
-        private const string Url = "https://api.openai.com/v1/completions";
+        private const string Url = "https://api.openai.com/v1/chat/completions";
         private readonly string _apiKey;
         private readonly string _model;
 
@@ -33,9 +34,12 @@ namespace Description
         /// <param name="callback">An action that gets executed with the translated text.</param>
         public IEnumerator Explain(string content, Action<string[]> callback)
         {
-            // Create body of the request. PromtpRequest -> json -> bytes
-            var reqBody = new PromptRequest(this._model, content, 10, 0.0f);
+            //Message message1 = new Message("user", "I am a language teacher and want to explain the concept of a word. Give me the definition of " + content + " in a couple of sentences.");
+            Message message1 = new Message("user", "Explain " + content  + " to me like I'm 10 in a couple of sentences.");
+            List <Message> messages = new List<Message> { message1 };
+            var reqBody = new PromptRequest(this._model, messages);
             byte[] reqBodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(reqBody));
+
 
             string[] returnString = new string[2];
             returnString[0] = content;
@@ -54,17 +58,19 @@ namespace Description
                 // Send the request and wait for a response
                 yield return www.SendWebRequest();
 
+                Debug.Log(www.result);
+
                 // Got a response with Connection Error
                 if (www.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    returnString[1] = "Connection Error: " + www.error;
+                    returnString[1] = "Sorry, description is currently not available.";
                     Debug.LogError(returnString[1]);
                     callback(returnString);
                 }
                 // Got a reponse with Protocol Error
                 else if (www.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    returnString[1] = "Protocol Error: " + www.error;
+                    returnString[1] = "Sorry, description is currently not available.";
                     Debug.LogError(returnString[1]);
                     callback(returnString);
                 }
@@ -72,22 +78,22 @@ namespace Description
                 else
                 {
                     string message = "";
+                    Debug.Log("[DEBUG] ChatGPT says: " + www.downloadHandler.text);
                     // response text is null
-                    if (www.downloadHandler.text == null) message = "downloadHander.text is null.";
+                    if (www.downloadHandler.text == null) message = "Sorry, description is currently not available.";
                     // response text is an empty string
-                    else if (www.downloadHandler.text == "") message = "downloadHander.text is an empty string.";
+                    else if (www.downloadHandler.text == "") message = "Sorry, description is currently not available.";
                     // valid response
                     else
                     {
                         // Parse the response in json into an object.
                         // A response from ChatGPT API should look like what's defined below (Response class).
                         OpenAIAPIResponse res = JsonUtility.FromJson<OpenAIAPIResponse>(www.downloadHandler.text);
-                        if (res == null) message = "response is empty.";
-                        else if (res.choices == null || res.choices.Count == 0) message = "choices is empty. Read the ChatGPT document for more details.";
-                        else message = res.choices[0].text;
+                        if (res == null) message = "Sorry, description is currently not available.";
+                        else if (res.choices == null || res.choices.Count == 0) message = "Sorry, description is currently not available.";
+                        else message = res.choices[0].message.content;
                     }
                     returnString[1] = message.Trim(',', '\n');
-                    Debug.Log(returnString[1]);
                     callback(returnString);
                 }
             }

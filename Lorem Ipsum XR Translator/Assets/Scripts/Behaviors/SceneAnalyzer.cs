@@ -25,7 +25,7 @@ public class SceneAnalyzer : MonoBehaviour
     private IObjectDetectorClient _objectDetectorGCPClient;
     private string _detectionService = "unknown";
     private System.Random _rand;
-    private double _probAzure = 0.5;
+    private double _probAzure = 1.0;
 
     // Feedback
     private FeedbackClient _feedbackClient;

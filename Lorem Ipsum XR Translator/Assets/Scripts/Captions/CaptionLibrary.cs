@@ -44,6 +44,7 @@ public class CaptionLibrary : MonoBehaviour
     private FeedbackClient _feedbackClient;
 
     private System.Random _rand;
+    private double DICT_PROB = 0.0;
     // Should be either "dictionary" or "chatgpt"
     private string _descriptionModel = "unknown";
 
@@ -67,7 +68,7 @@ public class CaptionLibrary : MonoBehaviour
         this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
 
         // Initialise description client
-        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
+        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "gpt-3.5-turbo");
 
         // Initialise listener for language selection
         languageSetting = SelectLanguagePanel.GetComponent<LanguageSetting>();
@@ -129,7 +130,7 @@ public class CaptionLibrary : MonoBehaviour
             // Request a new description. It's diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
             descriptions.Put(title, holdString);
 
-            if (this._rand.NextDouble() > 0.5 && !title.Contains(" "))
+            if (this._rand.NextDouble() <= this.DICT_PROB && !title.Contains(" "))
             {
                 Debug.Log("[INFO] Use dictionary");
                 StartCoroutine(_dictionaryClient.Explain(title, GetDescriptionFromDict));
