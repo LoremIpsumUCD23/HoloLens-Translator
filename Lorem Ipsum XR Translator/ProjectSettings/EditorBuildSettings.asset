@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/RaycastScene.unity
-    guid: a391174bccf668f44b886c190e780cb0
+    path: Assets/Scenes/UIBuildTest.unity
+    guid: 50fc063dcf4110b45a8562b034f19e1e
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: eb774bd4a9127e0498741f4eb86810ee, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 5ec0bd620e80d244392909c87623c389, type: 2}
