@@ -23,7 +23,8 @@ namespace TTS
             { "ja","ja-JP" },
             { "bn","ba-IN" },
             { "hi","hi-IN" },
-            { "ms","ms-MY" }
+            { "ms","ms-MY" },
+            { "es","es-ES" }
         };
 
         private AudioSource audioSource;

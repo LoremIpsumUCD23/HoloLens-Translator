@@ -16,6 +16,7 @@ public class LanguageSetting : MonoBehaviour
     public PressableButton malayButton;
     public PressableButton japaneseButton;
     public PressableButton bengaliButton;
+    public PressableButton spanishButton;
 
     // Field for Feedback Text
     [SerializeField] TextMeshPro FeedbackText;
@@ -62,6 +63,8 @@ public class LanguageSetting : MonoBehaviour
         malayButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Malay"));
         japaneseButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Japanese"));
         bengaliButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Bengali"));
+        spanishButton.GetComponent<Interactable>().OnClick.AddListener(() => SetLanguage("Spanish"));
+        
 
 
         // Add the languages we want to support to the dictionary on start
@@ -70,6 +73,7 @@ public class LanguageSetting : MonoBehaviour
         _languageCodeDictionary.Add("Malay", "ms");
         _languageCodeDictionary.Add("Japanese", "ja");
         _languageCodeDictionary.Add("Bengali", "bn");
+        _languageCodeDictionary.Add("Spanish", "es");
 
     }
 
