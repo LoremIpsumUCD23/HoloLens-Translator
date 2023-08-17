@@ -2245,7 +2245,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.011, y: -0.0006}
-  m_SizeDelta: {x: 20, y: 20}
+  m_SizeDelta: {x: 0.069, y: 0.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8360444097279974628
 MeshRenderer:
@@ -2344,11 +2344,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.18
+  m_fontSize: 0.2
   m_fontSizeBase: 0.18
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0.1
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 2
@@ -2362,7 +2362,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -3058,7 +3058,8 @@ MonoBehaviour:
   translatedTitle: 
   primaryDescription: 
   translatedDescription: 
-  feedbackSent: 0
+  detectionFeedbackSent: 0
+  descriptionFeedbackSent: 0
 --- !u!114 &8936009069524415148
 MonoBehaviour:
   m_ObjectHideFlags: 0
