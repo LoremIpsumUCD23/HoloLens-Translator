@@ -47976,17 +47976,17 @@ PrefabInstance:
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2047144661}
-    - target: {fileID: 1298755854883093946, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
-      propertyPath: maxDistance
-      value: 1.3
+    - target: {fileID: 5319079813539573821, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_fontSize
+      value: 0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 1298755854883093946, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
-      propertyPath: maxViewVerticalDegrees
-      value: 55
+    - target: {fileID: 5319079813539573821, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_margin.w
+      value: -0.005333648
       objectReference: {fileID: 0}
-    - target: {fileID: 1298755854883093946, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
-      propertyPath: maxViewHorizontalDegrees
-      value: 90
+    - target: {fileID: 5319079813539573821, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
+      propertyPath: m_margin.z
+      value: -0.101792604
       objectReference: {fileID: 0}
     - target: {fileID: 6187669168354764276, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -48046,7 +48046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7048448162009890166, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e15bcd71c6075ae4aaa58ec8f5a0691d, type: 3}
