@@ -24,7 +24,8 @@ namespace TTS
             { "bn","ba-IN" },
             { "hi","hi-IN" },
             { "ms","ms-MY" },
-            { "es","es-ES" }
+            { "es","es-ES" },
+            { "fr","fr-FR" }
         };
 
         private AudioSource audioSource;
