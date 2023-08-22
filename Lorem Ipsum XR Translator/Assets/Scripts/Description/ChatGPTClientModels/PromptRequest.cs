@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Description
 {
@@ -9,18 +10,26 @@ namespace Description
     class PromptRequest
     {
         public string model;
-        public string prompt;
-        public int max_tokens;
-        public float temperature;
+        public List<Message> messages;
 
         /// <summary> request body </summary>
-        /// <see href="https://platform.openai.com/docs/api-reference/completions/create" />
-        public PromptRequest(string model, string prompt, int max_tokens, float temperature)
+        /// <see href=https://platform.openai.com/docs/api-reference/chat/create />
+        public PromptRequest(string model, List<Message> messages)
         {
             this.model = model;
-            this.prompt = prompt;
-            this.max_tokens = max_tokens;
-            this.temperature = temperature;
+            this.messages = messages;
+        }
+    }
+
+    [Serializable]
+    class Message
+    {
+        public string role;
+        public string content;
+        public Message(string role, string content)
+        {
+            this.role = role;
+            this.content = content;
         }
     }
 }

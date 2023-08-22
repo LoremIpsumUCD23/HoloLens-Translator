@@ -1,21 +1,34 @@
 using Config;
 using ObjectDetection;
+using Feedback;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Windows.WebCam;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
+
+
 public class SceneAnalyzer : MonoBehaviour
 {
     public CaptionController CaptionController;
     public TextMeshPro DebugText;
     public GameObject DebugQuad;
+    public ParticleSystem LoadingPS;
+    public GameObject AnalyzeVisualFeedback;
 
     private PhotoCapture photoCaptureObject = null;
     private IObjectDetectorClient _objectDetectorClient;
+    private IObjectDetectorClient _objectDetectorGCPClient;
+    private string _detectionService = "unknown";
+    private System.Random _rand;
+    private double _probAzure = 1.0;
+
+    // Feedback
+    private FeedbackClient _feedbackClient;
 
     // Data for scene analysis:
     private Texture2D image;
@@ -24,17 +37,28 @@ public class SceneAnalyzer : MonoBehaviour
     private Vector3 cameraPosition;
     private float textureWidth;
     private float textureHeight;
+    private bool analyzing = false;
 
     // Constants for camera offset and optical warp based on device testing
     private Vector3 CAMERA_OFFSET = new Vector3(0, 0.009f, 0.05f);
     private const float OPTICAL_WARP_FACTOR = 0.521f;
     private const float MAX_RAY_DIST = 3.1f;
 
+    // Timer
+    private System.Diagnostics.Stopwatch timer;
+    private System.Diagnostics.Stopwatch apiTimer;
+
     // Start is called before the first frame update
     void Start()
     {
         CaptionController = GetComponent<CaptionController>();
+        // For randomising Azure and GCP calls
+        _rand = new System.Random();
         _objectDetectorClient = new AzureObjectDetector(Secrets.GetAzureImageRecognitionKey());
+        _objectDetectorGCPClient = new GCPObjectDetection(Secrets.GetGCPCloudVisionKey());
+        _feedbackClient = new FeedbackClient(Secrets.GetFeedbackServerEndpoint());
+        timer = new System.Diagnostics.Stopwatch();
+        apiTimer = new System.Diagnostics.Stopwatch();
     }
 
     /// <summary>
@@ -44,8 +68,24 @@ public class SceneAnalyzer : MonoBehaviour
     /// There might be an issue with camera capture occurring on main thread, and not asynchronously at all.
     public void StartCapture()
     {
+        // Don't allow multiple attempts at capturing until the capture process is complete.
+        if (analyzing)
+        {
+            return;
+        }
+
+        analyzing = true;
+        AnalyzeVisualFeedback.SetActive(true);
         DebugText.text = "Beginning screenshot process";
+
+        Debug.Log("Timer starting..");
+        timer.Start();
+
         PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
+        if (LoadingPS != null)
+        {
+            LoadingPS.Play();
+        }
     }
 
     /// <summary>
@@ -81,6 +121,12 @@ public class SceneAnalyzer : MonoBehaviour
         else
         {
             DebugText.text = "Unable to start photo mode!";
+            analyzing = false;
+            photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
+            if (LoadingPS != null)
+            {
+                LoadingPS.Stop();
+            }
         }
     }
 
@@ -89,7 +135,7 @@ public class SceneAnalyzer : MonoBehaviour
     /// </summary>
     /// <param name="result">The result of the photo capture operation</param>
     /// <param name="photoCaptureFrame">The captured photo data</param>
-    private void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
+    private async void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
         if (result.success)
         {
@@ -111,11 +157,16 @@ public class SceneAnalyzer : MonoBehaviour
             projectionMatrix = camera.projectionMatrix;
             cameraPosition = camera.transform.position;
 
-            StartCoroutine(AnalyzeImage());
+           await AnalyzeImage();
         }
         else 
         { 
-            DebugText.text = "Failed to save photo to memory"; 
+            DebugText.text = "Failed to save photo to memory";
+            analyzing = false;
+            if (LoadingPS != null)
+            {
+                LoadingPS.Stop();
+            }
         }
         // Clean up
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
@@ -135,14 +186,26 @@ public class SceneAnalyzer : MonoBehaviour
     /// Coroutine to analyze an image. This sends the image off to our image recognition service and awaits the result
     /// </summary>
     /// <returns>IEnumerator waits on image processing result from Azure</returns>
-    public IEnumerator AnalyzeImage()
+    public async Task AnalyzeImage()
     {
         textureWidth = image.width;
         textureHeight = image.height; 
         DebugText.text = "Analyzing Image";
-        // Record view to image
-        yield return this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
+        apiTimer.Start();
+
+        if (this._rand.NextDouble() <= this._probAzure)
+        {
+            Debug.Log("Use Azure Object Detection");
+            this._detectionService = "Azure";
+            await this._objectDetectorClient.DetectObjects("https://obj-holo.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest",
             image, this.ProcessAnalysis);
+        }
+        else
+        {
+            Debug.Log("Use GCP Object Detection");
+            this._detectionService = "GCP";
+            await this._objectDetectorGCPClient.DetectObjects("", image, this.ProcessAnalysis);
+        }
     }
 
     /// <summary>
@@ -151,10 +214,15 @@ public class SceneAnalyzer : MonoBehaviour
     /// <param name="detectedObjects">List of objects detected by the image recognition service</param>
     private void ProcessAnalysis(List<DetectedObject> detectedObjects)
     {
+        if (LoadingPS != null)
+        {
+            LoadingPS.Stop();
+        }
+        analyzing = false;
         DebugText.text = "Processing image analysis. Found " + detectedObjects.Count + " objects";
         // Clear previously created captions (We'll decide how to handle this better later)
         CaptionController.ClearCaptions();
-
+        
         foreach (DetectedObject detectedObject in detectedObjects)
         {
 
@@ -171,9 +239,10 @@ public class SceneAnalyzer : MonoBehaviour
             // Cast to find location of object in 3D space (using optical warp, and adjusting camera by virtual offset)
             RaycastHit hit;
             Ray ray = ScreenToWorldRay(warpedPos, worldMatrix, projectionMatrix.inverse, cameraPosition + CAMERA_OFFSET);
-            
+
             // Do not collide with other captions
-            LayerMask captionMask = LayerMask.GetMask("Captions");
+            string[] layerNames = {"Captions", "UI" };
+            LayerMask captionMask = LayerMask.GetMask(layerNames);
             Physics.Raycast(ray, out hit, MAX_RAY_DIST * 1.5f, ~captionMask);
 
             Vector3 targetLocation = ray.origin + ray.direction * MAX_RAY_DIST;
@@ -184,7 +253,11 @@ public class SceneAnalyzer : MonoBehaviour
 
             // Create caption at that location
             CaptionController.CreateCaption(detectedObject.objectName + ": " + detectedObject.confidence, targetLocation);
+
+            Debug.Log("API Call: " + apiTimer.ElapsedMilliseconds + " ms");
+            Debug.Log("Total Elapsed: " + timer.ElapsedMilliseconds + " ms");
         }
+        AnalyzeVisualFeedback.SetActive(false);
     }
 
     /// <summary>
@@ -215,5 +288,17 @@ public class SceneAnalyzer : MonoBehaviour
         Vector3 worldDirection = Vector3.Normalize(modifiedWorldSpace);
 
         return new Ray(cameraOrigin, worldDirection);
+    }
+
+    public void PutGoodFeedbackForObjectDetection()
+    {
+        Debug.Log("Send a positive feedback to feedback server (object detection)");
+        StartCoroutine(this._feedbackClient.PutFeedback("detection", this._detectionService, true));
+    }
+
+    public void PutBadFeedbackForObjectDetection()
+    {
+        Debug.Log("Send a negative feedback to feedback server (object detection)");
+        StartCoroutine(this._feedbackClient.PutFeedback("detection", this._detectionService, false));
     }
 }

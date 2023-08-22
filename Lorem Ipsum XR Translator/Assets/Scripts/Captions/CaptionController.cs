@@ -10,8 +10,10 @@ public class CaptionController : MonoBehaviour
 
     public GameObject DescriptionPanel;
 
+    public bool captionActive = true;
+
     CaptionLibrary CaptionLib;
-    
+
     List<GameObject> ActiveCaptions;
     ObjectPool<GameObject> CaptionPool;
 
@@ -47,6 +49,20 @@ public class CaptionController : MonoBehaviour
         // Need to find caption in current caption list and remove it. Unfortunately O(n) operation
         // This should be fine since caption list should never be particularly large.
         ActiveCaptions.Remove(caption.gameObject);
+    }
+
+    /// <summary>
+    /// Show/hide captions based on toggled selections
+    /// </summary>
+    /// <param name="active"></param>
+    public void HandleCaptions(bool active)
+    {
+        foreach (GameObject c in ActiveCaptions)
+        {
+            c.SetActive(captionActive);
+        }
+
+        captionActive = !captionActive;
     }
 
     /// <summary>

@@ -8,10 +8,14 @@ public class Caption : MonoBehaviour
     public CaptionLibrary CaptionLib;
     public CaptionController CaptionCon;
 
-    string primaryTitle;
-    string translatedTitle;
-    string primaryDescription;
-    string translatedDescription;
+    string secondaryLanguage;
+
+    public string primaryTitle;
+    public string translatedTitle;
+    public string primaryDescription;
+    public string translatedDescription;
+    public bool detectionFeedbackSent;
+    public bool descriptionFeedbackSent;
 
     public void SetPrimaryTitle(string pTitle) { primaryTitle = pTitle; SetText(); }
 
@@ -19,21 +23,26 @@ public class Caption : MonoBehaviour
 
     public void SetTranslatedTitle(string tTitle) { translatedTitle = tTitle; SetText(); }
 
-    public string GetTranslatedTitle() {  return translatedTitle; }
+    public string GetTranslatedTitle() { return translatedTitle; }
 
     public void SetPrimaryDescription(string pDesc) { primaryDescription = pDesc; SetText(); }
 
     public string GetPrimaryDescription() { return primaryDescription; }
 
-    public void SetTranslatedDescription(string tDesc) {  translatedDescription = tDesc; SetText(); }
+    public void SetTranslatedDescription(string tDesc) { translatedDescription = tDesc; SetText(); }
 
     public string GetTranslatedDescription() { return translatedDescription; }
 
     public void InitializeCaption(string pTitle, CaptionLibrary captionLib, CaptionController captionCon)
     {
         primaryTitle = pTitle;
+        SetPrimaryDescription("");
+        SetTranslatedTitle("");
+        SetTranslatedDescription("");
         CaptionLib = captionLib;
         CaptionCon = captionCon;
+        detectionFeedbackSent = false;
+        descriptionFeedbackSent = false;
         SetText();
     }
 
@@ -83,15 +92,17 @@ public class Caption : MonoBehaviour
     {
         if (textObject == null)
         {
-            textObject = transform.Find("CaptionText").GetComponent<TextMeshPro>();
+            textObject = transform.GetComponentInChildren<TextMeshPro>();
         }
         if (!string.IsNullOrEmpty(translatedTitle))
         {
             textObject.text = translatedTitle;
+            //Debug.Log(textObject.text);
         }
         else // Set our caption with the primary text while we await our translation.
         {
             textObject.text = primaryTitle;
+            //Debug.Log(textObject.text);
         }
     }
 
@@ -113,9 +124,22 @@ public class Caption : MonoBehaviour
         if (CaptionCon.DescriptionPanel != null)
         {
             DescriptionPanel descriptionPanel = CaptionCon.DescriptionPanel.GetComponent<DescriptionPanel>();
+            if (descriptionPanel.ttsObject != null)
+            {
+                descriptionPanel.StopAudioCall();
+            }
             descriptionPanel.captionRef = this;
+            descriptionPanel.SetSecondaryLanguage(CaptionLib.GetSecondaryLanguage());
             descriptionPanel.SetText();
             CaptionCon.DescriptionPanel.SetActive(true);
+            if (!detectionFeedbackSent)
+            {
+                descriptionPanel.detectionFeedbackSection.SetActive(true);
+            }
+            if (!descriptionFeedbackSent)
+            {
+                descriptionPanel.descriptionFeedbackSection.SetActive(true);
+            }
         }
     }
 }

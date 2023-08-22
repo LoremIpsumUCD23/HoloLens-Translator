@@ -66,19 +66,19 @@ namespace Description
                 {
                     // Connection error
                     case UnityWebRequest.Result.ConnectionError:
-                        returnString[1] = "Connection Error: " + webRequest.error;
+                        returnString[1] = "Sorry, description is currently not available.";
                         Debug.LogError(returnString[1]);
                         callback(returnString);
                         break;
                     // Data Processing error
                     case UnityWebRequest.Result.DataProcessingError:
-                        returnString[1] = "Dataprocessing Error: " + webRequest.error;
+                        returnString[1] = "Sorry, description is currently not available.";
                         Debug.LogError(returnString[1]);
                         callback(returnString);
                         break;
                     // HTTP error
                     case UnityWebRequest.Result.ProtocolError:
-                        returnString[1] = "Http Error: " + webRequest.error;
+                        returnString[1] = "Sorry, description is currently not available.";
                         Debug.LogError(returnString[1]);
                         callback(returnString);
                         break;
@@ -86,7 +86,7 @@ namespace Description
                     case UnityWebRequest.Result.Success:
                         List<Item> res = JsonConvert.DeserializeObject<List<Item>>(webRequest.downloadHandler.text);
                         if (res.Count == 0){
-                            returnString[1] = "No such word";
+                            returnString[1] = "Sorry, description is currently not available.";
                             callback(returnString);
                             break;
                         }

@@ -1,5 +1,6 @@
-using Config;
+﻿using Config;
 using Description;
+using Feedback;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,8 +8,11 @@ using Translator;
 using UnityEngine;
 using Util;
 using Util.Cache;
+using Microsoft.MixedReality.Toolkit.UI;
 
-public class CaptionLibrary : MonoBehaviour 
+
+
+public class CaptionLibrary : MonoBehaviour
 {
     // Three caches are set up for tracking descriptions and translated titles (primary titles are the key)
     ICache<string, string> descriptions;
@@ -25,20 +29,37 @@ public class CaptionLibrary : MonoBehaviour
 
     // Strings used for string processing logic (may be better ways to handle some of this)
     string holdString = "Processing...";
-    string separator = "<|>";
+    string separator = ":";
 
     // This should be moved to some other translation settings class later.
+    // References to the Language Settings
+    public GameObject SelectLanguagePanel;
+    public PressableButton ConfirmButton;
+    public PressableButton firstConfirmButton;
+    private LanguageSetting languageSetting;
+
     string originalLanguage = "en";
-    string[] targetLanguages = new string[] { "ja" };
+    string[] targetLanguages = new string[] { "en" };
+
+    private FeedbackClient _feedbackClient;
+
+    private System.Random _rand;
+    private double DICT_PROB = 0.0;
+    // Should be either "dictionary" or "chatgpt"
+    private string _descriptionModel = "unknown";
 
     public string HoldString { get => holdString; set => holdString = value; }
 
     void Start()
     {
-        // Initialize caches
+        // Initialize caches.
+        // "descriptions" should be always empty because we want to call "dictionary" and "chatgpt" to get feedbacks from users
         descriptions = new LRUCache<string, string>(cacheCapacity);
         titleTranslations = new LRUCache<string, string>(cacheCapacity);
         descriptionTranslations = new LRUCache<string, string>(cacheCapacity);
+
+        // For randomising dictionary and chatgpt calls
+        this._rand = new System.Random();
 
         // Initialise translator client
         this._translatorClient = new AzureTranslator(Secrets.GetAzureTranslatorKey(), "northeurope");
@@ -47,7 +68,39 @@ public class CaptionLibrary : MonoBehaviour
         this._dictionaryClient = new DictionaryAPIClient("elementary", Secrets.GetDictApiKeyFor("elementary"));
 
         // Initialise description client
-        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "text-davinci-003");
+        this._chatGPTClient = new ChatGPTClient(Secrets.GetChatGPTApiKey(), "gpt-3.5-turbo");
+
+        // Initialise listener for language selection
+        languageSetting = SelectLanguagePanel.GetComponent<LanguageSetting>();
+        firstConfirmButton.GetComponent<Interactable>().OnClick.AddListener(ConfirmLanguageSelection);
+        ConfirmButton.GetComponent<Interactable>().OnClick.AddListener(ConfirmLanguageSelection);
+
+        // Ininitialise a client for sending requests to the feedback server
+        this._feedbackClient = new FeedbackClient(Secrets.GetFeedbackServerEndpoint());
+    }
+
+    /// <summary>
+    /// Sets the selected language on this class when the confirm language button is pressed
+    /// </summary>
+    private void ConfirmLanguageSelection()
+    {
+        if (string.IsNullOrEmpty(languageSetting.GetSelectedLanguageCode()))
+        {
+            Debug.Log("CL: No language selected. Current target language code is: " + targetLanguages[0]);
+            return;
+        }
+
+        targetLanguages = new string[] { languageSetting.GetSelectedLanguageCode() };
+        Debug.Log("CL: Language code confirmed: " + targetLanguages[0]);
+    }
+
+    /// <summary>
+    /// Getter for confirmed secondary language
+    /// </summary>
+    /// <returns></returns>
+    public string GetSecondaryLanguage()
+    {
+        return targetLanguages[0];
     }
 
     /// <summary>
@@ -61,13 +114,34 @@ public class CaptionLibrary : MonoBehaviour
         string result = descriptions.Get(title);
         if (!string.IsNullOrEmpty(result))
         {
+            string titleTrans = TryGetTitleTranslation(title);
+            if (string.IsNullOrEmpty(titleTrans) && result != holdString)
+            {
+                //Debug.Log("Have description but no current translation. Request retranslation");
+                string toTranslate = title + separator + result;
+                string key = title + "_" + languageSetting.GetSelectedLanguageCode();
+                titleTranslations.Put(key, holdString);
+                StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
+            }
             return result;
         }
         else
         {
-            // Request a new description
+            // Request a new description. It's diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
             descriptions.Put(title, holdString);
-            StartCoroutine(_dictionaryClient.Explain(title, GetDescriptionFromDict));
+
+            if (this._rand.NextDouble() <= this.DICT_PROB && !title.Contains(" "))
+            {
+                Debug.Log("[INFO] Use dictionary");
+                StartCoroutine(_dictionaryClient.Explain(title, GetDescriptionFromDict));
+                this._descriptionModel = "dictionry";
+            }
+            else
+            {
+                Debug.Log("[INFO] Use chatgpt");
+                StartCoroutine(_chatGPTClient.Explain(title, GetDescriptionFromGPT));
+                this._descriptionModel = "chatgpt";
+            }
 
             return null;
         }
@@ -80,7 +154,18 @@ public class CaptionLibrary : MonoBehaviour
     /// <returns>Hold String or translated title</returns>
     public string TryGetTitleTranslation(string title)
     {
-        return titleTranslations.Get(title);
+        string key = title + "_" + languageSetting.GetSelectedLanguageCode();
+        string result = titleTranslations.Get(key);
+        if (!string.IsNullOrEmpty(result))
+        {
+            return result;
+        }
+        else
+        {
+            //titleTranslations.Put(key, holdString);
+
+            return null;
+        }
     }
 
     /// <summary>
@@ -90,7 +175,18 @@ public class CaptionLibrary : MonoBehaviour
     /// <returns>Hold String or translated description</returns>
     public string TryGetDescriptionTranslation(string title)
     {
-        return descriptionTranslations.Get(title);
+        string key = title + "_" + languageSetting.GetSelectedLanguageCode();
+        string result = descriptionTranslations.Get(key);
+        if (!string.IsNullOrEmpty (result))
+        {
+            return result;
+        }
+        else
+        {
+            //descriptionTranslations.Put(key, holdString);
+
+            return null;
+        }
     }
 
     /// <summary>
@@ -101,13 +197,15 @@ public class CaptionLibrary : MonoBehaviour
     {
         if (returned[1] != null)
         {
+            // The cache is diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
             descriptions.Put(returned[0], returned[1]);
-            string toTranslate = returned[0] + separator + returned[1];
-            StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
+            //string toTranslate = returned[0] + separator + returned[1];
+            //StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
         }
         else
         {
             string result = "Got null. Must be something wrong with Description API client's implementation. Try ChatGPT instead";
+            descriptions.Put(returned[0], "Unable to get a definition.");
             Debug.Log(result);
 
             string prompt = "Definition of " + returned[0];
@@ -123,16 +221,18 @@ public class CaptionLibrary : MonoBehaviour
     {
         if (returned[1] != null)
         {
+            // The cache is diabled now because we want to make a call to "chatgpt" or "dictionary" to get data for feedback
             descriptions.Put(returned[0], returned[1]);
-            string toTranslate = returned[0] + separator + returned[1];
-            StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
+            //string toTranslate = returned[0] + separator + returned[1];
+            //StartCoroutine(_translatorClient.Translate(toTranslate, originalLanguage, targetLanguages, GetTranslation));
         }
         else
         {
             Debug.Log("Got null. Must be something wrong with Description API client's implementation");
+            descriptions.Put(returned[0], "Unable to get a definition.");
         }
     }
-    
+
     /// <summary>
     /// Callback function for completed translation API call. Parses returned results and assigns title and description translations to cache.
     /// </summary>
@@ -141,14 +241,28 @@ public class CaptionLibrary : MonoBehaviour
     {
         if (returned[1] != null)
         {
-            string[] original = returned[0].Split(separator);
-            string[] results = returned[1].Split(separator);
-            titleTranslations.Put(original[0], results[0]);
-            descriptionTranslations.Put(original[0], results[1]);
+            string[] parsedOriginal = returned[0].Split(separator);
+            string[] parsedTranslations = returned[1].Split(separator);
+            string key = parsedOriginal[0] + "_" + languageSetting.GetSelectedLanguageCode();
+            Debug.Log(key);
+            titleTranslations.Put(key, parsedTranslations[0]);
+            descriptionTranslations.Put(key, parsedTranslations[1]);
         }
         else
         {
             Debug.Log("Got null. Must be something wrong with Translation API client's implementation");
         }
+    }
+
+    public void PutGoodFeedbackForDescription()
+    {
+        Debug.Log("Send a positive feedback to feedback server");
+        StartCoroutine(this._feedbackClient.PutFeedback("description", this._descriptionModel, true));
+    }
+
+    public void PutBadFeedbackForDescription()
+    {
+        Debug.Log("Send a negative feedback to feedback server");
+        StartCoroutine(this._feedbackClient.PutFeedback("description", this._descriptionModel, false));
     }
 }
